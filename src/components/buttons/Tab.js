@@ -193,14 +193,14 @@ function Tab({ link }) {
 
   const handleEditLink = (e) => {
     e.preventDefault();
-    const { name, size, color, url, url2 } = e.target.elements;
+    const { name, size, color, linkUrl, imgUrl } = e.target.elements;
 
     // link.index = index.value;
     link.name = name.value;
     link.size = size.value;
     link.color = color.value;
-    link.linkUrl = url.value;
-    link.imgUrl = url2.value;
+    link.linkUrl = linkUrl.value;
+    link.imgUrl = imgUrl.value;
 
     onClose();
   };
