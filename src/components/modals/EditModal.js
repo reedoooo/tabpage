@@ -51,11 +51,11 @@ function EditModal({ isOpen, onClose, onSubmit }) {
             </FormControl>
             <FormControl mt={4} id="linkUrl">
               <FormLabel>Link URL</FormLabel>
-              <Input type="url" name="url" required />
+              <Input type="url" name="linkUrl" required />
             </FormControl>
             <FormControl mt={4} id="imgUrl">
               <FormLabel>Image URL</FormLabel>
-              <Input type="url" name="url2" required />
+              <Input type="url" name="imgUrl" required />
             </FormControl>
           </ModalBody>
           <ModalFooter>
