@@ -16,6 +16,7 @@ import { Route, Routes } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 // import CallBack from "../services/auth/CallBack";
 import ProTabs from "../pages/proTabs/ProTabs";
+// import Tab from "../components/buttons/Tab";
 // import ProfileData from "../components/data/ProfileData";
 // import { Auth0ProviderWithHistory } from "../services/auth/auth0-provider-with-history";
 
@@ -43,6 +44,14 @@ export default class Main extends Component {
                   />
                 }
               />
+              {/* <Route
+                path="/tabsloader"
+                element={
+                  <Tab
+                  savedTabsData={this.props.savedTabsData} 
+                  />
+                }
+              /> */}
               {/* <Route path="*" render={(props) => <CallBack {...props} />} /> */}
             </Routes>
           </ChakraProvider>
