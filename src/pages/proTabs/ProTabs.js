@@ -1,14 +1,9 @@
-import {
-  Box,
-  ChakraProvider,
-  Grid,
-  useDisclosure,
-  extendTheme,
-} from "@chakra-ui/react";
+import { ChakraProvider, useDisclosure, extendTheme } from "@chakra-ui/react";
 import EditModal from "../../components/modals/EditModal";
 import { useState } from "react";
 import Header from "../../containers/header/Header";
-import Tab from "../../components/buttons/Tab"; // Import the new component
+import TabGridContainer from "../../containers/tabGridContainer/TabGridContainer";
+import axios from "axios";
 
 function ProTabs() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -26,21 +21,34 @@ function ProTabs() {
     },
   });
 
+  const handleAddTabToServer = async (newLink) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/myTabRoutes`, newLink);
+      const savedData = response.data; // Extract the saved data from the response
+      console.log(savedData); // Display the saved data
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+
   const handleAddLink = (e) => {
     e.preventDefault();
-    const { name, color, url, url2 } = e.target.elements;
+    const { name, size, color, url, url2 } = e.target.elements;
 
-    // Check if the elements exist before accessing their values
-    if (name && color && url && url2) {
-      setLinks((prevLinks) => [
-        ...prevLinks,
-        {
-          name: name.value,
-          color: color.value,
-          linkUrl: url.value,
-          imgUrl: url2.value,
-        },
-      ]);
+    if (name.value && size.value && color.value && url.value && url2.value) {
+      const newLink = {
+        // index: index.value,
+        name: name.value,
+        size: size.value,
+        color: color.value,
+        linkUrl: url.value,
+        imgUrl: url2.value,
+      };
+
+      setLinks((prevLinks) => [...prevLinks, newLink]);
+
+      handleAddTabToServer(newLink);
     }
 
     onClose();
@@ -51,24 +59,157 @@ function ProTabs() {
   return (
     <ChakraProvider theme={theme}>
       <Header onOpen={onOpen} />
-
-      <Box width="100vw" height="100vh" padding={4}>
-        <Grid
-          templateColumns="repeat(6, 1fr)"
-          templateRows="repeat(5, 1fr)"
-          gap={4}
-          minHeight="100%"
-          minWidth="100%"
-        >
-          {links.map((link, index) => (
-            <Tab key={index} link={link} /> // Use the new component here
-          ))}
-        </Grid>
-
-        <EditModal isOpen={isOpen} onClose={onClose} onSubmit={handleAddLink} />
-      </Box>
+      <TabGridContainer links={links} />
+      <EditModal isOpen={isOpen} onClose={onClose} onSubmit={handleAddLink} />
     </ChakraProvider>
   );
 }
 
 export default ProTabs;
+
+// import { ChakraProvider, useDisclosure, extendTheme } from "@chakra-ui/react";
+// import EditModal from "../../components/modals/EditModal";
+// import { useState } from "react";
+// import Header from "../../containers/header/Header";
+// import TabGridContainer from "../../containers/tabGridContainer/TabGridContainer";
+// import axios from "axios";
+
+// function ProTabs() {
+//   const { isOpen, onOpen, onClose } = useDisclosure();
+//   const [links, setLinks] = useState([]);
+
+//   const theme = extendTheme({
+//     components: {
+//       Modal: {
+//         baseStyle: {
+//           dialog: {
+//             minHeight: "320px",
+//           },
+//         },
+//       },
+//     },
+//   });
+
+//   const handleAddTabToServer = async (newLink) => {
+//     const optionsForPost = {
+//       method: "POST",
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({ newLink }),
+//       url: `${process.env.REACT_APP_SERVER}/api/myTabRoutes`,
+//     };
+//     try {
+//       const response = await axios(optionsForPost);
+//       console.log(response.data);
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+
+//   const handleAddLink = (e) => {
+//     e.preventDefault();
+//     const { name, color, url, url2 } = e.target.elements;
+
+//     if (name && color && url && url2) {
+//       const newLink = {
+//         name: name.value,
+//         color: color.value,
+//         linkUrl: url.value,
+//         imgUrl: url2.value,
+//       };
+
+//       setLinks((prevLinks) => [
+//         ...prevLinks,
+//         newLink,
+//       ]);
+
+//       handleAddTabToServer(newLink);
+//     }
+
+//     onClose();
+//   };
+
+//   console.log("protabs reached");
+
+//   return (
+//     <ChakraProvider theme={theme}>
+//       <Header onOpen={onOpen} />
+//       <TabGridContainer links={links} />
+//       <EditModal isOpen={isOpen} onClose={onClose} onSubmit={handleAddLink} />
+//     </ChakraProvider>
+//   );
+// }
+
+// export default ProTabs;
+
+// import { ChakraProvider, useDisclosure, extendTheme } from "@chakra-ui/react";
+// import EditModal from "../../components/modals/EditModal";
+// import { useState } from "react";
+// import Header from "../../containers/header/Header";
+// import TabGridContainer from "../../containers/tabGridContainer/TabGridContainer";
+// import axios from "axios";
+
+// function ProTabs() {
+//   const { isOpen, onOpen, onClose } = useDisclosure();
+//   const [links, setLinks] = useState([]);
+
+//   const theme = extendTheme({
+//     components: {
+//       Modal: {
+//         baseStyle: {
+//           dialog: {
+//             minHeight: "320px",
+//           },
+//         },
+//       },
+//     },
+//   });
+
+//   const handleAddTabToServer = async (newLink) => {
+//     const optionsForPost = {
+//       method: "POST",
+//       url: `${process.env.REACT_APP_SERVER}/api/myTabRoutes`,
+//       data: newLink,
+//     };
+//     try {
+//       const response = await axios(optionsForPost);
+//       console.log(response.data);
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+
+//   const handleAddLink = (e) => {
+//     e.preventDefault();
+//     const { name, color, url, url2 } = e.target.elements;
+
+//     if (name && color && url && url2) {
+//       const newLink = {
+//         name: name.value,
+//         color: color.value,
+//         linkUrl: url.value,
+//         imgUrl: url2.value,
+//       };
+
+//       setLinks((prevLinks) => [
+//         ...prevLinks,
+//         newLink,
+//       ]);
+
+//       handleAddTabToServer(newLink);
+//     }
+
+//     onClose();
+//   };
+
+//   console.log("protabs reached");
+
+//   return (
+//     <ChakraProvider theme={theme}>
+//       <Header onOpen={onOpen} />
+//       <TabGridContainer links={links} />
+//       <EditModal isOpen={isOpen} onClose={onClose} onSubmit={handleAddLink} />
+//     </ChakraProvider>
+//   );
+// }
+
+// export default ProTabs;

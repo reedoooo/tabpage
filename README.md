@@ -1,70 +1,83 @@
-# Getting Started with Create React App
+<!-- The title of your project -->
+# Project Title
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- A one- or two-line summary of what this project does -->
+## Overview
 
-## Available Scripts
+This project is a productivty app that primarily serves to organize your most-used links into one space. Secondarily, there are various other uses such as writing important notes, making to-do lists, go-to chat-gpt prompt window, etc.
 
-In the project directory, you can run:
+<!-- Why this project exists -->
+## Motivation
 
-### `npm start`
+This project exists to help me stay organized and have faster access to important and often-used sites.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<!-- How to get up and running with your project -->
+## Getting Started
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Prerequisites
 
-### `npm test`
+<!-- What things you need to install the software and how to install them -->
+These are the things you need to use this project and instructions on how to install them:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Create_React_App
+2. Chakra UI
+3. MongoDB
 
-### `npm run build`
+### Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<!-- A step-by-step series of examples that tell you how to get a development env running -->
+Here are the steps to set up the project:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Install dependencies.
+2. Set up your folder structure in accordance with the one shown in this project.
+3. Set up your online MongoDB account and database
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `npm run eject`
+<!-- Examples of useful commands, scripts -->
+Here's how to use the project:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.
+2. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.
+3. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Running the tests
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+<!-- How to run the automated tests for this system -->
+To run the tests, you need to run the App.test.js file.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Deployment
 
-## Learn More
+<!-- Additional notes about how to deploy this on a live system -->
+Instructions on how to deploy this on a live system can be found using chatGPT and prompting 'how to deploy an app using render and netlify'.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Built With
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<!-- List the major frameworks you used to build your project -->
+This project uses these major frameworks:
 
-### Code Splitting
+- [React](https://react.dev/)
+- [Framework2](link_to_framework2)
+- [Framework3](link_to_framework3)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Contributing
 
-### Analyzing the Bundle Size
+<!-- Details on how other developers can contribute to your project -->
+Please read [CONTRIBUTING.md](link_to_contributing_guide) for details on our code of conduct and the process for submitting pull requests.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Authors
 
-### Making a Progressive Web App
+<!-- List of authors and any acknowledgment you feel necessary -->
+- **Your Name** - [YourGithubUsername](your_github_profile_link)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+See also the list of [contributors](link_to_contributors) who participated in this project.
 
-### Advanced Configuration
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+<!-- The license your project uses -->
+This project is licensed under the ________ License - see the [LICENSE.md](link_to_license) file for details.
 
-### Deployment
+## Acknowledgments
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<!-- Any acknowledgment you feel necessary -->
+I would like to thank CodeFellows for me with a very solid foundation in coding knowledge
