@@ -55,11 +55,11 @@ function EditSpecTabModal({ isOpen, onClose, onSubmit, onDelete }) {
             </FormControl>
             <FormControl mt={4} id="linkUrl">
               <FormLabel>Link URL</FormLabel>
-              <Input type="url" name="url" />
+              <Input type="url" name="linkUrl" />
             </FormControl>
             <FormControl mt={4} id="imgUrl">
               <FormLabel>Image URL</FormLabel>
-              <Input type="url" name="url2" />
+              <Input type="url" name="imgUrl" />
             </FormControl>
           </ModalBody>
           <ModalFooter>
