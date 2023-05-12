@@ -31,8 +31,7 @@ export default class Main extends Component {
               exact
               element={
                 <ProTabs
-                  profileData={this.props.profileData}
-                  dataLoaded={this.props.profileData}
+                savedTabsData={this.props.savedTabsData} 
                 />
               }
             />
@@ -40,12 +39,10 @@ export default class Main extends Component {
                 path="/protabs"
                 element={
                   <ProTabs
-                    profileData={this.props.profileData}
-                    dataLoaded={this.props.profileData}
+                  savedTabsData={this.props.savedTabsData} 
                   />
                 }
               />
-
               {/* <Route path="*" render={(props) => <CallBack {...props} />} /> */}
             </Routes>
           </ChakraProvider>
