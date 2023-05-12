@@ -38,14 +38,14 @@ function EditSpecTabModal({ isOpen, onClose, onSubmit, onDelete }) {
             </FormControl>
             <FormControl mt={4} id="size">
               <FormLabel>Size</FormLabel>
-              <Select placeholder="Select Size" name="size" required>
+              <Select placeholder="Select Size" name="size">
                 <option value="small">Small</option>
                 <option value="large">Large</option>
               </Select>
             </FormControl>
             <FormControl mt={4} id="color">
               <FormLabel>Color</FormLabel>
-              <Select placeholder="Select a color" name="color" required>
+              <Select placeholder="Select a color" name="color">
                 <option value="red.500">Red</option>
                 <option value="blue.500">Blue</option>
                 <option value="green.500">Green</option>
@@ -55,11 +55,11 @@ function EditSpecTabModal({ isOpen, onClose, onSubmit, onDelete }) {
             </FormControl>
             <FormControl mt={4} id="linkUrl">
               <FormLabel>Link URL</FormLabel>
-              <Input type="url" name="url" required />
+              <Input type="url" name="url" />
             </FormControl>
             <FormControl mt={4} id="imgUrl">
               <FormLabel>Image URL</FormLabel>
-              <Input type="url" name="url2" required />
+              <Input type="url" name="url2" />
             </FormControl>
           </ModalBody>
           <ModalFooter>
@@ -70,7 +70,7 @@ function EditSpecTabModal({ isOpen, onClose, onSubmit, onDelete }) {
                 colorScheme="red"
                 marginRight={3}
               >
-                Delte Tab
+                Delete
               </Button>
               <Button type="submit" colorScheme="blue" marginRight={3}>
                 Save Changes
