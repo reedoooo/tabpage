@@ -32,6 +32,13 @@ function EditModal({ isOpen, onClose, onSubmit }) {
               <FormLabel>Name</FormLabel>
               <Input type="text" name="name" required />
             </FormControl>
+            <FormControl mt={4} id="size">
+              <FormLabel>Size</FormLabel>
+              <Select placeholder="Select Size" id='size' name="size" required>
+                <option value="small">Small</option>
+                <option value="large">Large</option>
+              </Select>
+            </FormControl>
             <FormControl mt={4} id="color">
               <FormLabel>Color</FormLabel>
               <Select placeholder="Select a color" name="color" required>

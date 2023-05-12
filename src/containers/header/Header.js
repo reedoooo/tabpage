@@ -7,9 +7,7 @@ function Header({ onOpen }) {
   return (
     <header id="header" style={{ display: "block", minHeight: "10vh" }}>
       <Box>
-
           <ModalAddTab onOpen={onOpen} />
-
       </Box>
     </header>
   );
