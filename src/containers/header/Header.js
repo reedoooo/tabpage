@@ -1,13 +1,13 @@
-import React from 'react';
-import './header.css'
+import React from "react";
+import "./header.css";
 import { Box } from "@chakra-ui/react";
-import ModalAddTab from "../../components/buttons/ModalAddTab";
+import AddTabButton from "../../components/buttons/OpenTabModalButton";
 
 function Header({ onOpen }) {
   return (
     <header id="header" style={{ display: "block", minHeight: "10vh" }}>
       <Box>
-          <ModalAddTab onOpen={onOpen} />
+        <AddTabButton onOpen={onOpen} />
       </Box>
     </header>
   );
