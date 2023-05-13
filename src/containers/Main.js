@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import ProTabs from "../pages/proTabs/ProTabs";
+import Home from "../pages/home/Home";
 
 export default class Main extends Component {
   render() {
@@ -12,15 +12,15 @@ export default class Main extends Component {
             <Route
               path="/"
               exact
-              element={<ProTabs savedTabsData={this.props.savedTabsData} />}
+              element={<Home savedTabsData={this.props.savedTabsData} savedNotesData={this.props.savedNotesData} />}
             />
             <Route
-              path="/protabs"
-              element={<ProTabs savedTabsData={this.props.savedTabsData} />}
+              path="/home"
+              element={<Home savedTabsData={this.props.savedTabsData} savedNotesData={this.props.savedNotesData} />}
             />
           </Routes>
         </ChakraProvider>
-      </>
+      </> 
     );
   }
 }
