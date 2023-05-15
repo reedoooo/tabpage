@@ -11,7 +11,7 @@ import {
   Center,
   useColorModeValue,
 } from "@chakra-ui/react";
-import CreateItem from "../todolist/CreateListItem";
+import CreateTask from "../todolist/CreateTask";
 
 export default function ToDoListModal({ isOpen, onClose }) {
   const bgColor = useColorModeValue("gray.50", "gray.800");
@@ -47,7 +47,7 @@ export default function ToDoListModal({ isOpen, onClose }) {
               borderWidth={1}
               borderColor={secondaryTextColor}
             >
-              <CreateItem />
+              <CreateTask />
             </VStack>
           </Center>
         </ModalBody>

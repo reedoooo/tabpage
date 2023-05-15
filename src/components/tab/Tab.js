@@ -1,10 +1,21 @@
 import React from "react";
 import { Button, AspectRatio, GridItem } from "@chakra-ui/react";
-import EditButton from "../buttons/EditTabModalButton";
+import EditTabModalButton from "../buttons/EditTabModalButton";
 
-function Tab({ link }) {
+function Tab({
+  tabIndex,
+  allTabs,
+  tab,
+  isOpen,
+  // onOpen,
+  onOpenModal,
+  onClose,
+  handleButtonClick,
+}) {
+
+
   const buttonStyle = {
-    backgroundImage: `url(${link.imgUrl})`,
+    backgroundImage: `url(${tab.imgUrl})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
@@ -19,30 +30,26 @@ function Tab({ link }) {
     justifyContent: "center",
   };
 
-  const handleEditLink = (e) => {
-    e.preventDefault();
-    const { name, size, color, linkUrl, imgUrl } = e.target.elements;
-
-    // link.index = index.value;
-    link.name = name.value;
-    link.size = size.value;
-    link.color = color.value;
-    link.linkUrl = linkUrl.value;
-    link.imgUrl = imgUrl.value;
-  };
-
   return (
     <GridItem width="100%" height="100%" boxSizing="border-box">
       <AspectRatio ratio={1}>
         <Button
           as="a"
-          href={link.linkUrl}
+          href={tab.linkUrl}
           target="_blank"
           rel="noopener noreferrer"
-          backgroundColor={link.color}
+          backgroundColor={tab.color}
           style={buttonStyle}
+          onClick={onOpenModal}
         >
-          <EditButton link={link} handleEditLink={handleEditLink} />
+          <EditTabModalButton
+            allTabs={allTabs}
+            // isOpen={isOpen}
+            // isOpen={!!tab}
+            onOpen={onOpenModal}
+            onClose={onClose}
+            tab={tab} // pass the current tab data
+          />
           <section
             id="tab-title-section"
             style={{
@@ -56,7 +63,7 @@ function Tab({ link }) {
             }}
           >
             <div style={{ marginBottom: "10%", marginTop: "1%" }}>
-              <h2 id="button-content">{link.name}</h2>
+              <h2 id="button-content">{tab.name}</h2>
             </div>
           </section>
         </Button>
