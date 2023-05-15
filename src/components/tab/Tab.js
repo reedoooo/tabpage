@@ -1,30 +1,21 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Button, AspectRatio, GridItem } from "@chakra-ui/react";
 import EditTabModalButton from "../buttons/EditTabModalButton";
 
 function Tab({
   tabIndex,
   allTabs,
-  selectedTab,
+  tab,
   isOpen,
-  onOpen,
-  tabId,
+  // onOpen,
+  onOpenModal,
   onClose,
   handleButtonClick,
 }) {
-  const handleClick = useCallback(
-    () => handleButtonClick(tabIndex),
-    [handleButtonClick, tabIndex]
-  );
 
-  // Check if selectedTab is defined
-  if (!selectedTab) {
-    // If not, you can return a default UI or null
-    return null; // Or some default UI
-  }
 
   const buttonStyle = {
-    backgroundImage: `url(${selectedTab.imgUrl})`,
+    backgroundImage: `url(${tab.imgUrl})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
@@ -44,21 +35,20 @@ function Tab({
       <AspectRatio ratio={1}>
         <Button
           as="a"
-          href={selectedTab.linkUrl}
+          href={tab.linkUrl}
           target="_blank"
           rel="noopener noreferrer"
-          backgroundColor={selectedTab.color}
+          backgroundColor={tab.color}
           style={buttonStyle}
+          onClick={onOpenModal}
         >
           <EditTabModalButton
             allTabs={allTabs}
-            tabId={tabId}
-            onClick={handleClick}
-            isOpen={isOpen}
-            selectedTab={selectedTab} // pass the current tab data
-            onOpen={onOpen}
+            // isOpen={isOpen}
+            // isOpen={!!tab}
+            onOpen={onOpenModal}
             onClose={onClose}
-            tabIndex={tabIndex}
+            tab={tab} // pass the current tab data
           />
           <section
             id="tab-title-section"
@@ -73,7 +63,7 @@ function Tab({
             }}
           >
             <div style={{ marginBottom: "10%", marginTop: "1%" }}>
-              <h2 id="button-content">{selectedTab.name}</h2>
+              <h2 id="button-content">{tab.name}</h2>
             </div>
           </section>
         </Button>
