@@ -2,7 +2,7 @@ import React from "react";
 import { Button, AspectRatio, GridItem, useDisclosure } from "@chakra-ui/react";
 import ToDoListModal from "../../components/modals/AddTaskFormsModal";
 
-function ModalTabContainer({ link }) {
+function Tab4ToDoApp({ allTabs }) {
   const buttonStyle = {
     // backgroundImage: `url(${link.imgUrl})`,
     backgroundImage: `url('https://cdn-icons-png.flaticon.com/512/3235/3235042.png')`,
@@ -28,14 +28,14 @@ function ModalTabContainer({ link }) {
   };
 
   return (
-    <GridItem width="100%" height="100%" boxSizing="border-box">
+    <GridItem width="100%" height="100%" boxSizing="border-box" id="modal-tab-container">
       <AspectRatio ratio={1}>
         <Button
           as="a"
-          href={link.linkUrl}
+          href={allTabs.linkUrl}
           target="_blank"
           rel="noopener noreferrer"
-          backgroundColor={link.color}
+          backgroundColor={allTabs.color}
           style={buttonStyle}
           onClick={handleUpperButtonClick} // Use the updated event handler
         >
@@ -44,7 +44,7 @@ function ModalTabContainer({ link }) {
             style={{ position: "absolute", top: 0, right: 0 }}
           >
             <Button id="edit-specific-tab-button" onClick={onOpen} />
-            <ToDoListModal isOpen={isOpen} onClose={onClose} />
+            <ToDoListModal isOpen={isOpen} onClose={onClose} link={allTabs} />
           </section>
           <section
             id="tab-title-section"
@@ -68,4 +68,4 @@ function ModalTabContainer({ link }) {
   );
 }
 
-export default ModalTabContainer;
+export default Tab4ToDoApp;

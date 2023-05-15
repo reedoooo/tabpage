@@ -1,5 +1,5 @@
 import { ChakraProvider, useDisclosure, extendTheme } from "@chakra-ui/react";
-import EditModal from "../../components/modals/AddTabFormsModal";
+import AddTabFormsModal from "../../components/modals/AddTabFormsModal";
 import { useState, useEffect } from "react";
 import Header from "../../containers/header/Header";
 import TabGridContainer from "../../containers/tabGridContainer/TabGridContainer";
@@ -8,7 +8,7 @@ import axios from "axios";
 function Home() {
   // Creating state variables and hooks
   const { isOpen, onOpen, onClose } = useDisclosure(); // useDisclosure hook from Chakra UI to handle modal visibility
-  const [links, setLinks] = useState([]); // State variable to store links
+  // const [links, setLinks] = useState([]); // State variable to store links
   const [savedTabsData, setSavedTabsData] = useState([]); // State variable to store saved tabs data
 
   // Creating a custom Chakra UI theme
@@ -37,8 +37,11 @@ function Home() {
       );
 
       const savedTabsDatax = response.data
+
         .filter((item) => item.tab)
         .map((item) => ({
+          id: item.tab._id,
+          index: item.tab.index,
           name: item.tab.name,
           size: item.tab.size,
           color: item.tab.color,
@@ -46,13 +49,13 @@ function Home() {
           imgUrl: item.tab.imgUrl,
         }));
 
-      console.log(savedTabsDatax);
+      // console.log(savedTabsDatax);
       setSavedTabsData(savedTabsDatax);
     } catch (error) {
       console.error(error);
     }
   };
-
+  
   // Function to handle adding a new tab to the server
   const handleAddTabToServer = async (newLink) => {
     try {
@@ -71,9 +74,13 @@ function Home() {
   // Function to handle adding a new link
   const handleAddLink = (e) => {
     e.preventDefault();
-    const { name, size, color, linkUrl, imgUrl } = e.target.elements;
+    const { index, name, size, color, linkUrl, imgUrl } = e.target.elements;
+
+
 
     if (
+      // id.value &&
+      index &&
       name.value &&
       size.value &&
       color.value &&
@@ -81,6 +88,8 @@ function Home() {
       imgUrl.value
     ) {
       const newLink = {
+        // id: id.value,
+        index: index,
         name: name.value,
         size: size.value,
         color: color.value,
@@ -88,22 +97,21 @@ function Home() {
         imgUrl: imgUrl.value,
       };
 
-      setLinks((prevLinks) => [...prevLinks, newLink]);
-
+      // setLinks((prevLinks) => [...prevLinks, newLink]);
       handleAddTabToServer(newLink);
     }
 
     onClose();
   };
 
-  console.log("protabs reached");
-
+  // console.log("protabs reached");
+  console.log(savedTabsData)
   // Rendered JSX elements
   return (
     <ChakraProvider theme={theme}>
       <Header onOpen={onOpen} />
-      <EditModal isOpen={isOpen} onClose={onClose} onSubmit={handleAddLink} />
-      <TabGridContainer links={links} savedTabsData={savedTabsData} />
+      <AddTabFormsModal isOpen={isOpen} onClose={onClose} onSubmit={handleAddLink} />
+      <TabGridContainer savedTabsData={savedTabsData} />
     </ChakraProvider>
   );
 }

@@ -1,15 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@chakra-ui/react";
-import EditSpecTabModal from "../modals/EditTabFormsModal";
-import { useDisclosure } from "@chakra-ui/react";
+import EditTabFormsModal from "../modals/EditTabFormsModal";
 
-function EditButton({ link, handleEditLink }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+function EditTabModalButton({ tabIndex, tabId, allTabs, selectedTab, onOpen, onClose }) {
+  // const [isOpen, setIsOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [size, setSize] = useState("");
+  const [color, setColor] = useState("");
+  const [linkUrl, setLinkUrl] = useState("");
+  const [imgUrl, setImgUrl] = useState("");
 
-  const handleUpperButtonClick = (event) => {
-    event.stopPropagation(); // Stop the event from propagating further
-    onOpen();
+  // const handleCloseModal = () => {
+  //   // setIsOpen(false);
+  // };
+  console.log(tabId)
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    console.log("id: ", tabId);
+    const id = tabId;
+    const response = await fetch(`/myTabRoutes/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, size, color, linkUrl, imgUrl }),
+    });
+    const data = await response.json();
+    console.log(data);
   };
+
+  // console.log(selectedTab);
 
   return (
     <section
@@ -17,19 +35,30 @@ function EditButton({ link, handleEditLink }) {
       style={{ position: "absolute", top: 0, right: 0 }}
     >
       <Button
-        id="edit-specific-tab-button"
-        onClick={handleUpperButtonClick}
+        // id="edit-specific-tab-button"
+        onClick={onOpen} // Use onOpen passed from the parent
         style={{ zIndex: "100" }}
-      />
-      <EditSpecTabModal
-        link={link}
-        size={link.size}
-        isOpen={isOpen}
+      >
+        Edit
+      </Button>
+
+      <EditTabFormsModal
+        // isOpen={isOpen}
+        onSubmit={handleFormSubmit}
+        // onClose={handleCloseModal}
         onClose={onClose}
-        onSubmit={handleEditLink}
+        tabIndex={tabIndex}
+        tabId={tabId}
+        selectedTab={selectedTab}
+        allTabs={allTabs}
+        onNameChange={(e) => setName(e.target.value)}
+        onSizeChange={(e) => setSize(e.target.value)}
+        onColorChange={(e) => setColor(e.target.value)}
+        onLinkUrlChange={(e) => setLinkUrl(e.target.value)}
+        onImgUrlChange={(e) => setImgUrl(e.target.value)}
       />
     </section>
   );
 }
 
-export default EditButton;
+export default EditTabModalButton;

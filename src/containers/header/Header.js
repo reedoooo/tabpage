@@ -1,7 +1,7 @@
 import React from "react";
 import "./header.css";
 import { Box } from "@chakra-ui/react";
-import AddTabButton from "../../components/buttons/OpenTabModalButton";
+import AddTabButton from "../../components/buttons/AddTabModalButton";
 
 function Header({ onOpen }) {
   return (
