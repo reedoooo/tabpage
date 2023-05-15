@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from "@chakra-ui/react";
 
-function DeleteListItem({ itemId }) {
+function DeleteTask({ itemId }) {
   const handleDelete = async () => {
     const response = await fetch(`/api/myTodoRoutes/${itemId}`, {
       method: 'DELETE',
@@ -15,4 +15,4 @@ function DeleteListItem({ itemId }) {
   );
 }
 
-export default DeleteListItem;
+export default DeleteTask;
