@@ -29,6 +29,14 @@
 #edit-specific-tab-button {
     z-index: 100;
     margin-top: 0;
+}
 
+#add-tab-button {
+    justify-content: center;
+    align-items: center;
+}
 
+#open-settings-button {
+    justify-content: left;
+    align-items: left;
 }

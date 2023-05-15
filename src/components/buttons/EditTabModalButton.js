@@ -1,62 +1,75 @@
-import React, { useState } from "react";
-import { Button } from "@chakra-ui/react";
+import React from "react";
+import {
+  Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+} from "@chakra-ui/react";
 import EditTabFormsModal from "../modals/EditTabFormsModal";
 
-function EditTabModalButton({ tabIndex, tabId, allTabs, selectedTab, onOpen, onClose }) {
-  // const [isOpen, setIsOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [size, setSize] = useState("");
-  const [color, setColor] = useState("");
-  const [linkUrl, setLinkUrl] = useState("");
-  const [imgUrl, setImgUrl] = useState("");
+function EditTabModalButton({
+  allTabs,
+  selectedTab,
+  onClose,
+  tab,
+  isOpen,
+  onOpen,
+}) {
 
-  // const handleCloseModal = () => {
-  //   // setIsOpen(false);
-  // };
-  console.log(tabId)
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    console.log("id: ", tabId);
-    const id = tabId;
-    const response = await fetch(`/myTabRoutes/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, size, color, linkUrl, imgUrl }),
-    });
-    const data = await response.json();
-    console.log(data);
+  const handleSubmit = async (updatedTab) => {
+    const id = updatedTab.id;
+    console.log(id);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER}/api/myTabRoutes/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...updatedTab }),
+      });
+      window.location.reload();
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
-  // console.log(selectedTab);
-
+  const handleDelete = async (deletedTab) => {
+    const id = deletedTab.id;
+    console.log(id);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER}/api/myTabRoutes/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
   return (
     <section
       id="edit-specific-tab-button-section"
       style={{ position: "absolute", top: 0, right: 0 }}
     >
-      <Button
-        // id="edit-specific-tab-button"
-        onClick={onOpen} // Use onOpen passed from the parent
-        style={{ zIndex: "100" }}
-      >
-        Edit
-      </Button>
+      <Button onClick={onOpen}>Edit</Button>
 
-      <EditTabFormsModal
-        // isOpen={isOpen}
-        onSubmit={handleFormSubmit}
-        // onClose={handleCloseModal}
-        onClose={onClose}
-        tabIndex={tabIndex}
-        tabId={tabId}
-        selectedTab={selectedTab}
-        allTabs={allTabs}
-        onNameChange={(e) => setName(e.target.value)}
-        onSizeChange={(e) => setSize(e.target.value)}
-        onColorChange={(e) => setColor(e.target.value)}
-        onLinkUrlChange={(e) => setLinkUrl(e.target.value)}
-        onImgUrlChange={(e) => setImgUrl(e.target.value)}
-      />
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalHeader>Edit Tab</ModalHeader>
+        <ModalContent>
+          <EditTabFormsModal
+            initialValues={tab}
+            onSubmit={handleSubmit}
+            onClose={onClose}
+            onDelete={handleDelete}
+            selectedTab={selectedTab}
+            allTabs={allTabs}
+          />
+        </ModalContent>
+      </Modal>
     </section>
   );
 }

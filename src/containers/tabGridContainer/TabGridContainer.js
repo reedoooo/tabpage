@@ -4,7 +4,7 @@ import { Box, Grid, GridItem } from "@chakra-ui/react";
 
 // Import other custom components used in the layout
 import Tab from "../../components/tab/Tab";
-import ToDoList from "../todolistContainer/ToDoListContainer";
+import ToDoListContainer from "../todolistContainer/ToDoListContainer";
 import NotesContainer from "../notesContainer/NotesContainer";
 
 // Import ModalTabContainer for displaying a modal dialog
@@ -13,18 +13,14 @@ import EditTabModalButton from "../../components/buttons/EditTabModalButton";
 
 // Define TabGridContainer functional component, which receives savedTabsData as props
 function TabGridContainer({ savedTabsData }) {
-  const [selectedTabIndex, setSelectedTabIndex] = useState(null);
-  const [selectedTabId, setSelectedTabId] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(null);
 
-  const handleOpenModal = (tabIndex, tabId) => {
-    setSelectedTabIndex(tabIndex);
-    setSelectedTabId(tabId);
-    setIsOpen(true);
+  const handleOpenModal = (tab) => {
+    setSelectedTab(tab);
   };
 
   const handleCloseModal = () => {
-    setIsOpen(false);
+    setSelectedTab(null);
   };
 
   return (
@@ -39,37 +35,25 @@ function TabGridContainer({ savedTabsData }) {
         minHeight="100%"
         minWidth="100%"
       >
-        {savedTabsData.map((savedTabData, index) => {
-          return (
-            <div key={savedTabData.id}>
-              <Tab
-                allTabs={savedTabsData}
-                selectedTab={savedTabData} // pass the current tab data
-                index={index} // pass the current index
-                isOpen={isOpen}
-                // onOpen={() => handleOpenModal(index, savedTabData.id)} // pass the current index and id to the handler
-                tabIndex={selectedTabIndex}
-                tabId={selectedTabId}
-                // onClick={() => handleButtonClick(savedTabData.id, index)}
-                // {...(isSelected
-                //   ? { selectedTab: savedTabData, selectedTabId }
-                //   : {})}
-              />
-              <EditTabModalButton
-                isOpen={isOpen}
-                selectedTab={savedTabData} // pass the current tab data
-                allTabs={savedTabsData}
-                onOpen={() => handleOpenModal(index, savedTabData.id)} // pass the current index and id to the handler
-                onClose={handleCloseModal}
-                tabIndex={selectedTabIndex}
-                tabId={selectedTabId}
-              />
-            </div>
-          );
-        })}
+      {savedTabsData.map((tab, index) => (
+          <Tab
+            key={index}
+            allTabs={savedTabsData}
+            tab={tab}
+            onClose={handleCloseModal}
+            onOpenModal={() => handleOpenModal(tab)}
+          />
+        ))}
+      {selectedTab && (
+        <EditTabModalButton
+          tab={selectedTab}
+          isOpen={!!selectedTab}
+          onClose={handleCloseModal}
+        />
+      )}
 
         <GridItem colSpan={2} rowSpan={2} colStart={5} rowStart={1}>
-          <ToDoList />
+          <ToDoListContainer />
         </GridItem>
 
         <GridItem colSpan={2} rowSpan={2} colStart={5} rowStart={3}>

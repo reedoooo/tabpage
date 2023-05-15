@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, AspectRatio, GridItem, useDisclosure } from "@chakra-ui/react";
-import ToDoListModal from "../../components/modals/AddTaskFormsModal";
+import AddTaskFormsModal from "../../components/modals/AddTaskFormsModal";
 
 function Tab4ToDoApp({ allTabs }) {
   const buttonStyle = {
@@ -44,8 +44,9 @@ function Tab4ToDoApp({ allTabs }) {
             style={{ position: "absolute", top: 0, right: 0 }}
           >
             <Button id="edit-specific-tab-button" onClick={onOpen} />
-            <ToDoListModal isOpen={isOpen} onClose={onClose} link={allTabs} />
+            <AddTaskFormsModal isOpen={isOpen} onClose={onClose} link={allTabs} />
           </section>
+          
           <section
             id="tab-title-section"
             style={{

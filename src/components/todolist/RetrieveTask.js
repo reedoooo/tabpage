@@ -1,94 +1,71 @@
-import {
-  Box,
+import React, { useState } from "react";
+import { 
+  VStack, 
+  Button, 
+  useColorModeValue, 
+  Collapse, 
+  Box, 
   Text,
-  VStack,
-  Collapse,
-  Button,
-  useStyleConfig,
-  useColorModeValue,
+  Badge
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import UpdateTask from "./UpdateTask";
+import UpdateTask from './UpdateTask'; // Assuming you have this component in the same directory
 
-function RetrieveTask() {
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    fetchTodoItems();
-  }, []);
-
-  const fetchTodoItems = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_SERVER}/api/myTodoRoutes`
-      );
-
-      const savedNotes = response.data.map((item) => ({
-        name: item.name,
-        tasks: item.tasks,
-        createdAt: item.createdAt,
-      }));
-
-      setItems(savedNotes);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // A softer background color for the container
-  const bg = useColorModeValue("gray.50", "gray.700");
-
-  return (
-    <VStack spacing={4} align="stretch" bg={bg} p={5} borderRadius="md" boxShadow="md">
-      {items.flatMap((item, i) =>
-        item.tasks.map((task, j) => (
-          <TaskAccordion key={`${i}-${j}`} task={task} item={item} />
-        ))
-      )}
-    </VStack>
-  );
-}
-
-function TaskAccordion({ task, item }) {
+function TaskAccordion({ onClose, onOpenModal, task, allTasks }) {
   const [show, setShow] = useState(false);
-  const styles = useStyleConfig("Button", {
-    variant: "outline",
-    size: "md",
-    colorScheme: "teal",
-  });
 
-  const handleToggle = () => setShow(!show);
-
-  // Additional styling for text and box elements
   const color = useColorModeValue("gray.700", "gray.50");
   const borderColor = useColorModeValue("gray.200", "gray.600");
+  const buttonColor = useColorModeValue("gray.200", "gray.700");
+  const boxBgColor = useColorModeValue("gray.100", "gray.600");
+
+  const handleToggle = () => setShow(!show);
 
   return (
     <VStack spacing={4} align="stretch" id="task-accordion-container">
       <Button
         onClick={handleToggle}
-        sx={styles}
-        _hover={{ opacity: 1 }}
-        opacity={0.5}
+        colorScheme="teal"
+        variant="outline"
         width="100%"
+        _hover={{ bg: buttonColor }}
       >
-        {show ? "Hide" : "Show"} {task.title}
+        {show ? `Hide ${task.name}` : `Show ${task.name}`}
       </Button>
       <Collapse in={show}>
-        <Box border="1px" borderColor={borderColor} p={5} pl={0} pr={0} borderRadius="md" w={'100%'} bg={borderColor}>
-          <Text fontSize="sm" color={color}>Task: {task.name}</Text>
-          <Text fontSize="sm" color={color}>Created At: {item.createdAt}</Text>
-          <Text fontSize="sm" color={color}>Description: {task.description}</Text>
-          <Text fontSize="sm" color={color}>
-            Status: {task.completed ? "Completed" : "Incomplete"}
+        <Box
+          border="1px"
+          borderColor={borderColor}
+          p={5}
+          borderRadius="md"
+          w={"100%"}
+          bg={boxBgColor}
+        >
+          <Text fontSize="lg" color={color} fontWeight="bold">
+            Task: {task.name}
           </Text>
-{console.log(task._id)}
-          <UpdateTask id={task._id} size="xs" />
+          <Text fontSize="sm" color={color}>
+            Created At: {task.createdAt}
+          </Text>
+          <Text fontSize="sm" color={color}>
+            Description: {task.description}
+          </Text>
+          <Text fontSize="sm" color={color}>
+            Status: 
+            <Badge colorScheme={task.completed ? "green" : "red"} ml="2">
+              {task.completed ? "Completed" : "Incomplete"}
+            </Badge>
+          </Text>
+          <Button colorScheme="blue" onClick={onOpenModal} mt="4">Edit</Button>
+          <UpdateTask
+            id={task._id}
+            task={task}
+            allTasks={allTasks}
+            onClose={onClose}
+          />
         </Box>
       </Collapse>
     </VStack>
   );
 }
 
-export default RetrieveTask;
+export default TaskAccordion;

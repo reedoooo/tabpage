@@ -1,20 +1,19 @@
 import React from "react";
 import { Circle } from "@chakra-ui/react";
-import { FaPlus } from "react-icons/fa";
+import { FcSettings } from "react-icons/fc";
 
-function AddTabModalButton({ onOpen }) {
+function OpenSettingsButton({ isOpen, onOpen }) {
   return (
     <Circle
-      id="add-tab-button"
+      id="open-settings-button"
       size="50px"
       backgroundColor="teal.500"
       color="white"
       onClick={onOpen}
-      
     >
-      <FaPlus />
+      <FcSettings />
     </Circle>
   );
 }
 
-export default AddTabModalButton;
+export default OpenSettingsButton;
