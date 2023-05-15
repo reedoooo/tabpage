@@ -26,7 +26,7 @@ function App() {
         );
         // Parse server response to json
         const serverData = await serverResponse.json();
-        console.log(serverData);
+        // console.log(serverData);
 
         // Update state with the fetched data
         const updatedSavedTabsData = serverData;
@@ -60,7 +60,7 @@ function App() {
         );
         // Parse server response to json
         const serverData = await serverResponse.json();
-        console.log(serverData);
+        // console.log(serverData);
 
         // Update state with the fetched data
         const updatedSavedTabsData = serverData;

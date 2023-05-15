@@ -2,7 +2,7 @@ import React from "react";
 import { Circle } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 
-function ModalAddTab({ onOpen }) {
+function AddTabModalButton({ onOpen }) {
   return (
     <Circle
     id="add-tab-button"
@@ -20,4 +20,4 @@ function ModalAddTab({ onOpen }) {
   );
 }
 
-export default ModalAddTab;
+export default AddTabModalButton; 
