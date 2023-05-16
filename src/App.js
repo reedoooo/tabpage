@@ -26,17 +26,12 @@ function App() {
         );
         // Parse server response to json
         const serverData = await serverResponse.json();
-        // console.log(serverData);
 
         // Update state with the fetched data
-        const updatedSavedTabsData = serverData;
-        setSavedTabsData(updatedSavedTabsData);
-        // Indicate that data has been loaded
-        setDataLoaded(true);
+        setSavedTabsData(serverData);
       } catch (error) {
-        // If an error occurs, log it and set dataLoaded to true
-        console.error("Error fetching response:", error);
-        setDataLoaded(true);
+        // If an error occurs, log it
+        console.error("Error fetching tab data:", error);
       }
     };
 
@@ -55,22 +50,17 @@ function App() {
 
         // Make a fetch call to get note data from the server
         const serverResponse = await fetch(
-          `${process.env.REACT_APP_SERVER}/api/myTabRoutes`,
+          `${process.env.REACT_APP_SERVER}/api/myNoteRoutes`, // Please check this endpoint
           requestOptions
         );
         // Parse server response to json
         const serverData = await serverResponse.json();
-        // console.log(serverData);
 
         // Update state with the fetched data
-        const updatedSavedTabsData = serverData;
-        setSavedNotesData(updatedSavedTabsData);
-        // Indicate that data has been loaded
-        setDataLoaded(true);
+        setSavedNotesData(serverData);
       } catch (error) {
-        // If an error occurs, log it and set dataLoaded to true
-        console.error("Error fetching response:", error);
-        setDataLoaded(true);
+        // If an error occurs, log it
+        console.error("Error fetching note data:", error);
       }
     };
 
@@ -78,10 +68,21 @@ function App() {
     loadNoteData();
   }, []); // Empty array means this effect runs once on component mount and not on subsequent re-renders
 
+  // useEffect hook to check if both data are loaded
+  useEffect(() => {
+    if (savedTabsData && savedNotesData) {
+      setDataLoaded(true);
+    }
+  }, [savedTabsData, savedNotesData]);
+
   // Render the Main component with the fetched data and dataLoaded state
   return (
     <div>
-      <Main savedTabsData={savedTabsData} savedNotesData={savedNotesData} dataLoaded={dataLoaded} />
+      <Main
+        savedTabsData={savedTabsData}
+        savedNotesData={savedNotesData}
+        dataLoaded={dataLoaded}
+      />
     </div>
   );
 }

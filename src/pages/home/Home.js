@@ -4,6 +4,7 @@ import {
   extendTheme,
   Grid,
   GridItem,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import AddTabFormsModal from "../../components/modals/AddTabFormsModal";
 import { useState, useEffect } from "react";
@@ -163,6 +164,8 @@ function Home() {
 
     onClose();
   };
+  const bg = useColorModeValue("gray.50", "gray.700");
+  const color = useColorModeValue("gray.700", "gray.50");
 
   // console.log("protabs reached");
   console.log(savedTabsData);
@@ -174,8 +177,6 @@ function Home() {
         id="header"
         style={{
           display: "block",
-          minHeight: "10vh",
-          minWidth: "100vw",
         }}
       >
         <Grid
@@ -185,6 +186,8 @@ function Home() {
           minHeight="10vh"
           minWidth="100vw"
           padding={4}
+          bg={bg}
+          color={color}
         >
           <GridItem colSpan={1} rowSpan={1} colStart={8} rowStart={1}>
             <AddTabModalButton

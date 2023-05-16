@@ -12,6 +12,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 function EditModal({ isOpen, onClose, onSubmit }) {
@@ -20,28 +21,33 @@ function EditModal({ isOpen, onClose, onSubmit }) {
     onSubmit(e);
   };
 
+  // Additional styling
+  const color = useColorModeValue("gray.700", "gray.50");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const hoverColor = useColorModeValue("blue.100", "blue.900");
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Add a Link</ModalHeader>
+      <ModalContent borderColor={borderColor} borderWidth="1px" borderRadius="md">
+        <ModalHeader color={color}>Add a Link</ModalHeader>
         <ModalCloseButton />
         <form onSubmit={handleFormSubmit}>
           <ModalBody>
             <FormControl id="name">
-              <FormLabel>Name</FormLabel>
-              <Input type="text" name="name" required />
+              <FormLabel color={color}>Name</FormLabel>
+              <Input type="text" name="name" required borderColor={borderColor} _hover={{ borderColor: hoverColor }} />
             </FormControl>
             <FormControl mt={4} id="size">
-              <FormLabel>Size</FormLabel>
-              <Select placeholder="Select Size" id='size' name="size" required>
+              <FormLabel color={color}>Size</FormLabel>
+              <Select placeholder="Select Size" id='size' name="size" required borderColor={borderColor} _hover={{ borderColor: hoverColor }}>
                 <option value="small">Small</option>
                 <option value="large">Large</option>
               </Select>
             </FormControl>
             <FormControl mt={4} id="color">
-              <FormLabel>Color</FormLabel>
-              <Select placeholder="Select a color" name="color" required>
+              <FormLabel color={color}>Color</FormLabel>
+              <Select placeholder="Select a color" name="color" required borderColor={borderColor} _hover={{ borderColor: hoverColor }}>
                 <option value="red.500">Red</option>
                 <option value="blue.500">Blue</option>
                 <option value="green.500">Green</option>
@@ -50,19 +56,21 @@ function EditModal({ isOpen, onClose, onSubmit }) {
               </Select>
             </FormControl>
             <FormControl mt={4} id="linkUrl">
-              <FormLabel>Link URL</FormLabel>
-              <Input type="url" name="linkUrl" required />
+              <FormLabel color={color}>Link URL</FormLabel>
+              <Input type="url" name="linkUrl" required borderColor={borderColor} _hover={{ borderColor: hoverColor }} />
             </FormControl>
             <FormControl mt={4} id="imgUrl">
-              <FormLabel>Image URL</FormLabel>
-              <Input type="url" name="imgUrl" required />
+              <FormLabel color={color}>Image URL</FormLabel>
+              <Input type="url" name="imgUrl" required borderColor={borderColor} _hover={{ borderColor: hoverColor }} />
             </FormControl>
           </ModalBody>
           <ModalFooter>
             <Button type="submit" colorScheme="blue" marginRight={3}>
               Add Link
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button variant="outline" colorScheme="red" onClick={onClose}>
+              Cancel
+            </Button>
           </ModalFooter>
         </form>
       </ModalContent>

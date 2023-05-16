@@ -5,6 +5,8 @@ import {
   Heading,
   useColorModeValue,
   VStack,
+  Progress,
+  Flex,
 } from "@chakra-ui/react";
 import axios from "axios";
 import TaskAccordion from "../../components/todolist/RetrieveTask";
@@ -46,7 +48,6 @@ function ToDoList({ task }) {
   }, [task]);
 
   const bg = useColorModeValue("gray.50", "gray.700");
-  // const borderColor = useColorModeValue("gray.200", "gray.700");
 
   const handleOpenModal = (task) => {
     setSelectedTask(task);
@@ -55,6 +56,11 @@ function ToDoList({ task }) {
   const handleCloseModal = () => {
     setSelectedTask(null);
   };
+
+  // Compute the progress
+  const completedTasks = savedTasks.filter(task => task.status === "completed").length;
+  const totalTasks = savedTasks.length;
+  const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
   return (
     <VStack
@@ -65,14 +71,14 @@ function ToDoList({ task }) {
       boxShadow="md"
       p={5}
     >
-      <Box display="flex" flexDirection="row" height="100%" w='100%' >
-        <Heading size="md" alignSelf="start">
+      <Flex justify="space-between" alignItems="center">
+        <Heading size="md">
           My To-Do List
         </Heading>
-        <Box h={'full'} w={'full'} >
-
+        <Box w="50%">
+          <Progress colorScheme="green" value={progress} size="xs" />
         </Box>
-      </Box>
+      </Flex>
 
       <Grid
         templateColumns="repeat(1, 1fr)" // for 1 column grid, adjust as needed
