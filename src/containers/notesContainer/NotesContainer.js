@@ -1,51 +1,114 @@
-import React, { useState } from "react";
-import { GridItem, Button, Input, Textarea } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Grid, GridItem } from "@chakra-ui/react";
 import "./notesContainer.css";
+import CreateNote from "../../components/notes/CreateNote";
+import NotesAccordion from "../../components/notes/NotesAccordion";
 
-function NotesContainer() {
-  const [title, setTitle] = useState("");
-  const [notes, setNotes] = useState("");
+function NotesContainer({ noteDataLoaded, setNoteDataLoaded }) {
+  const [savedNotesData, setSavedNotesData] = useState([]);
+  const [note, setNote] = useState({});
+  // const [dataLoaded, setDataLoaded] = useState(false);
 
-  const handleSave = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER}/api/myNotesRoutes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, notes }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  // const [note, setNote] = useState({});
+
+  useEffect(() => {
+    const loadNoteData = async () => {
+      try {
+        const requestOptions = {
+          method: "GET",
+        };
+
+        const serverResponse = await fetch(
+          `${process.env.REACT_APP_SERVER}/api/myNotesRoutes`,
+          requestOptions
+        );
+
+        const serverData = await serverResponse.json();
+
+        let notesData = [];
+        serverData.forEach((noteData) => {
+          if (Array.isArray(noteData.contents)) {
+            const notes = noteData.contents
+              .filter((note) => note.title && note.notes) // add this line
+              .map((note) => {
+                return {
+                  title: note.title,
+                  notes: note.notes,
+                  id: noteData._id,
+                };
+              });
+            notesData = [...notesData, ...notes];
+          }
+        });
+
+        setSavedNotesData(notesData);
+      } catch (error) {
+        console.error("Error fetching note data:", error);
       }
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error('Error:', error);
+    };
+
+    loadNoteData();
+  }, []);
+
+  useEffect(() => {
+    console.log(note)
+
+    if (savedNotesData && note) {
+      setNoteDataLoaded(true);
+      setNote(note);
+    } else if (savedNotesData) {
+      setNoteDataLoaded(true);
     }
+  }, [savedNotesData, note, setNoteDataLoaded]);
+
+  const handleOpenButton = (note) => {
+    setNote(note);
   };
+
+  const handleCloseButton = () => {
+    setNote(null);
+  };
+  // const handleOpenModal = (note) => {
+  //   setNote(note);
+  // };
+
+  // const handleCloseModal = () => {
+  //   setNote(null);
+  // };
 
   return (
     <>
-      <GridItem width="100%" height="100%" boxSizing="border-box">
-        <div className="container">
-          <Input
-            variant="filled"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+      <Grid
+        templateColumns="repeat(7, 1fr)" // for 1 column grid, adjust as needed
+        templateRows="repeat(1, 1fr)"
+        width="100%"
+        height="100%"
+        boxSizing="border-box"
+      >
+        <GridItem
+          colSpan={1}
+          rowSpan={1}
+          // style={{ flexGrow: 1, flexShrink: 1, flexBasis: "auto" }} // Add Flexbox properties here
+        >
+          <NotesAccordion
+            allNotes={savedNotesData}
+            noteDataLoaded={noteDataLoaded}
+            note={note}
+            onOpenModal={handleOpenButton}
+            onCloseModal={handleCloseButton}
+            setNote={setNote} // Pass setSelectedNote to NotesAccordion
           />
-          <Textarea
-            variant="filled"
-            className="notes-textarea"
-            placeholder="Write note here..."
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+        </GridItem>
+        <GridItem colSpan={6} rowSpan={1}>
+          <CreateNote
+            allNotes={savedNotesData}
+            note={note}
+            setNote={setNote} // Pass setSelectedNote to NotesAccordion
+            noteDataLoaded={noteDataLoaded}
           />
-          <Button onClick={handleSave} colorScheme="blue" mt={4}>
-            Save
-          </Button>
-        </div>
-      </GridItem>
+
+        </GridItem>
+      </Grid>
     </>
   );
 }

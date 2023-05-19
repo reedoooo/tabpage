@@ -2,29 +2,29 @@ import React, { useState } from "react";
 import { Grid, Box, Text, useDisclosure, GridItem } from "@chakra-ui/react";
 import ScheduleModal from "../../components/modals/ScheduleModal";
 
-const WeeklySchedule = () => {
-  const [schedules, setSchedules] = useState({
-    Monday: [],
-    Tuesday: [],
-    Wednesday: [],
-    Thursday: [],
-    Friday: [],
+const HabitTracker = () => {
+  const [habits, setHabits] = useState({
+    lifting: [],
+    sleep: [],
+    brushedTeeth: [],
+    noSugar: [],
+    screenTime: [],
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedDay, setSelectedDay] = useState(null);
+//   const [selectedDay, setSelectedDay] = useState(null);
 
   const handleDayClick = (day) => {
     setSelectedDay(day);
     onOpen();
   };
 
-  const handleModalSubmit = (eventData) => {
-    setSchedules((prev) => ({
-      ...prev,
-      [selectedDay]: [...prev[selectedDay], eventData],
-    }));
-    onClose();
-  };
+//   const handleModalSubmit = (eventData) => {
+//     setSchedules((prev) => ({
+//       ...prev,
+//       [selectedDay]: [...prev[selectedDay], eventData],
+//     }));
+//     onClose();
+//   };
 
   return (
     <GridItem templateColumns="repeat(12, 1fr)" gap={6} padding={4} gridColumn="span 12" gridRow="span 12">
@@ -49,4 +49,4 @@ const WeeklySchedule = () => {
   );
 };
 
-export default WeeklySchedule;
+export default HabitTracker;

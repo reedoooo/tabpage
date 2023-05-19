@@ -3,17 +3,12 @@ import { Button, AspectRatio, GridItem } from "@chakra-ui/react";
 import EditTabModalButton from "../buttons/EditTabModalButton";
 
 function Tab({
-  tabIndex,
   allTabs,
   tab,
-  isOpen,
   // onOpen,
   onOpenModal,
   onClose,
-  handleButtonClick,
 }) {
-
-
   const buttonStyle = {
     backgroundImage: `url(${tab.imgUrl})`,
     backgroundSize: "cover",
@@ -31,7 +26,12 @@ function Tab({
   };
 
   return (
-    <GridItem width="100%" height="100%" boxSizing="border-box">
+    <GridItem
+      width="100%"
+      height="100%"
+      boxSizing="border-box"
+      style={{ flexGrow: 1, flexShrink: 1, flexBasis: "auto" }} // Add Flexbox properties here
+    >
       <AspectRatio ratio={1}>
         <Button
           as="a"

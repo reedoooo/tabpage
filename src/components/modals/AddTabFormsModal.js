@@ -30,7 +30,7 @@ function EditModal({ isOpen, onClose, onSubmit }) {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent borderColor={borderColor} borderWidth="1px" borderRadius="md">
-        <ModalHeader color={color}>Add a Link</ModalHeader>
+        <ModalHeader color={color}>Add a Tab</ModalHeader>
         <ModalCloseButton />
         <form onSubmit={handleFormSubmit}>
           <ModalBody>

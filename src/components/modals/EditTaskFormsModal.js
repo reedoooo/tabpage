@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 
-const EditTaskFormsModal = ({
-  initialValues,
-  onSubmit,
-  onClose,
-  onDelete,
-}) => {
+const EditTaskFormsModal = ({ initialValues, onSubmit, onClose, onDelete }) => {
   const [name, setName] = useState(initialValues.name || "");
-  const [description, setDescription] = useState(initialValues.description || "");
+  const [description, setDescription] = useState(
+    initialValues.description || ""
+  );
   const [status, setStatus] = useState(initialValues.status || "");
   const [dueDate, setDueDate] = useState("");
-console.log(initialValues)
+  console.log(initialValues);
   let id = initialValues.id;
   let deleteId = initialValues.id;
 

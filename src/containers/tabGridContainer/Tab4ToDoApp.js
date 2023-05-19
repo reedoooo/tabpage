@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, AspectRatio, GridItem, useDisclosure } from "@chakra-ui/react";
+import { Button, AspectRatio, GridItem, useDisclosure, Box } from "@chakra-ui/react";
 import AddTaskFormsModal from "../../components/modals/AddTaskFormsModal";
 
 function Tab4ToDoApp({ allTabs }) {
@@ -28,11 +28,16 @@ function Tab4ToDoApp({ allTabs }) {
   };
 
   return (
-    <GridItem width="100%" height="100%" boxSizing="border-box" id="modal-tab-container">
+    <GridItem
+      width="100%"
+      height="100%"
+      boxSizing="border-box"
+      id="modal-tab-container"
+    >
       <AspectRatio ratio={1}>
-        <Button
-          as="a"
-          href={allTabs.linkUrl}
+        <Box
+          // as="a"
+          // href={allTabs.linkUrl}
           target="_blank"
           rel="noopener noreferrer"
           backgroundColor={allTabs.color}
@@ -44,9 +49,13 @@ function Tab4ToDoApp({ allTabs }) {
             style={{ position: "absolute", top: 0, right: 0 }}
           >
             <Button id="edit-specific-tab-button" onClick={onOpen} />
-            <AddTaskFormsModal isOpen={isOpen} onClose={onClose} link={allTabs} />
+            <AddTaskFormsModal
+              isOpen={isOpen}
+              onClose={onClose}
+              link={allTabs}
+            />
           </section>
-          
+
           <section
             id="tab-title-section"
             style={{
@@ -60,10 +69,10 @@ function Tab4ToDoApp({ allTabs }) {
             }}
           >
             <div style={{ marginBottom: "10%", marginTop: "1%" }}>
-              <h2 id="button-content">{'ToDo App'}</h2>
+              <h2 id="button-content">{"ToDo App"}</h2>
             </div>
           </section>
-        </Button>
+        </Box>
       </AspectRatio>
     </GridItem>
   );

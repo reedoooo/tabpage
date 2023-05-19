@@ -63,14 +63,15 @@ function ToDoList({ task }) {
   const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
   return (
-    <VStack
+    <>
+        {/* <VStack
       spacing={5}
       align="stretch"
       bg={bg}
       borderRadius="md"
       boxShadow="md"
       p={5}
-    >
+    ></VStack> */}
       <Flex justify="space-between" alignItems="center">
         <Heading size="md">
           My To-Do List
@@ -82,7 +83,7 @@ function ToDoList({ task }) {
 
       <Grid
         templateColumns="repeat(1, 1fr)" // for 1 column grid, adjust as needed
-        gap={4} // spacing between grid items
+        // gap={4} // spacing between grid items
       >
         {savedTasks.map((task, i) => (
           <TaskAccordion
@@ -103,7 +104,7 @@ function ToDoList({ task }) {
           onClose={handleCloseModal} // added this line
         />
       )}
-    </VStack>
+    </>
   );
 }
 

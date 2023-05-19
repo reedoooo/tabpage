@@ -1,7 +1,28 @@
 import React, { useState } from "react";
-import { Button, FormControl, FormLabel, Input, Select, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Stack } from "@chakra-ui/react";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Select,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Stack,
+  Image,
+} from "@chakra-ui/react";
 
-const EditTabFormsModal = ({ initialValues, onSubmit, onClose, onDelete }) => {
+const EditTabFormsModal = ({
+  initialValues,
+  selectedTab,
+  onSubmit,
+  onClose,
+  onDelete,
+}) => {
   const [name, setName] = useState(initialValues.name);
   const [size, setSize] = useState(initialValues.size);
   const [color, setColor] = useState(initialValues.color);
@@ -40,7 +61,10 @@ const EditTabFormsModal = ({ initialValues, onSubmit, onClose, onDelete }) => {
               </FormControl>
               <FormControl>
                 <FormLabel>Color</FormLabel>
-                <Select value={color} onChange={(e) => setColor(e.target.value)}>
+                <Select
+                  value={color}
+                  onChange={(e) => setColor(e.target.value)}
+                >
                   <option value="red">Red</option>
                   <option value="blue">Blue</option>
                   <option value="green">Green</option>
@@ -50,18 +74,42 @@ const EditTabFormsModal = ({ initialValues, onSubmit, onClose, onDelete }) => {
               </FormControl>
               <FormControl>
                 <FormLabel>Link URL</FormLabel>
-                <Input type="url" value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} />
+                <Input
+                  type="url"
+                  value={linkUrl}
+                  onChange={(e) => setLinkUrl(e.target.value)}
+                />
               </FormControl>
               <FormControl>
                 <FormLabel>Image URL</FormLabel>
-                <Input type="url" value={imgUrl} onChange={(e) => setImgUrl(e.target.value)} />
+                <Input
+                  type="url"
+                  value={imgUrl}
+                  onChange={(e) => setImgUrl(e.target.value)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Image Preview</FormLabel>
+                <Image
+                  src={imgUrl}
+                  alt="Image Preview"
+                  fallbackSrc="https://via.placeholder.com/150"
+                  boxSize="150px"
+                  objectFit="cover"
+                />
               </FormControl>
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Button type="submit" colorScheme="green" mr={3}>Save Changes</Button>
-            <Button onClick={handleFormDelete} colorScheme="red" mr={3}>Delete</Button>
-            <Button onClick={onClose} colorScheme="gray">Cancel</Button>
+            <Button type="submit" colorScheme="green" mr={3}>
+              Save Changes
+            </Button>
+            <Button onClick={handleFormDelete} colorScheme="red" mr={3}>
+              Delete
+            </Button>
+            <Button onClick={onClose} colorScheme="gray">
+              Cancel
+            </Button>
           </ModalFooter>
         </form>
       </ModalContent>
