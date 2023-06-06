@@ -1,77 +1,106 @@
-import { Button, Input, Textarea } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import EditNoteButton from "../modals/EditNoteButton";
 
-function UpdateNote({ id, onClose, isOpen, selectedNote, allNotes, setNote }) {
-  const [localNote, setLocalNote] = useState(selectedNote);
+function UpdateNote({
+  onClose = () => {}, // Provide a default empty function if onClose is not passed
+  isOpen,
+  note,
+  selectedNote = {},
+  id,
+  allNotes,
+  setNote,
+  handleUpdateNote,
+  handleDeleteNote,
+  setEditing,
+}) {
+  const handleSubmit = async (note) => {
+    console.log("note", note)
+    if (!note.id) {
+      console.log("Note or id is undefined");
+      return;
+    }
   
-  useEffect(() => {
-    setLocalNote(selectedNote);
-  }, [selectedNote]);
-
-  const handleSubmit = async () => {
-    const id = localNote.id;
+    const updatedData = {
+      id: note.id,
+      title: note.title,
+      notes: note.notes,
+    };
+  
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER}/api/myNotesRoutes/${id}`,
+        `${process.env.REACT_APP_SERVER}/api/myNotesRoutes/${updatedData.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...localNote }),
+          body: JSON.stringify(updatedData),
         }
       );
-      setNote(localNote);
-      onClose();
-      const data = await response.json();
-      console.log(data);
   
+      const data = await response.json();
+      console.log("data", data);
+  
+      handleUpdateNote(data); // Update the note in your application state
+      setEditing(false);
+      onClose();
     } catch (error) {
       console.error("Error:", error);
     }
   };
+  
+  
 
   const handleInputChange = (event) => {
-    setLocalNote({
-      ...localNote,
-      [event.target.name]: event.target.value,
-    });
+    if (!note) return;
+
+    const { name, value } = event.target;
+
+    setNote(prevNote => ({
+      ...prevNote,
+      [name]: value,
+    }));
   };
 
   const handleDelete = async () => {
-    const id = localNote.id;
+    if (!selectedNote.id) {
+      console.log("selectedNote or id is undefined");
+      return;
+    }
+
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER}/api/myNotesRoutes/${id}`,
+        `${process.env.REACT_APP_SERVER}/api/myNotesRoutes/${selectedNote.id}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
         }
       );
-      onClose();
       const data = await response.json();
-      console.log(data);
+      handleDeleteNote(selectedNote.id);
+      setEditing(false);
+      onClose();
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   return (
-    <>
-      <div>
-        <Input
-          name="title" 
-          value={localNote.title} 
-          onChange={handleInputChange} 
-        />
-        <Textarea
-          name="notes" 
-          value={localNote.notes} 
-          onChange={handleInputChange} 
-        />
-        <Button onClick={handleSubmit}>Save</Button>
-        <Button onClick={handleDelete}>Delete</Button>
-      </div>
-    </>
+    <div className="container">
+      <EditNoteButton
+        onClose={onClose}
+        onDelete={handleDelete}
+        initialValues={{ title: note.title, notes: note.notes, id: note.id }}
+        onChange={handleInputChange}
+        onSubmit={handleSubmit}
+        isOpen={isOpen}
+        note={note}
+        noteId={id}
+        allNotes={allNotes}
+        setNote={setNote}
+        handleUpdateNote={handleUpdateNote}
+        setEditing={setEditing}
+      />
+    </div>
   );
 }
-  
+
 export default UpdateNote;

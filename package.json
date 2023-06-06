@@ -21,6 +21,8 @@
     "react-router-dom": "^6.11.1",
     "react-scripts": "^5.0.1",
     "react-spring": "^9.7.1",
+    "three": "^0.153.0",
+    "three-orbitcontrols": "^2.110.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

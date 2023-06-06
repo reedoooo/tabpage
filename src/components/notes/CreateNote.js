@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, Input, Textarea } from "@chakra-ui/react";
 
-function CreateNote({ note, setNote }) { // Corrected props
+function CreateNote({
+  note,
+  setNote,
+  setAllNotes,
+  setEditing,
+  handleSaveNote,
+  newNote, // Additional prop to check if a new note is added
+}) {
   const [title, setTitle] = useState("");
   const [notes, setNotes] = useState("");
 
@@ -30,8 +37,14 @@ function CreateNote({ note, setNote }) { // Corrected props
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setNote(null); // Reset note after save
-      console.log(data);
+      setNote(null);
+      setEditing(false);
+      handleSaveNote(data);
+
+      if (newNote) {
+        // Check if a new note is added
+        setAllNotes((prevNotes) => [...prevNotes, data]); // Update the allNotes state with the new note
+      }
     } catch (error) {
       console.error("Error:", error);
     }
@@ -53,8 +66,8 @@ function CreateNote({ note, setNote }) { // Corrected props
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
       />
-      <Button onClick={handleSave} colorScheme="blue" mt={4}>
-        Save
+      <Button onClick={handleSave} colorScheme="green" mt={4}>
+        Add
       </Button>
     </div>
   );

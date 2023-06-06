@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Grid, GridItem } from "@chakra-ui/react";
-import "./notesContainer.css";
-import CreateNote from "../../components/notes/CreateNote";
 import NotesAccordion from "../../components/notes/NotesAccordion";
 
-function NotesContainer({ noteDataLoaded, setNoteDataLoaded }) {
+function NotesContainer() {
   const [savedNotesData, setSavedNotesData] = useState([]);
   const [note, setNote] = useState({});
-  // const [dataLoaded, setDataLoaded] = useState(false);
-
-  // const [note, setNote] = useState({});
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     const loadNoteData = async () => {
@@ -29,7 +24,7 @@ function NotesContainer({ noteDataLoaded, setNoteDataLoaded }) {
         serverData.forEach((noteData) => {
           if (Array.isArray(noteData.contents)) {
             const notes = noteData.contents
-              .filter((note) => note.title && note.notes) // add this line
+              .filter((note) => note.title && note.notes)
               .map((note) => {
                 return {
                   title: note.title,
@@ -50,65 +45,32 @@ function NotesContainer({ noteDataLoaded, setNoteDataLoaded }) {
     loadNoteData();
   }, []);
 
-  useEffect(() => {
-    console.log(note)
-
-    if (savedNotesData && note) {
-      setNoteDataLoaded(true);
-      setNote(note);
-    } else if (savedNotesData) {
-      setNoteDataLoaded(true);
-    }
-  }, [savedNotesData, note, setNoteDataLoaded]);
-
-  const handleOpenButton = (note) => {
-    setNote(note);
+  const handleSaveNote = (newNote) => {
+    setSavedNotesData((prevNotes) => [...prevNotes, newNote]);
   };
+  // console.log('savedNotesData', savedNotesData)
 
-  const handleCloseButton = () => {
-    setNote(null);
+  const handleUpdateNote = (updatedNote) => {
+    console.log('updatedNote', updatedNote)
+    console.log('note', note)
+    setSavedNotesData((prevNotes) =>
+      prevNotes.map((note) => (note.id === updatedNote._id ? updatedNote : note))
+    );
   };
-  // const handleOpenModal = (note) => {
-  //   setNote(note);
-  // };
-
-  // const handleCloseModal = () => {
-  //   setNote(null);
-  // };
+  
 
   return (
     <>
-      <Grid
-        templateColumns="repeat(7, 1fr)" // for 1 column grid, adjust as needed
-        templateRows="repeat(1, 1fr)"
-        width="100%"
-        height="100%"
-        boxSizing="border-box"
-      >
-        <GridItem
-          colSpan={1}
-          rowSpan={1}
-          // style={{ flexGrow: 1, flexShrink: 1, flexBasis: "auto" }} // Add Flexbox properties here
-        >
-          <NotesAccordion
-            allNotes={savedNotesData}
-            noteDataLoaded={noteDataLoaded}
-            note={note}
-            onOpenModal={handleOpenButton}
-            onCloseModal={handleCloseButton}
-            setNote={setNote} // Pass setSelectedNote to NotesAccordion
-          />
-        </GridItem>
-        <GridItem colSpan={6} rowSpan={1}>
-          <CreateNote
-            allNotes={savedNotesData}
-            note={note}
-            setNote={setNote} // Pass setSelectedNote to NotesAccordion
-            noteDataLoaded={noteDataLoaded}
-          />
-
-        </GridItem>
-      </Grid>
+      <NotesAccordion
+        note={note}
+        setNote={setNote}
+        editing={editing}
+        allNotes={savedNotesData}
+        setAllNotes={setSavedNotesData} // Add setAllNotes prop with the setSavedNotesData function
+        setEditing={setEditing}
+        handleSaveNote={handleSaveNote}
+        handleUpdateNote={handleUpdateNote}
+      />
     </>
   );
 }

@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import AddTabFormsModal from "../../components/modals/AddTabFormsModal";
 import { useState, useEffect } from "react";
+
 // import Header from "../../containers/header/Header";
 import TabGridContainer from "../../containers/tabGridContainer/TabGridContainer";
 import axios from "axios";
@@ -173,22 +174,26 @@ function Home() {
   return (
     <ChakraProvider theme={theme}>
       {/* <Header onOpen={onOpen} isOpen={isOpen} /> */}
+
       <header
         id="header"
         style={{
           display: "block",
         }}
       >
+      
         <Grid
           templateColumns="repeat(1, 1fr)"
           templateRows={"repeat(2, 1fr)"}
           gap={2}
+          zIndex={1}
           minHeight="10vh"
           minWidth="100vw"
           padding={4}
           bg={bg}
           color={color}
         >
+
           <GridItem colSpan={1} rowSpan={1} colStart={8} rowStart={1}>
             <AddTabModalButton
               isOpen={addTabModalDisclosure.isOpen}
@@ -214,10 +219,13 @@ function Home() {
         onClose={settingsModalDisclosure.onClose}
         onSubmit={handleChangeSettings}
       />
-      <TabGridContainer
-        savedTabsData={savedTabsData}
-        savedSettingsData={savedSettingsData}
-      />
+{/* <Box backgroundColor="rgba(255, 255, 255, 0.5)" p={0} m={0} > */}
+  <TabGridContainer
+    savedTabsData={savedTabsData}
+    savedSettingsData={savedSettingsData}
+  />
+
+{/* </Box> */}
     </ChakraProvider>
   );
 }

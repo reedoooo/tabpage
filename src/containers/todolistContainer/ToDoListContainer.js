@@ -3,8 +3,7 @@ import {
   Box,
   Grid,
   Heading,
-  useColorModeValue,
-  VStack,
+  // useColorModeValue,
   Progress,
   Flex,
 } from "@chakra-ui/react";
@@ -47,7 +46,7 @@ function ToDoList({ task }) {
     setSelectedTask(task);
   }, [task]);
 
-  const bg = useColorModeValue("gray.50", "gray.700");
+  // const bg = useColorModeValue("gray.50", "gray.700");
 
   const handleOpenModal = (task) => {
     setSelectedTask(task);
@@ -73,7 +72,7 @@ function ToDoList({ task }) {
       p={5}
     ></VStack> */}
       <Flex justify="space-between" alignItems="center">
-        <Heading size="md">
+        <Heading size="md" color={'white'} >
           My To-Do List
         </Heading>
         <Box w="50%">

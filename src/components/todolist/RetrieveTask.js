@@ -29,7 +29,7 @@ function TaskAccordion({ onClose, onOpenModal, task, allTasks }) {
         width="100%"
         _hover={{ bg: buttonColor }}
       >
-        {show ? `Hide ${task.name}` : `Show ${task.name}`}
+        {show ? `Hide ${task.name}` : `Show ${task.name}`} 
       </Button>
       <Collapse in={show}>
         <Box

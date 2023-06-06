@@ -16,6 +16,7 @@ import ToDoListContainer from "../todolistContainer/ToDoListContainer";
 import NotesContainer from "../notesContainer/NotesContainer";
 import Tab4ToDoApp from "./Tab4ToDoApp";
 import EditTabModalButton from "../../components/buttons/EditTabModalButton";
+// import ParticleEffect from "../../utils/ParticleEffect";
 // import Tab4Schedule from "./Tab4Schedule";
 // import WeeklySchedule from "../weeklySchedule/WeeklySchedule";
 // import AnimatedBoxComponent from "../weeklySchedule/AnimatedBoxComponent";
@@ -24,6 +25,7 @@ function TabGridContainer({ savedTabsData }) {
   const [selectedTab, setSelectedTab] = useState(null);
   // const [note, setNote] = useState({});
   const [noteDataLoaded, setNoteDataLoaded] = useState(false);
+  
 
   const [expanded, setExpanded] = useState(false); // Track the expansion state
   const buttonStyle = {
@@ -91,8 +93,11 @@ function TabGridContainer({ savedTabsData }) {
   };
 
   return (
+    // <Box backgroundColor="rgba(255, 255, 255, 0.5)" p={0} m={0} >
+
     <Box width="100vw" height="100vh" padding={4} marginTop={10}>
       {/* <AspectRatio ratio={1}> */}
+      {/* <ParticleEffect /> */}
 
       <Grid
         templateColumns="repeat(9, 1fr)"
@@ -103,18 +108,19 @@ function TabGridContainer({ savedTabsData }) {
         borderRadius="2%"
         minHeight="100%"
         minWidth="100%"
+        backgroundColor="rgba(255, 255, 255, 0.5)"
         // flex={}
       >
         {/* <AspectRatio ratio={1}> */}
-        {savedTabsData.map((tab, index) => (
-          <Tab
-            key={index}
-            allTabs={savedTabsData}
-            tab={tab}
-            onClose={handleCloseModal}
-            onOpenModal={() => handleOpenModal(tab)}
-          />
-        ))}
+        {savedTabsData.map((tab) => (
+        <Tab
+          key={tab.id} // Add a unique key prop using tab.id or any other unique identifier
+          allTabs={savedTabsData}
+          tab={tab}
+          onClose={handleCloseModal}
+          onOpenModal={() => handleOpenModal(tab)}
+        />
+      ))}
         {selectedTab && (
           <EditTabModalButton
             tab={selectedTab}
