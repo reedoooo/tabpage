@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Textarea } from "@chakra-ui/react";
+import { Button, IconButton, Input, Textarea, Flex } from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
 import DeleteNote from "../notes/DeleteNote";
 
 // EditNoteButton component
-const EditNoteButton = ({ initialValues = {}, onSubmit, onClose, onDelete, noteId }) => {
+const EditNoteButton = ({
+  initialValues = {},
+  onSubmit,
+  onClose,
+  onDelete,
+  noteId,
+}) => {
   const [title, setTitle] = useState(initialValues.title || "");
   const [notes, setNotes] = useState(initialValues.notes || "");
   console.log(initialValues.id);
-  console.log('noteid', noteId)
+  console.log("noteid", noteId);
 
   useEffect(() => {
     setTitle(initialValues.title || "");
@@ -16,15 +23,15 @@ const EditNoteButton = ({ initialValues = {}, onSubmit, onClose, onDelete, noteI
 
   const handleButtonSubmit = (e) => {
     e.preventDefault();
-    console.log('onSubmit', title, notes, 'initialValues.id', initialValues.id)
-    console.log('noteid', noteId)
-    onSubmit({ 
-      id: noteId, 
+    console.log("onSubmit", title, notes, "initialValues.id", initialValues.id);
+    console.log("noteid", noteId);
+    onSubmit({
+      id: noteId,
       title: title,
       notes: notes,
-     });
+    });
   };
-  
+
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -34,31 +41,45 @@ const EditNoteButton = ({ initialValues = {}, onSubmit, onClose, onDelete, noteI
   };
 
   return (
-    <form>
-      <Input
-        placeholder="Title"
-        name="title"
-        bg="white"
-        value={title}
-        
-        onChange={handleTitleChange}
-      />
-      <Textarea
-        className="notes-textarea"
-        placeholder="Write note here..."
-        bg="white"
-        name="notes"
-        value={notes}
-        onChange={handleNotesChange}
-      />
-      <Button onClick={handleButtonSubmit} colorScheme="blue" mt={4}>
-        Save
-      </Button>
-      <DeleteNote
-        noteId={noteId}
-        handleNoteDeletion={onDelete}
-      />
-    </form>
+    <Flex 
+    flexGrow={1} 
+    left='0'
+    justifyContent={'right'} 
+    >
+      <form flexGrow={1} width='100%' height='100%'>
+        <Input
+          placeholder="Title"
+          name="title"
+          bg="white"
+          value={title}
+          onChange={handleTitleChange}
+          overflow="auto"
+        />
+        <Textarea
+          className="notes-textarea"
+          placeholder="Write note here..."
+          bg="white"
+          name="notes"
+          value={notes}
+          onChange={handleNotesChange}
+          overflow="auto"
+        />
+        <Flex justifyContent="flex-end">
+          <IconButton
+            aria-label="Save note"
+            icon={<EditIcon />}
+            size="lg"
+            colorScheme="blue"
+            onClick={handleButtonSubmit}
+            bgGradient="linear(to-r, blue.200, blue.500)"
+            _hover={{
+              bgGradient: "linear(to-r, blue.500, blue.200)",
+            }}
+          />
+          <DeleteNote noteId={noteId} handleNoteDeletion={onDelete} />
+        </Flex>
+      </form>
+    </Flex>
   );
 };
 

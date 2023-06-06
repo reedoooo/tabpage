@@ -70,6 +70,7 @@ const EditTabFormsModal = ({
                   <option value="green">Green</option>
                   <option value="yellow">Yellow</option>
                   <option value="purple">Purple</option>
+                  <option value="white">White</option>
                 </Select>
               </FormControl>
               <FormControl>

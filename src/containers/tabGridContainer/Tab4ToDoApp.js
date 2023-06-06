@@ -1,5 +1,14 @@
 import React from "react";
-import { Button, AspectRatio, GridItem, useDisclosure, Box } from "@chakra-ui/react";
+import {
+  Button,
+  AspectRatio,
+  GridItem,
+  useDisclosure,
+  Box,
+  useColorModeValue,
+  Grid,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import AddTaskFormsModal from "../../components/modals/AddTaskFormsModal";
 
 function Tab4ToDoApp({ allTabs }) {
@@ -27,12 +36,28 @@ function Tab4ToDoApp({ allTabs }) {
     onOpen();
   };
 
+  // Use the useBreakpointValue hook to get the current screen size
+  const isSmallScreen = useBreakpointValue({ base: true, md: false });
+
+  // Apply different styles based on the screen size
+  const gridItemStyle = isSmallScreen
+    ? {
+        colSpan: 2,
+        rowSpan: 2,
+      }
+    : {
+        colSpan: 1,
+        rowSpan: 1,
+      };
+
   return (
     <GridItem
       width="100%"
       height="100%"
       boxSizing="border-box"
       id="modal-tab-container"
+      colSpan={gridItemStyle.colSpan}
+      rowSpan={gridItemStyle.rowSpan}
     >
       <AspectRatio ratio={1}>
         <Box

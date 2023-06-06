@@ -1,12 +1,16 @@
-import React from 'react';
-import { Button } from "@chakra-ui/react";
+import React from "react";
+import { Button, Flex, IconButton } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 function DeleteNote({ noteId, handleNoteDeletion }) {
   const handleDelete = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER}/api/myNotesRoutes/${noteId}`, {
-        method: 'DELETE',
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER}/api/myNotesRoutes/${noteId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -20,7 +24,19 @@ function DeleteNote({ noteId, handleNoteDeletion }) {
   };
 
   return (
-    <Button onClick={handleDelete} colorScheme="red" mt={4}>Delete Note</Button>
+    // <Flex justifyContent="flex-end" mt={4}>
+      <IconButton
+        aria-label="Delete note"
+        icon={<DeleteIcon />}
+        size="lg"
+        colorScheme="red"
+        onClick={handleDelete}
+        bgGradient="linear(to-r, red.200, red.500)"
+        _hover={{
+          bgGradient: "linear(to-r, red.500, red.200)",
+        }}
+      />
+    // </Flex>
   );
 }
 

@@ -16,6 +16,10 @@ function UpdateTask({ id, task, onClose, isOpen, selectedTask, allTasks }) {
 
   const handleSubmit = async (updatedTask) => {
     const id = updatedTask.id;
+    const task = updatedTask.task;
+    const completed = updatedTask.status;
+    console.log(task);
+    console.log(completed);
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVER}/api/myTodoRoutes/${id}`, {
         method: "PUT",

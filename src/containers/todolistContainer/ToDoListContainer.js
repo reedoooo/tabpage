@@ -3,9 +3,10 @@ import {
   Box,
   Grid,
   Heading,
-  // useColorModeValue,
   Progress,
   Flex,
+  useColorModeValue,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import TaskAccordion from "../../components/todolist/RetrieveTask";
@@ -14,6 +15,9 @@ import UpdateTask from "../../components/todolist/UpdateTask";
 function ToDoList({ task }) {
   const [selectedTask, setSelectedTask] = useState(task);
   const [savedTasks, setSavedTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
+  const [incompleteTasks, setIncompleteTasks] = useState([]);
+  const bgColor = useColorModeValue("teal.200", "teal.700");
 
   useEffect(() => {
     const fetchTodoLists = async () => {
@@ -31,12 +35,23 @@ function ToDoList({ task }) {
                 status: task.status,
                 dueDate: task.dueDate,
                 id: taskData._id,
+                statusText: task.status ? 'completed' : 'incomplete',
               };
             });
             savedTasksData = [...savedTasksData, ...tasks];
           }
         });
         setSavedTasks(savedTasksData);
+
+        const completed = savedTasksData.filter(
+          (task) => task.status === true
+        );
+        const incomplete = savedTasksData.filter(
+          (task) => task.status !== true
+        );
+
+        setCompletedTasks(completed);
+        setIncompleteTasks(incomplete);
       } catch (error) {
         console.error(error);
       }
@@ -46,8 +61,6 @@ function ToDoList({ task }) {
     setSelectedTask(task);
   }, [task]);
 
-  // const bg = useColorModeValue("gray.50", "gray.700");
-
   const handleOpenModal = (task) => {
     setSelectedTask(task);
   };
@@ -56,33 +69,33 @@ function ToDoList({ task }) {
     setSelectedTask(null);
   };
 
-  // Compute the progress
-  const completedTasks = savedTasks.filter(task => task.status === "completed").length;
-  const totalTasks = savedTasks.length;
-  const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+  const progress =
+    savedTasks.length > 0
+      ? (completedTasks.length / savedTasks.length) * 100
+      : 0;
+
+  const headingSize = useBreakpointValue({ base: "md", md: "lg" });
+  const boxSize = useBreakpointValue({ base: "50%", md: "100%" });
 
   return (
     <>
-        {/* <VStack
-      spacing={5}
-      align="stretch"
-      bg={bg}
-      borderRadius="md"
-      boxShadow="md"
-      p={5}
-    ></VStack> */}
       <Flex justify="space-between" alignItems="center">
-        <Heading size="md" color={'white'} >
+        <Heading size={headingSize} color={"white"}>
           My To-Do List
         </Heading>
-        <Box w="50%">
-          <Progress colorScheme="green" value={progress} size="xs" />
+        <Box w={boxSize}>
+          <Progress colorScheme="teal" value={progress} size="xs" />
         </Box>
       </Flex>
 
       <Grid
-        templateColumns="repeat(1, 1fr)" // for 1 column grid, adjust as needed
-        // gap={4} // spacing between grid items
+        templateColumns="repeat(1, 1fr)"
+        bg={`rgba(220, 220, 220, 0.5)`}
+        boxSizing="border-box"
+        borderRadius="md"
+        id="notes-accordion"
+        border="1px solid"
+        borderColor={bgColor}
       >
         {savedTasks.map((task, i) => (
           <TaskAccordion
@@ -91,6 +104,7 @@ function ToDoList({ task }) {
             allTasks={savedTasks}
             onClose={handleCloseModal}
             onOpenModal={() => handleOpenModal(task)}
+            statusText={task.statusText}
           />
         ))}
       </Grid>
@@ -100,7 +114,7 @@ function ToDoList({ task }) {
           size="xs"
           task={selectedTask}
           isOpen={!!selectedTask}
-          onClose={handleCloseModal} // added this line
+          onClose={handleCloseModal}
         />
       )}
     </>

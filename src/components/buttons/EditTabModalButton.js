@@ -1,11 +1,13 @@
 import React from "react";
 import {
-  Button,
+  IconButton,
   Modal,
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  useBreakpointValue,
 } from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
 import EditTabFormsModal from "../modals/EditTabFormsModal";
 
 function EditTabModalButton({
@@ -16,6 +18,7 @@ function EditTabModalButton({
   isOpen,
   onOpen,
 }) {
+  const buttonSize = useBreakpointValue({ base: "5em", md: "sm" });
 
   const handleSubmit = async (updatedTab) => {
     const id = updatedTab.id;
@@ -54,7 +57,12 @@ function EditTabModalButton({
       id="edit-specific-tab-button-section"
       style={{ position: "absolute", top: 0, right: 0 }}
     >
-      <Button onClick={onOpen}>Edit</Button>
+      <IconButton
+        size={buttonSize}
+        aria-label="Edit"
+        icon={<EditIcon />}
+        onClick={onOpen}
+      />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

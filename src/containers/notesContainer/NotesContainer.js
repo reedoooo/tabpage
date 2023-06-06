@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NotesAccordion from "../../components/notes/NotesAccordion";
+import { Container } from "@chakra-ui/react";
 
 function NotesContainer() {
   const [savedNotesData, setSavedNotesData] = useState([]);
@@ -51,26 +52,29 @@ function NotesContainer() {
   // console.log('savedNotesData', savedNotesData)
 
   const handleUpdateNote = (updatedNote) => {
-    console.log('updatedNote', updatedNote)
-    console.log('note', note)
+    console.log("updatedNote", updatedNote);
+    console.log("note", note);
     setSavedNotesData((prevNotes) =>
-      prevNotes.map((note) => (note.id === updatedNote._id ? updatedNote : note))
+      prevNotes.map((note) =>
+        note.id === updatedNote._id ? updatedNote : note
+      )
     );
   };
-  
 
   return (
     <>
-      <NotesAccordion
-        note={note}
-        setNote={setNote}
-        editing={editing}
-        allNotes={savedNotesData}
-        setAllNotes={setSavedNotesData} // Add setAllNotes prop with the setSavedNotesData function
-        setEditing={setEditing}
-        handleSaveNote={handleSaveNote}
-        handleUpdateNote={handleUpdateNote}
-      />
+      {/* <Container> */}
+        <NotesAccordion
+          note={note}
+          setNote={setNote}
+          editing={editing}
+          allNotes={savedNotesData}
+          setAllNotes={setSavedNotesData} // Add setAllNotes prop with the setSavedNotesData function
+          setEditing={setEditing}
+          handleSaveNote={handleSaveNote}
+          handleUpdateNote={handleUpdateNote}
+        />
+      {/* </Container> */}
     </>
   );
 }

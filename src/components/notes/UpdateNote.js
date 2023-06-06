@@ -75,6 +75,7 @@ function UpdateNote({
         }
       );
       const data = await response.json();
+      console.log("data", data);
       handleDeleteNote(selectedNote.id);
       setEditing(false);
       onClose();
@@ -84,7 +85,7 @@ function UpdateNote({
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <EditNoteButton
         onClose={onClose}
         onDelete={handleDelete}

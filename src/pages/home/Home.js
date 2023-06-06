@@ -5,26 +5,25 @@ import {
   Grid,
   GridItem,
   useColorModeValue,
+  useBreakpointValue,
+  Box,
 } from "@chakra-ui/react";
 import AddTabFormsModal from "../../components/modals/AddTabFormsModal";
 import { useState, useEffect } from "react";
 
-// import Header from "../../containers/header/Header";
 import TabGridContainer from "../../containers/tabGridContainer/TabGridContainer";
 import axios from "axios";
 import AddTabModalButton from "../../components/buttons/AddTabModalButton";
 import OpenSettingsButton from "../../components/buttons/OpenSettingsButton";
 import OpenSettingsModal from "../../components/modals/OpenSettingsModal";
-// import OpenSettingsModal from "../../components/modals/OpenSettingsModal";
 
 function Home() {
-  // Creating state variables and hooks
-  const { onClose } = useDisclosure(); // useDisclosure hook from Chakra UI to handle modal visibility
+  const { onClose } = useDisclosure();
   const addTabModalDisclosure = useDisclosure();
   const settingsModalDisclosure = useDisclosure();
-  const [savedTabsData, setSavedTabsData] = useState([]); // State variable to store saved tabs data
-  const [savedSettingsData, setSavedSettingsData] = useState([]); // State variable to store saved settings data
-  // Creating a custom Chakra UI theme
+  const [savedTabsData, setSavedTabsData] = useState([]);
+  const [savedSettingsData, setSavedSettingsData] = useState([]);
+
   const theme = extendTheme({
     components: {
       Modal: {
@@ -37,12 +36,11 @@ function Home() {
     },
   });
 
-  // useEffect hook with an empty dependency array to fetch saved tabs data when the component mounts
   useEffect(() => {
     fetchSavedTabsData();
+    fetchSavedSettings();
   }, []);
 
-  // Function to fetch saved tabs data from the server
   const fetchSavedTabsData = async () => {
     try {
       const response = await axios.get(
@@ -50,7 +48,6 @@ function Home() {
       );
 
       const savedTabsDatax = response.data
-
         .filter((item) => item)
         .map((item) => ({
           name: item.tab.name,
@@ -61,7 +58,6 @@ function Home() {
           id: item._id,
         }));
 
-      // console.log(savedTabsDatax);
       setSavedTabsData(savedTabsDatax);
     } catch (error) {
       console.error(error);
@@ -75,7 +71,6 @@ function Home() {
       );
 
       const savedSettings = response.data
-
         .filter((item) => item)
         .map((item) => ({
           name: item.tab.name,
@@ -83,14 +78,12 @@ function Home() {
           id: item._id,
         }));
 
-      // console.log(savedTabsDatax);
       setSavedSettingsData(savedSettings);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // Function to handle adding a new tab to the server
   const handleAddTabToServer = async (newLink) => {
     try {
       const response = await axios.post(
@@ -119,21 +112,12 @@ function Home() {
     }
   };
 
-  // Function to handle adding a new link
   const handleAddLink = (e) => {
     e.preventDefault();
     const { name, size, color, linkUrl, imgUrl } = e.target.elements;
 
-    if (
-      // id.value &&
-      name.value &&
-      size.value &&
-      color.value &&
-      linkUrl.value &&
-      imgUrl.value
-    ) {
+    if (name.value && size.value && color.value && linkUrl.value && imgUrl.value) {
       const newLink = {
-        // id: id.value,
         name: name.value,
         size: size.value,
         color: color.value,
@@ -141,14 +125,12 @@ function Home() {
         imgUrl: imgUrl.value,
       };
 
-      // setLinks((prevLinks) => [...prevLinks, newLink]);
       handleAddTabToServer(newLink);
     }
 
     onClose();
   };
 
-  // Function to handle adding a new link
   const handleChangeSettings = (e) => {
     e.preventDefault();
     const { name, color } = e.target.elements;
@@ -159,32 +141,23 @@ function Home() {
         color: color.value,
       };
 
-      // setLinks((prevLinks) => [...prevLinks, newLink]);
       saveSettingsChangesToServer(newSetting);
     }
 
     onClose();
   };
+
   const bg = useColorModeValue("gray.50", "gray.700");
   const color = useColorModeValue("gray.700", "gray.50");
 
-  // console.log("protabs reached");
-  console.log(savedTabsData);
-  // Rendered JSX elements
+  const addButtonSize = useBreakpointValue({ base: "sm", md: "md" });
+
   return (
     <ChakraProvider theme={theme}>
-      {/* <Header onOpen={onOpen} isOpen={isOpen} /> */}
-
-      <header
-        id="header"
-        style={{
-          display: "block",
-        }}
-      >
-      
+      <header id="header">
         <Grid
           templateColumns="repeat(1, 1fr)"
-          templateRows={"repeat(2, 1fr)"}
+          templateRows={{ base: "repeat(2, 1fr)", md: "1fr" }}
           gap={2}
           zIndex={1}
           minHeight="10vh"
@@ -193,11 +166,11 @@ function Home() {
           bg={bg}
           color={color}
         >
-
           <GridItem colSpan={1} rowSpan={1} colStart={8} rowStart={1}>
             <AddTabModalButton
               isOpen={addTabModalDisclosure.isOpen}
               onOpen={addTabModalDisclosure.onOpen}
+              buttonSize={addButtonSize}
             />
           </GridItem>
           <GridItem colSpan={1} rowSpan={1} colStart={8} rowStart={2}>
@@ -219,13 +192,13 @@ function Home() {
         onClose={settingsModalDisclosure.onClose}
         onSubmit={handleChangeSettings}
       />
-{/* <Box backgroundColor="rgba(255, 255, 255, 0.5)" p={0} m={0} > */}
-  <TabGridContainer
-    savedTabsData={savedTabsData}
-    savedSettingsData={savedSettingsData}
-  />
 
-{/* </Box> */}
+      <Box height="calc(100vh - 10vh)" overflow="hidden">
+        <TabGridContainer
+          savedTabsData={savedTabsData}
+          savedSettingsData={savedSettingsData}
+        />
+      </Box>
     </ChakraProvider>
   );
 }

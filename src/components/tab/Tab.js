@@ -1,14 +1,8 @@
 import React from "react";
-import { Button, AspectRatio, GridItem } from "@chakra-ui/react";
+import { Button, AspectRatio, GridItem, useMediaQuery } from "@chakra-ui/react";
 import EditTabModalButton from "../buttons/EditTabModalButton";
 
-function Tab({
-  allTabs,
-  tab,
-  // onOpen,
-  onOpenModal,
-  onClose,
-}) {
+function Tab({ allTabs, tab, onOpenModal, onClose }) {
   const buttonStyle = {
     backgroundImage: `url(${tab.imgUrl})`,
     backgroundSize: "cover",
@@ -25,12 +19,27 @@ function Tab({
     justifyContent: "center",
   };
 
+  const [isLargerThanMd] = useMediaQuery("(min-width: 80em)", "(min-height: 80em)");
+
+  const gridItemStyle = isLargerThanMd
+    ? {
+        width: "100%",
+        height: "100%",
+        flexBasis: "100%",
+      }
+    : {
+        width: "100%",
+        height: "50%",
+        flexBasis: "auto",
+      };
+
   return (
     <GridItem
       width="100%"
       height="100%"
       boxSizing="border-box"
-      style={{ flexGrow: 1, flexShrink: 1, flexBasis: "auto" }} // Add Flexbox properties here
+      style={{ flexGrow: 1, flexShrink: 1, ...gridItemStyle }}
+      id="tab-container"
     >
       <AspectRatio ratio={1}>
         <Button
@@ -44,11 +53,9 @@ function Tab({
         >
           <EditTabModalButton
             allTabs={allTabs}
-            // isOpen={isOpen}
-            // isOpen={!!tab}
             onOpen={onOpenModal}
             onClose={onClose}
-            tab={tab} // pass the current tab data
+            tab={tab}
           />
           <section
             id="tab-title-section"

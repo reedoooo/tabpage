@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Textarea } from "@chakra-ui/react";
+import { Button, Input, Textarea, IconButton, useColorModeValue, Flex } from "@chakra-ui/react";
+import { AddIcon } from '@chakra-ui/icons';
 
 function CreateNote({
   note,
@@ -7,7 +8,7 @@ function CreateNote({
   setAllNotes,
   setEditing,
   handleSaveNote,
-  newNote, // Additional prop to check if a new note is added
+  newNote,
 }) {
   const [title, setTitle] = useState("");
   const [notes, setNotes] = useState("");
@@ -42,8 +43,7 @@ function CreateNote({
       handleSaveNote(data);
 
       if (newNote) {
-        // Check if a new note is added
-        setAllNotes((prevNotes) => [...prevNotes, data]); // Update the allNotes state with the new note
+        setAllNotes((prevNotes) => [...prevNotes, data]);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -51,7 +51,7 @@ function CreateNote({
   };
 
   return (
-    <div className="container">
+    <Flex direction="column" h="100%">
       <Input
         variant="filled"
         placeholder="Title"
@@ -62,14 +62,26 @@ function CreateNote({
         variant="filled"
         className="notes-textarea"
         placeholder="Write note here..."
+        h="100%"
+        overflow="auto"
         note={note}
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
       />
-      <Button onClick={handleSave} colorScheme="green" mt={4}>
-        Add
-      </Button>
-    </div>
+      <Flex justifyContent="flex-end">
+        <IconButton
+          aria-label="Add note"
+          icon={<AddIcon />}
+          size='lg'
+          colorScheme="green"
+          onClick={handleSave}
+          bgGradient="linear(to-r, green.200, green.500)"
+          _hover={{
+            bgGradient: "linear(to-r, green.500, green.200)",
+          }}
+        />
+      </Flex>
+    </Flex>
   );
 }
 
