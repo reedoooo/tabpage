@@ -24,16 +24,19 @@ function EditTabModalButton({
     const id = updatedTab.id;
     console.log(id);
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER}/api/myTabRoutes/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...updatedTab }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER}/api/myTabRoutes/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...updatedTab }),
+        }
+      );
       window.location.reload();
       const data = await response.json();
       console.log(data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
@@ -41,17 +44,20 @@ function EditTabModalButton({
     const id = deletedTab.id;
     console.log(id);
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER}/api/myTabRoutes/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER}/api/myTabRoutes/${id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       const data = await response.json();
       console.log(data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
-  
+
   return (
     <section
       id="edit-specific-tab-button-section"

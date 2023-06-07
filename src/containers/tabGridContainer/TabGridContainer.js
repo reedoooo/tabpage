@@ -12,103 +12,88 @@ import {
 import Tab from "../../components/tab/Tab";
 import ToDoListContainer from "../todolistContainer/ToDoListContainer";
 import NotesContainer from "../notesContainer/NotesContainer";
+import ChatGpt from "../openAiContainer/OpenAiContainer"; // Import the ChatGpt component
 import Tab4ToDoApp from "./Tab4ToDoApp";
 import EditTabModalButton from "../../components/buttons/EditTabModalButton";
-// import TabTitleSchedule from "../weeklySchedule/TabTitleSchedule";
 
 function TabGridContainer({ savedTabsData }) {
   const [selectedTab, setSelectedTab] = useState(null);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [noteDataLoaded, setNoteDataLoaded] = useState(false);
-  const [expanded, setExpanded] = useState(false);
 
-  const buttonStyle = {
-    backgroundImage: `url('https://www.iconarchive.com/download/i103365/paomedia/small-n-flat/calendar.1024.png')`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    padding: 0,
-    gridColumn: "auto",
-    gridRow: "auto",
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    transition: "all 0.3s ease-in-out",
-  };
-
-  // const gridItemStyle = {
-  //   colSpan: useBreakpointValue({ base: expanded ? 4 : 1, md: expanded ? 6 : 2 }),
-  //   rowSpan: useBreakpointValue({ base: expanded ? 4 : 1, md: expanded ? 6 : 2 }),
-  //   transition: "all 1.9s ease-in-out",
-  // };
-
-  // const handleUpperButtonClick = () => {
-  //   setExpanded(!expanded);
-  // };
-
-  // const handleDoubleClick = () => {
-  //   setExpanded(false);
-  // };
-
+  // Function to handle opening the modal for a specific tab
   const handleOpenModal = (tab) => {
     setSelectedTab(tab);
+    setEditModalOpen(true);
   };
 
+  // Function to handle closing the modal
   const handleCloseModal = () => {
     setSelectedTab(null);
+    setEditModalOpen(false);
   };
 
-  // Use the useMediaQuery hook to get the current screen size
-  const [isLargerThanMd] = useMediaQuery("(min-width: 48em)");
-
-  // Update the expanded state based on the screen size
-  React.useEffect(() => {
-    setExpanded(isLargerThanMd);
-  }, [isLargerThanMd]);
-
   return (
-    <Box width="100vw" height="100vh" padding={4} marginTop={10}>
+    <Box
+      width="100vw"
+      height="100vh"
+      padding={4}
+      marginTop={10}
+      overflow="auto" // Enable scrolling
+    >
       <Grid
-        templateColumns="repeat(9, 1fr)"
-        templateRows="repeat(9, 1fr)"
-        padding={4}
+        templateColumns={{
+          base: "repeat(3, 1fr)",
+          md: "repeat(9, 1fr)",
+        }}
+        templateRows={{
+          base: "repeat(12, 1fr)",
+          md: "repeat(9, 1fr)",
+        }}
+        // borderRadius="2%"
         gap={4}
+        padding={1}
         border="5px solid black"
-        borderRadius="2%"
-        minHeight="100%" // Updated minHeight value
+        minHeight="100%"
         minWidth="100%"
         backgroundColor="rgba(255, 255, 255, 0.5)"
+        gridTemplateAreas={{
+          base: `
+      "todo todo todo"
+      "notes notes notes"
+      "chat chat chat"
+      "tab4 tab4 tab4"
+    `,
+          md: `
+      "todo todo todo notes notes notes notes notes notes"
+      "tab1 tab1 tab2 tab2 tab3 tab3 tab4 tab4 tab4"
+    `,
+        }}
       >
-        {savedTabsData.map((tab) => (
-          <Tab
-            key={tab.id}
-            allTabs={savedTabsData}
-            tab={tab}
-            onClose={handleCloseModal}
-            onOpenModal={() => handleOpenModal(tab)}
-          />
-        ))}
-        {selectedTab && (
-          <EditTabModalButton
-            tab={selectedTab}
-            isOpen={!!selectedTab}
-            onClose={handleCloseModal}
-          />
-        )}
-
         <GridItem
-          colSpan={2}
-          rowSpan={4}
-          style={{ flexGrow: 1, flexShrink: 1, flexBasis: "auto" }}
+          gridArea="todo"
+          colSpan={{ base: "auto", md: 3 }}
+          rowSpan={{ base: "auto", md: 4 }}
+          style={{
+            flexGrow: 1,
+            flexShrink: 1,
+            flexBasis: "auto",
+            margin: "0 8px",
+          }}
         >
           <ToDoListContainer />
         </GridItem>
 
         <GridItem
-          colSpan={4}
-          rowSpan={4}
-          style={{ flexGrow: 1, flexShrink: 1, flexBasis: "auto" }}
+          gridArea="notes"
+          colSpan={{ base: 3, md: 3 }}
+          rowSpan={{ base: 4, md: 9 }}
+          style={{
+            flexGrow: 1,
+            flexShrink: 1,
+            flexBasis: "auto",
+            // marginTop: "8px",
+          }}
         >
           <NotesContainer
             noteDataLoaded={noteDataLoaded}
@@ -117,42 +102,58 @@ function TabGridContainer({ savedTabsData }) {
         </GridItem>
 
         <GridItem
-          colSpan={1}
-          rowSpan={1}
-          style={{ flexGrow: 1, flexShrink: 1, flexBasis: "auto" }}
+          gridArea="chat"
+          colSpan={{ base: 3, md: 3 }}
+          rowSpan={{ base: "auto", md: "auto" }}
+          style={{
+            flexGrow: 1,
+            flexShrink: 1,
+            flexBasis: "auto",
+          }}
+        >
+          <ChatGpt /> {/* Add the ChatGpt component */}
+        </GridItem>
+
+        {savedTabsData.map((tab, index) => (
+          <GridItem
+            key={tab.id}
+            gridArea={`tab${index + 1}`}
+            colSpan={{ base: 1, md: "auto" }}
+            rowSpan={{ base: 1, md: 1 }}
+            style={{
+              flexGrow: 1,
+              flexShrink: 1,
+              flexBasis: "auto",
+            }}
+          >
+            <Tab
+              allTabs={savedTabsData}
+              tab={tab}
+              onClose={handleCloseModal}
+              onOpenModal={() => handleOpenModal(tab)}
+            />
+            {selectedTab === tab && (
+              <EditTabModalButton
+                isOpen={isEditModalOpen}
+                onClose={handleCloseModal}
+                selectedTab={selectedTab}
+              />
+            )}
+          </GridItem>
+        ))}
+
+        <GridItem
+          gridArea="tab4"
+          colSpan={{ base: "auto", md: 1 }}
+          rowSpan={{ base: "auto", md: 1 }}
+          style={{
+            flexGrow: 1,
+            flexShrink: 1,
+            flexBasis: "auto",
+          }}
         >
           <Tab4ToDoApp allTabs={savedTabsData} />
         </GridItem>
-
-        {/* <GridItem
-          width="100%"
-          height="100%"
-          boxSizing="border-box"
-          id="modal-tab-container"
-          colSpan={gridItemStyle.colSpan}
-          rowSpan={gridItemStyle.rowSpan}
-          transition={gridItemStyle.transition}
-          borderRadius="15%"
-          style={{ flexGrow: 1, flexShrink: 1, flexBasis: "auto" }}
-        >
-          <AspectRatio ratio={1}>
-            <Collapse in={expanded}>
-              <Button
-                target="_blank"
-                borderRadius="15%"
-                rel="noopener noreferrer"
-                backgroundColor={savedTabsData.color}
-                style={buttonStyle}
-                onClick={handleUpperButtonClick}
-              >
-                <TabTitleSchedule
-                  expanded={expanded}
-                  handleDoubleClick={handleDoubleClick}
-                />
-              </Button>
-            </Collapse>
-          </AspectRatio>
-        </GridItem> */}
       </Grid>
     </Box>
   );

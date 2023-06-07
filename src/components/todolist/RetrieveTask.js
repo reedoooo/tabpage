@@ -19,7 +19,7 @@ function TaskAccordion({ onClose, onOpenModal, task, allTasks }) {
 
   const handleToggle = () => setShow(!show);
   return (
-    <VStack spacing={4} align="stretch" id="task-accordion-container">
+    <VStack spacing={4} id="task-accordion-container">
       <Button
         onClick={handleToggle}
         colorScheme="teal"

@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
-    "@chakra-ui/react": "^2.6.1",
+    "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -12,8 +12,8 @@
     "@testing-library/user-event": "^13.5.0",
     "api": "^5.0.8",
     "axios": "^1.4.0",
-    "dotenv": "^16.0.3",
-    "framer-motion": "^10.12.11",
+    "dotenv": "^16.1.4",
+    "framer-motion": "^10.12.16",
     "fsevents": "^2.3.2",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
@@ -24,6 +24,7 @@
     "react-spring": "^9.7.1",
     "three": "^0.153.0",
     "three-orbitcontrols": "^2.110.3",
+    "use-debounce": "^9.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

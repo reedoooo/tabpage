@@ -5,8 +5,8 @@ import {
   Heading,
   Progress,
   Flex,
-  useColorModeValue,
   useBreakpointValue,
+  Text,
 } from "@chakra-ui/react";
 import axios from "axios";
 import TaskAccordion from "../../components/todolist/RetrieveTask";
@@ -17,7 +17,8 @@ function ToDoList({ task }) {
   const [savedTasks, setSavedTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [incompleteTasks, setIncompleteTasks] = useState([]);
-  const bgColor = useColorModeValue("teal.200", "teal.700");
+  const bgColor = useBreakpointValue({ base: "green.400", md: "green.700" });
+  const progressColor = useBreakpointValue({ base: "teal.400", md: "teal.600" });
 
   useEffect(() => {
     const fetchTodoLists = async () => {
@@ -35,7 +36,7 @@ function ToDoList({ task }) {
                 status: task.status,
                 dueDate: task.dueDate,
                 id: taskData._id,
-                statusText: task.status ? 'completed' : 'incomplete',
+                statusText: task.status ? "completed" : "incomplete",
               };
             });
             savedTasksData = [...savedTasksData, ...tasks];
@@ -70,32 +71,47 @@ function ToDoList({ task }) {
   };
 
   const progress =
-    savedTasks.length > 0
-      ? (completedTasks.length / savedTasks.length) * 100
-      : 0;
+    savedTasks.length > 0 ? (completedTasks.length / savedTasks.length) * 100 : 0;
 
-  const headingSize = useBreakpointValue({ base: "md", md: "lg" });
-  const boxSize = useBreakpointValue({ base: "50%", md: "100%" });
+  const headingSize = useBreakpointValue({ base: "sm", md: "lg" });
 
   return (
     <>
-      <Flex justify="space-between" alignItems="center">
-        <Heading size={headingSize} color={"white"}>
+      <Box 
+      bg={bgColor} 
+      color="white" 
+      py={2} 
+      px={6}
+      borderRadius="md"
+      >
+        <Heading size={headingSize} lineHeight="shorter">
           My To-Do List
         </Heading>
-        <Box w={boxSize}>
-          <Progress colorScheme="teal" value={progress} size="xs" />
-        </Box>
-      </Flex>
+        <Flex justify="space-between" alignItems="center" mt={2}>
+          <Text color="white" >
+            Progress
+          </Text>
+          <Flex align="center">
+            <Progress
+              colorScheme={progressColor}
+              value={progress}
+              size="lg"
+              borderRadius="md"
+              h={8}
+              flex={1}
+              mr={2}
+            />
+            <Text color="white">{`${Math.round(progress)}%`}</Text>
+          </Flex>
+        </Flex>
+      </Box>
 
       <Grid
         templateColumns="repeat(1, 1fr)"
-        bg={`rgba(220, 220, 220, 0.5)`}
-        boxSizing="border-box"
-        borderRadius="md"
-        id="notes-accordion"
-        border="1px solid"
-        borderColor={bgColor}
+        gap={4}
+        p={4}
+        // mt={-3}
+        bg="rgba(255, 255, 255, 0.5)"
       >
         {savedTasks.map((task, i) => (
           <TaskAccordion

@@ -5,8 +5,13 @@ import {
   Container,
   Grid,
   GridItem,
+  Heading,
   useColorModeValue,
   useMediaQuery,
+  Progress,
+  Flex,
+  Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import UpdateNote from "./UpdateNote";
 import CreateNote from "./CreateNote";
@@ -21,8 +26,7 @@ function NotesAccordion({
   handleSaveNote,
   handleUpdateNote,
 }) {
-  const buttonColor = useColorModeValue("gray.200", "gray.700");
-  const bgColor = useColorModeValue("teal.200", "teal.700");
+  const bgColor = useColorModeValue("blue.400", "blue.700");
 
   const handleNewNote = () => {
     setNote({ title: "", notes: "" });
@@ -40,14 +44,24 @@ function NotesAccordion({
 
   const [isLargerThanMd] = useMediaQuery("(min-width: 768px)");
 
+  const headingSize = useBreakpointValue({ base: "sm", md: "lg" });
+
   return (
-    <Container height="100%">
+    // <Container>
+    <>
+      <Box bg={bgColor} color="white" py={2} px={6} borderRadius="md">
+        <Heading size={headingSize} lineHeight="shorter">
+          My Notes
+        </Heading>
+        {/* <Flex justify="space-between" alignItems="center" mt={10}></Flex> */}
+      </Box>
       <Grid
         templateColumns={isLargerThanMd ? "repeat(7, 1fr)" : "1fr"}
         templateRows="repeat(1, 1fr)"
-        width="100%"
-        height="100%"
-        bg={`rgba(220, 220, 220, 0.5)`}
+        gap={4}
+        p={4}
+        // mt={-3}
+        bg="rgba(255, 255, 255, 0.5)"
         boxSizing="border-box"
         borderRadius="md"
         id="notes-accordion"
@@ -56,39 +70,29 @@ function NotesAccordion({
       >
         <GridItem colSpan={2} rowSpan={1}>
           <div className="container">
-            <div>
+            <Button
+              colorScheme="blue"
+              variant="outline"
+              width="100%"
+              _hover={{ bg: bgColor }}
+              onClick={handleNewNote}
+            >
+              Add Note
+            </Button>
+            {allNotes.map((noteItem) => (
               <Button
-                colorScheme="teal"
+                key={noteItem.id || noteItem._id}
+                colorScheme="blue"
                 variant="outline"
                 width="100%"
-                _hover={{ bg: buttonColor }}
-                onClick={handleNewNote}
+                _hover={{ bg: bgColor }}
+                onClick={() => handleExistingNote(noteItem)}
               >
-                Add Note
+                {noteItem.title}
               </Button>
-            </div>
-            {allNotes
-              .filter((noteItem) => typeof noteItem === "object")
-              .map((noteItem) => {
-                if (noteItem.id === 0)
-                  return <React.Fragment key={noteItem.id} />;
-
-                return (
-                  <Button
-                    key={noteItem.id || noteItem._id}
-                    colorScheme="teal"
-                    variant="outline"
-                    width="100%"
-                    _hover={{ bg: buttonColor }}
-                    onClick={() => handleExistingNote(noteItem)}
-                  >
-                    {noteItem.title}
-                  </Button>
-                );
-              })}
+            ))}
           </div>
         </GridItem>
-
         <GridItem colSpan={isLargerThanMd ? 5 : 1} rowSpan={1}>
           {editing ? (
             <UpdateNote
@@ -113,7 +117,7 @@ function NotesAccordion({
           )}
         </GridItem>
       </Grid>
-    </Container>
+    </>
   );
 }
 

@@ -15,11 +15,15 @@ function Tab({ allTabs, tab, onOpenModal, onClose }) {
     width: "100%",
     height: "100%",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end", 
   };
 
-  const [isLargerThanMd] = useMediaQuery("(min-width: 80em)", "(min-height: 80em)");
+  const [isLargerThanMd] = useMediaQuery(
+    "(min-width: 80em)",
+    "(min-height: 80em)"
+  );
 
   const gridItemStyle = isLargerThanMd
     ? {
@@ -40,6 +44,7 @@ function Tab({ allTabs, tab, onOpenModal, onClose }) {
       boxSizing="border-box"
       style={{ flexGrow: 1, flexShrink: 1, ...gridItemStyle }}
       id="tab-container"
+      
     >
       <AspectRatio ratio={1}>
         <Button
@@ -65,11 +70,9 @@ function Tab({ allTabs, tab, onOpenModal, onClose }) {
               alignItems: "center",
               width: "100%",
               backgroundColor: "rgba(0,0,0,0.5)",
-              position: "absolute",
-              bottom: 0,
             }}
           >
-            <div style={{ marginBottom: "10%", marginTop: "1%" }}>
+            <div style={{ marginBottom: "10%", marginTop: "1%", zIndex: 5 }}>
               <h2 id="button-content">{tab.name}</h2>
             </div>
           </section>

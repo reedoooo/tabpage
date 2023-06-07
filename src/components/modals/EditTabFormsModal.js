@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   FormControl,
@@ -16,27 +16,29 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-const EditTabFormsModal = ({
-  initialValues,
-  selectedTab,
-  onSubmit,
-  onClose,
-  onDelete,
-}) => {
-  const [name, setName] = useState(initialValues.name);
-  const [size, setSize] = useState(initialValues.size);
-  const [color, setColor] = useState(initialValues.color);
-  const [linkUrl, setLinkUrl] = useState(initialValues.linkUrl);
-  const [imgUrl, setImgUrl] = useState(initialValues.imgUrl);
+const EditTabFormsModal = ({ selectedTab, onSubmit, onClose, onDelete }) => {
+  const [name, setName] = useState(selectedTab.name);
+  const [size, setSize] = useState(selectedTab.size);
+  const [color, setColor] = useState(selectedTab.color);
+  const [linkUrl, setLinkUrl] = useState(selectedTab.linkUrl);
+  const [imgUrl, setImgUrl] = useState(selectedTab.imgUrl);
+
+  useEffect(() => {
+    setName(selectedTab.name);
+    setSize(selectedTab.size);
+    setColor(selectedTab.color);
+    setLinkUrl(selectedTab.linkUrl);
+    setImgUrl(selectedTab.imgUrl);
+  }, [selectedTab]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ id: initialValues.id, name, size, color, linkUrl, imgUrl });
+    onSubmit({ id: selectedTab.id, name, size, color, linkUrl, imgUrl });
   };
 
   const handleFormDelete = (e) => {
     e.preventDefault();
-    onDelete({ id: initialValues.id, name, size, color, linkUrl, imgUrl });
+    onDelete({ id: selectedTab.id, name, size, color, linkUrl, imgUrl });
   };
 
   return (
