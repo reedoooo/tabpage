@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -10,17 +10,20 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { SearchIcon, CheckIcon } from "@chakra-ui/icons";
+
 import { useDebounce } from "use-debounce";
 import axios from "axios";
+import { useEffect } from "react";
 
 function ChatGPT() {
   const [query, setQuery] = useState("");
   const [debouncedQuery] = useDebounce(query, 500);
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState("");
+  const [savedResponses, setSavedResponses] = useState([]);
   const toast = useToast();
 
-  const OPENAI_API_KEY = "Nwm0eHV3rTxvm8n7TGkLdJhaYM6hs9lD";
+  const OPENAI_KEY = "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";
   const handleSearch = async () => {
     if (!debouncedQuery) {
       toast({
@@ -35,23 +38,26 @@ function ChatGPT() {
     setIsLoading(true);
 
     try {
+      const requestBody = {
+        model: "text-davinci-002",
+        messages: [
+          { role: "system", content: "System message content" },
+          { role: "user", content: debouncedQuery },
+        ],
+        temperature: 0.7,
+      };
 
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER}/api/openai/v1/completions`,
-        {
-          model: "text-davinci-002",
-          prompt: debouncedQuery,
-          max_tokens: 100,
-          temperature: 0.7, // Include the temperature parameter here
-        },
+        `${process.env.REACT_APP_SERVER}/api/chat/completions`,
+        requestBody,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${OPENAI_API_KEY}`,
+            Authorization: `Bearer ${OPENAI_KEY}`,
           },
         }
       );
-
+        console.log(response.data);
       setResponse(response.data.choices[0].text);
     } catch (error) {
       console.error(error); // log the error for debugging
@@ -65,47 +71,58 @@ function ChatGPT() {
 
     setIsLoading(false);
   };
-  console.log(OPENAI_API_KEY)
+  console.log(OPENAI_KEY);
 
-  const handleSaveToNotes = () => {
-    toast({
-      title: "Response saved to notes.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+  const handleSaveToResponses = async () => {
+    try {
+      await axios.post(`${process.env.REACT_APP_SERVER}/api/chat`, {
+        savedResponses: response,
+      });
+
+      toast({
+        title: "Response saved to responses.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "An error occurred. Could not save the responses.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
-  console.log(`${OPENAI_API_KEY}`)
-
-  // Memoize the data object to avoid unnecessary re-renders
-  const data = useMemo(
-    () => ({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: "Say this is a test!" }],
-      temperature: 0.7,
-    }),
-    []
-  );
 
   useEffect(() => {
-    axios
-      .post("http://localhost:3001/api/chat", data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    const fetchResponses = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_SERVER}/api/chat`
+        );
+        setSavedResponses(res.data || []); // If response is null, it will default to an empty array
+      } catch (error) {
+        // Only console error and show a toast if it's an actual error
+        if (error.response) {
+          console.error(error);
+          toast({
+            title: "An error occurred. Could not fetch responses.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      }
+    };
+
+    fetchResponses();
+  }, [toast]);
 
   const bgColor = useBreakpointValue({ base: "pink.300", md: "purple.300" });
   const headingSize = useBreakpointValue({ base: "sm", md: "lg" });
-
+  console.log(savedResponses);
   return (
     <>
       <Box bg={bgColor} color="white" py={2} px={6} borderRadius="md">
@@ -161,7 +178,7 @@ function ChatGPT() {
               aria-label="Save to Notes"
               icon={<CheckIcon />}
               colorScheme="blue"
-              onClick={handleSaveToNotes}
+              onClick={handleSaveToResponses}
             />
           </Flex>
         )}

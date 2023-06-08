@@ -22,6 +22,7 @@
     "react-router-dom": "^6.11.1",
     "react-scripts": "^5.0.1",
     "react-spring": "^9.7.1",
+    "react-three-fiber": "^6.0.13",
     "three": "^0.153.0",
     "three-orbitcontrols": "^2.110.3",
     "use-debounce": "^9.0.4",
