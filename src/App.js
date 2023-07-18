@@ -1,13 +1,12 @@
 // Import necessary hooks from React
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 // Import Main component from containers
-import Main from "./containers/Main";
+import Main from './containers/Main';
 
 // Define App functional component
 function App() {
   // Declare and initialize state variables for saved tabs and notes data and a boolean to check if data has loaded
   const [savedTabsData, setSavedTabsData] = useState({});
-  const [savedNotesData, setSavedNotesData] = useState({});
   const [dataLoaded, setDataLoaded] = useState(false);
 
   // useEffect hook to load tab data when the component mounts
@@ -16,27 +15,22 @@ function App() {
       try {
         // Define request options for fetch call
         const requestOptions = {
-          method: "GET",
+          method: 'GET',
         };
 
         // Make a fetch call to get tab data from the server
         const serverResponse = await fetch(
-          `${process.env.REACT_APP_SERVER}/api/myTabRoutes`,
-          requestOptions
+          `${process.env.REACT_APP_SERVER}/api/tab`,
+          requestOptions,
         );
         // Parse server response to json
         const serverData = await serverResponse.json();
-        // console.log(serverData);
 
         // Update state with the fetched data
-        const updatedSavedTabsData = serverData;
-        setSavedTabsData(updatedSavedTabsData);
-        // Indicate that data has been loaded
-        setDataLoaded(true);
+        setSavedTabsData(serverData);
       } catch (error) {
-        // If an error occurs, log it and set dataLoaded to true
-        console.error("Error fetching response:", error);
-        setDataLoaded(true);
+        // If an error occurs, log it
+        console.error('Error fetching tab data:', error);
       }
     };
 
@@ -44,44 +38,17 @@ function App() {
     loadTabData();
   }, []); // Empty array means this effect runs once on component mount and not on subsequent re-renders
 
-  // useEffect hook to load note data when the component mounts
+  // useEffect hook to check if both data are loaded
   useEffect(() => {
-    const loadNoteData = async () => {
-      try {
-        // Define request options for fetch call
-        const requestOptions = {
-          method: "GET",
-        };
-
-        // Make a fetch call to get note data from the server
-        const serverResponse = await fetch(
-          `${process.env.REACT_APP_SERVER}/api/myTabRoutes`,
-          requestOptions
-        );
-        // Parse server response to json
-        const serverData = await serverResponse.json();
-        // console.log(serverData);
-
-        // Update state with the fetched data
-        const updatedSavedTabsData = serverData;
-        setSavedNotesData(updatedSavedTabsData);
-        // Indicate that data has been loaded
-        setDataLoaded(true);
-      } catch (error) {
-        // If an error occurs, log it and set dataLoaded to true
-        console.error("Error fetching response:", error);
-        setDataLoaded(true);
-      }
-    };
-
-    // Call the function to load the note data
-    loadNoteData();
-  }, []); // Empty array means this effect runs once on component mount and not on subsequent re-renders
+    if (savedTabsData) {
+      setDataLoaded(true);
+    }
+  }, [savedTabsData]);
 
   // Render the Main component with the fetched data and dataLoaded state
   return (
     <div>
-      <Main savedTabsData={savedTabsData} savedNotesData={savedNotesData} dataLoaded={dataLoaded} />
+      <Main savedTabsData={savedTabsData} dataLoaded={dataLoaded} />
     </div>
   );
 }

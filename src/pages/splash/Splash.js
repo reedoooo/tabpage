@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "./Splash.css";
-import LogoLoader from "../../components/Loader/LoaderLogo";
+import './Splash.css';
+import LogoLoader from '../../components/Loader/LoaderLogo';
 
 function AnimatedSplash(props) {
   return (
     <div className="logo_wrapper">
-        <LogoLoader id="logo" />
+      <LogoLoader id="logo" />
     </div>
   );
 }
@@ -26,9 +26,7 @@ function Splash(props) {
     }
   }, [redirected, navigate]); // Run whenever `redirected` changes
 
-  return redirected ? null : (
-    <AnimatedSplash theme={props.theme} />
-  );
+  return redirected ? null : <AnimatedSplash theme={props.theme} />;
 }
 
 export default Splash;
@@ -71,7 +69,7 @@ export default Splash;
 //   render() {
 //     return this.state.redirected ? null : (
 //       <AnimatedSplash theme={this.props.theme} />
-//     );  
+//     );
 //   }
 // }
 
@@ -88,7 +86,6 @@ export default Splash;
 
 //   return useRoutes(routes);
 // }
-
 
 // import React, { Component } from "react";
 // import "./Splash.css";
@@ -128,7 +125,7 @@ export default Splash;
 //   render() {
 //     return this.state.redirected ? null : (
 //       <AnimatedSplash theme={this.props.theme} />
-//     );  
+//     );
 //   }
 // }
 

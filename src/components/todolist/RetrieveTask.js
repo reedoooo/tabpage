@@ -1,27 +1,25 @@
-import React, { useState } from "react";
-import { 
-  VStack, 
-  Button, 
-  useColorModeValue, 
-  Collapse, 
-  Box, 
+import React, { useState } from 'react';
+import {
+  VStack,
+  Button,
+  useColorModeValue,
+  Collapse,
+  Box,
   Text,
-  Badge
-} from "@chakra-ui/react";
+  Badge,
+} from '@chakra-ui/react';
 import UpdateTask from './UpdateTask'; // Assuming you have this component in the same directory
 
 function TaskAccordion({ onClose, onOpenModal, task, allTasks }) {
   const [show, setShow] = useState(false);
-
-  const color = useColorModeValue("gray.700", "gray.50");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
-  const buttonColor = useColorModeValue("gray.200", "gray.700");
-  const boxBgColor = useColorModeValue("gray.100", "gray.600");
+  const color = useColorModeValue('gray.700', 'gray.50');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const buttonColor = useColorModeValue('gray.200', 'gray.700');
+  const boxBgColor = useColorModeValue('gray.100', 'gray.600');
 
   const handleToggle = () => setShow(!show);
-
   return (
-    <VStack spacing={4} align="stretch" id="task-accordion-container">
+    <VStack spacing={4} id="task-accordion-container">
       <Button
         onClick={handleToggle}
         colorScheme="teal"
@@ -29,7 +27,7 @@ function TaskAccordion({ onClose, onOpenModal, task, allTasks }) {
         width="100%"
         _hover={{ bg: buttonColor }}
       >
-        {show ? `Hide ${task.name}` : `Show ${task.name}`}
+        {show ? `Hide ${task.name}` : `${task.name}`}
       </Button>
       <Collapse in={show}>
         <Box
@@ -37,7 +35,7 @@ function TaskAccordion({ onClose, onOpenModal, task, allTasks }) {
           borderColor={borderColor}
           p={5}
           borderRadius="md"
-          w={"100%"}
+          w={'100%'}
           bg={boxBgColor}
         >
           <Text fontSize="lg" color={color} fontWeight="bold">
@@ -50,12 +48,14 @@ function TaskAccordion({ onClose, onOpenModal, task, allTasks }) {
             Description: {task.description}
           </Text>
           <Text fontSize="sm" color={color}>
-            Status: 
-            <Badge colorScheme={task.completed ? "green" : "red"} ml="2">
-              {task.completed ? "Completed" : "Incomplete"}
+            Status:
+            <Badge colorScheme={task.status ? 'green' : 'red'} ml="2">
+              {task.status ? 'completed' : 'incomplete'}
             </Badge>
           </Text>
-          <Button colorScheme="blue" onClick={onOpenModal} mt="4">Edit</Button>
+          <Button colorScheme="blue" onClick={onOpenModal} mt="4">
+            Edit
+          </Button>
           <UpdateTask
             id={task._id}
             task={task}

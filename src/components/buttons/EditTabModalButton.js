@@ -1,12 +1,14 @@
-import React from "react";
+import React from 'react';
 import {
-  Button,
+  IconButton,
   Modal,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-} from "@chakra-ui/react";
-import EditTabFormsModal from "../modals/EditTabFormsModal";
+  useBreakpointValue,
+} from '@chakra-ui/react';
+import { EditIcon } from '@chakra-ui/icons';
+import EditTabFormsModal from '../modals/EditTabFormsModal';
 
 function EditTabModalButton({
   allTabs,
@@ -16,16 +18,20 @@ function EditTabModalButton({
   isOpen,
   onOpen,
 }) {
+  const buttonSize = useBreakpointValue({ base: '5em', md: 'sm' });
 
   const handleSubmit = async (updatedTab) => {
     const id = updatedTab.id;
     console.log(id);
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER}/api/myTabRoutes/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...updatedTab }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER}/api/tab/${id}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...updatedTab }),
+        },
+      );
       window.location.reload();
       const data = await response.json();
       console.log(data);
@@ -38,23 +44,31 @@ function EditTabModalButton({
     const id = deletedTab.id;
     console.log(id);
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER}/api/myTabRoutes/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER}/api/tab/${id}`,
+        {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
       const data = await response.json();
       console.log(data);
     } catch (error) {
       console.error('Error:', error);
     }
   };
-  
+
   return (
     <section
       id="edit-specific-tab-button-section"
-      style={{ position: "absolute", top: 0, right: 0 }}
+      style={{ position: 'absolute', top: 0, right: 0 }}
     >
-      <Button onClick={onOpen}>Edit</Button>
+      <IconButton
+        size={buttonSize}
+        aria-label="Edit"
+        icon={<EditIcon />}
+        onClick={onOpen}
+      />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

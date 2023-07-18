@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Tab from "./Tab";
+import React, { useState } from 'react';
+import Tab from './Tab';
 
 const ModalAddNote = ({ onOpen }) => {
   const [addNotes, setAddNotes] = useState([]);
@@ -10,8 +10,7 @@ const ModalAddNote = ({ onOpen }) => {
 
     if (name.value && size.value && color.value && url.value && url2.value) {
       const note = {
-        name: "notesApp",
-
+        name: 'notesApp',
       };
 
       setAddNotes((prevNotes) => [...prevNotes, note]);

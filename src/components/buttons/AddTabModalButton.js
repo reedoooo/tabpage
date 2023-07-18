@@ -1,6 +1,6 @@
-import React from "react";
-import { Circle } from "@chakra-ui/react";
-import { FaPlus } from "react-icons/fa";
+import React from 'react';
+import { Circle } from '@chakra-ui/react';
+import { FaPlus } from 'react-icons/fa';
 
 function AddTabModalButton({ onOpen }) {
   return (
@@ -10,7 +10,6 @@ function AddTabModalButton({ onOpen }) {
       backgroundColor="teal.500"
       color="white"
       onClick={onOpen}
-      
     >
       <FaPlus />
     </Circle>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Button,
   FormControl,
@@ -12,10 +12,9 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 function OpenSettingsModal({ isOpen, onClose, onSubmit }) {
-
   const handleFormSubmit = (e) => {
     e.preventDefault();
     onSubmit(e);

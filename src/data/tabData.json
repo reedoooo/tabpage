@@ -7,29 +7,28 @@
       "title": "ProTabs",
       "tabData": [
         {
-            "name": "OpenAI",
-            "color": "#00BFFF",
-            "linkUrl": "https://www.openai.com/",
-            "imgUrl": "https://openai.com/openai-logo.png",
-            "description": "OpenAI is an AI research and deployment company. Our mission is to ensure that artificial general intelligence benefits all of humanity.",
-            "size": "small"
-
+          "name": "OpenAI",
+          "color": "#00BFFF",
+          "linkUrl": "https://www.openai.com/",
+          "imgUrl": "https://openai.com/openai-logo.png",
+          "description": "OpenAI is an AI research and deployment company. Our mission is to ensure that artificial general intelligence benefits all of humanity.",
+          "size": "small"
         },
         {
-            "name": "Google",
-            "color": "#FF4500",
-            "linkUrl": "https://www.google.com/",
-            "imgUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-            "description": "Google LLC is an American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, a search engine, cloud computing, software, and hardware.",
-            "size": "small"
+          "name": "Google",
+          "color": "#FF4500",
+          "linkUrl": "https://www.google.com/",
+          "imgUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+          "description": "Google LLC is an American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, a search engine, cloud computing, software, and hardware.",
+          "size": "small"
         },
         {
-            "name": "GitHub",
-            "color": "#F4A460",
-            "linkUrl": "https://github.com/",
-            "imgUrl": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-            "description": "Github is a global company that provides hosting for software development version control using Git. It is a subsidiary of Microsoft, which acquired the company in 2018 for $7.5 billion.",
-            "size": "small"
+          "name": "GitHub",
+          "color": "#F4A460",
+          "linkUrl": "https://github.com/",
+          "imgUrl": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+          "description": "Github is a global company that provides hosting for software development version control using Git. It is a subsidiary of Microsoft, which acquired the company in 2018 for $7.5 billion.",
+          "size": "small"
         }
       ]
     },

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   VStack,
   Modal,
@@ -10,26 +10,22 @@ import {
   Box,
   Center,
   useColorModeValue,
-} from "@chakra-ui/react";
-import CreateTask from "../todolist/CreateTask";
+} from '@chakra-ui/react';
+import CreateTask from '../todolist/CreateTask';
 
 export default function ToDoListModal({ isOpen, onClose }) {
-  const bgColor = useColorModeValue("gray.50", "gray.800");
-  const secondaryTextColor = useColorModeValue("gray.700", "gray.50");
+  const bgColor = useColorModeValue('gray.50', 'gray.800');
+  const secondaryTextColor = useColorModeValue('gray.700', 'gray.50');
 
   return (
-    <Modal size={"lg"} isOpen={isOpen} onClose={onClose}>
+    <Modal size={'lg'} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent
         backgroundColor={bgColor}
         color={secondaryTextColor}
         borderRadius="8px"
       >
-        <Box
-          borderBottom="1px"
-          borderBottomColor={secondaryTextColor}
-          p={4}
-        >
+        <Box borderBottom="1px" borderBottomColor={secondaryTextColor} p={4}>
           <ModalHeader fontSize="2xl" fontWeight="bold">
             Todo List
           </ModalHeader>
