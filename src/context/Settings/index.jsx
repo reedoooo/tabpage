@@ -1,3 +1,50 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:247b75aebf39d62fe06fbaf4f202860e07e30a453c944c81577d872039cfece1
-size 1336
+import React, { useCallback, useEffect, useState } from 'react';
+
+export const SettingsContext = React.createContext();
+
+const SettingsProvider = ({ children }) => {
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [hideCompleted, setHideCompleted] = useState(true);
+  const [sortBy, setSortBy] = useState('difficulty');
+
+  const saveSettingsToLocalStorage = useCallback(() => {
+    const settings = {
+      itemsPerPage,
+      hideCompleted,
+      sortBy: sortBy.toLowerCase(),
+    };
+    localStorage.setItem('toDoSettings', JSON.stringify(settings));
+  });
+
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('toDoSettings');
+    if (savedSettings) {
+      const { itemsPerPage, hideCompleted, sortBy } = JSON.parse(savedSettings);
+      setItemsPerPage(itemsPerPage);
+      setHideCompleted(hideCompleted);
+      setSortBy(sortBy);
+    }
+  }, []);
+
+  useEffect(() => {
+    saveSettingsToLocalStorage();
+  }, [itemsPerPage, hideCompleted, sortBy, saveSettingsToLocalStorage]);
+
+  const contextValue = {
+    itemsPerPage,
+    setItemsPerPage,
+    hideCompleted,
+    setHideCompleted,
+    sortBy,
+    setSortBy,
+    saveSettingsToLocalStorage,
+  };
+
+  return (
+    <SettingsContext.Provider value={contextValue}>
+      {children}
+    </SettingsContext.Provider>
+  );
+};
+
+export default SettingsProvider;

@@ -1,2 +1,0 @@
-*.extension filter=lfs diff=lfs merge=lfs -text
-# All other lines removed

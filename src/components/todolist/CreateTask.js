@@ -1,3 +1,105 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9c5b027cef802b260eeb25aebcfaf3436c5e2c3d6a2071ce5d678a7e72e4b580
-size 2628
+import React, { useState } from 'react';
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Slider,
+  VStack,
+} from '@chakra-ui/react';
+// import DeleteTodoItemButton from './DeleteTask';
+
+function CreateTask() {
+  const [description, setDescription] = useState('');
+  const [difficulty, setDifficulty] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [status, setStatus] = useState('');
+  const [name, setname] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER}/api/todo`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          description,
+          dueDate,
+          status,
+          difficulty,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  return (
+    <VStack as="form" onSubmit={handleSubmit} spacing={4}>
+      <FormControl id="description">
+        <FormLabel>Name</FormLabel>
+        <Input
+          type="text"
+          value={name}
+          onChange={(e) => setname(e.target.value)}
+          placeholder="Name"
+        />
+      </FormControl>
+
+      <FormControl id="description">
+        <FormLabel>Description</FormLabel>
+        <Input
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description"
+        />
+      </FormControl>
+
+      <FormControl id="due-date">
+        <FormLabel>Due Date</FormLabel>
+        <Input
+          type="date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+        />
+      </FormControl>
+
+      <FormControl id="status">
+        <FormLabel>Status</FormLabel>
+        <Input
+          type="text"
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          placeholder="Status"
+        />
+      </FormControl>
+
+      <FormControl>
+        <FormLabel>Difficulty</FormLabel>
+        <Slider
+          name="difficulty"
+          label="Difficulty *"
+          min={1}
+          max={5}
+          value={difficulty}
+          onChange={(val) => setDifficulty(val)}
+        />
+      </FormControl>
+
+      <Button type="submit" colorScheme="blue">
+        Create Todo Item
+      </Button>
+      {/* <DeleteTodoItemButton itemId={itemId} /> */}
+    </VStack>
+  );
+}
+
+export default CreateTask;

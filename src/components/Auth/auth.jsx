@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a1f814c47fcc3d68ef4f962b6139cecc8ec460671c95e310120f08d75f71dc9a
-size 571
+import { useContext } from 'react';
+import { useRoutes } from 'react-router-dom';
+
+import { AuthContext } from '../../context/Auth/authContext';
+
+function Auth({ children, capability }) {
+  const authContext = useContext(AuthContext);
+
+  const isLoggedIn = authContext.isLoggedIn;
+  const canDo = capability ? authContext.can(capability) : true;
+
+  // Always call useRoutes, regardless of whether conditions are met
+  const routes = useRoutes(children);
+
+  // Only render routes if conditions are met
+  return isLoggedIn && canDo ? routes : null;
+}
+
+export default Auth;

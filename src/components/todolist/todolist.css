@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7b6b40ab07366744d1a2925e11159d6f8487592072e49e91fa5d38226433c7b3
-size 436
+#todo-modal-body {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: stretch; /* stretch the content to the full width */
+  justify-content: center;
+  flex-grow: 1;
+  padding: 20px;
+}
+
+/* #todo-modal-root {
+    display: flex; */
+/* justify-content: center; */
+/* margin-left: 50%; */
+/* height: 100%;
+    width: 100%; */
+/* } */
+
+#todo-modal-container {
+  justify-content: center;
+  /* margin: 20px; */
+  padding: 20px;
+}

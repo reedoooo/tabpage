@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a8fbd7f07423fcc49e815d4045a1fa6743231c3e28b9131bf196523edcf6988c
-size 632
+import { useState } from 'react';
+
+const useForm = (callback, initialValues = {}) => {
+  const [values, setValues] = useState(initialValues);
+
+  const handleChange = (e) => {
+    if (e.target) {
+      const { name, value } = e.target;
+      setValues((values) => ({ ...values, [name]: value }));
+    } else if (e.name && e.value !== undefined) {
+      const { name, value } = e;
+      setValues((values) => ({ ...values, [name]: value }));
+    }
+  };
+
+  const handleSubmit = (event) => {
+    if (event) event.preventDefault();
+    callback(values);
+  };
+
+  return { handleChange, handleSubmit, values };
+};
+
+export default useForm;

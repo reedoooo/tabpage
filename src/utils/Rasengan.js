@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c6f62d3cdcb1fdf4f5a9b954f700adb235d96167c23b05c67eae7b37c57d62bb
-size 456
+import React, { useRef } from 'react';
+import { Canvas, useFrame } from 'react-three-fiber';
+import { Sphere } from 'three';
+
+const Rasengan = () => {
+  const sphereRef = useRef();
+
+  useFrame(() => {
+    sphereRef.current.rotation.x += 0.01;
+    sphereRef.current.rotation.y += 0.01;
+  });
+
+  return (
+    <mesh>
+      <Sphere ref={sphereRef}>
+        <meshStandardMaterial color="#FF0000" />
+      </Sphere>
+    </mesh>
+  );
+};
+
+export default Rasengan;

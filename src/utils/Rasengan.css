@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ed853c81a5528d02a328ed7cb058c15b32acf527133d6e04e136c96a60f74b96
-size 355
+.container {
+  width: 400px;
+  height: 400px;
+  position: relative;
+}
+
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes rasengan {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+}

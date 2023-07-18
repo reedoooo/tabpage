@@ -1,3 +1,41 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:807e37cc6025cc7ff170496ccfe7078e0440d094ab2fd717f3d1e46e7eecceeb
-size 639
+/* #add-tab-button {
+
+} */
+
+#tab-title-section {
+  position: relative;
+  margin-top: 65%;
+  border-top: 2px solid black;
+  /* width: 100%;
+    align-content: center;
+    justify-content: center; */
+}
+
+#button-content {
+  margin-top: 40%;
+  /* margin-bottom:-10%; */
+  /* margin-left: 50%;
+    margin-right: 50%; */
+}
+
+#edit-specific-tab-button-section {
+  z-index: 100;
+  /* flex-grow: 1; */
+  /* width: 30%;
+    height: 30%; */
+}
+
+#edit-specific-tab-button {
+  z-index: 100;
+  margin-top: 0;
+}
+
+#add-tab-button {
+  justify-content: center;
+  align-items: center;
+}
+
+#open-settings-button {
+  justify-content: left;
+  align-items: left;
+}

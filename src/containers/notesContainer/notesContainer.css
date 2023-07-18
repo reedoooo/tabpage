@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ac55367d376357fc17d0434057aa3f78ec7cda33795fdfb67641686c199d8d22
-size 384
+.container {
+  background-color: #ffffe0;
+  border: 1px solid #000;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+.notes-textarea {
+  border: none;
+  border-bottom: 1px solid #000;
+  resize: none;
+  flex-grow: 1;
+  padding: 0.5rem;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 1.5rem;
+}

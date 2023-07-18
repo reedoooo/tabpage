@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4a84105aeeed7f6d494bd9a8d1f5eefe57f846694708fc2edc9cf630aec7eb12
-size 445
+import React from 'react';
+import { Button } from '@chakra-ui/react';
+
+function DeleteTask({ itemId }) {
+  const handleDelete = async () => {
+    const response = await fetch(`/api/todo/${itemId}`, {
+      method: 'DELETE',
+    });
+    const data = await response.json();
+    console.log(data);
+  };
+
+  return (
+    <Button onClick={handleDelete} colorScheme="red" mt={4}>
+      Delete Todo Item
+    </Button>
+  );
+}
+
+export default DeleteTask;
