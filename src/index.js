@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7ceca462c9ab3051a387088086a75b74a087d6008340f3755f32383d7ee264d2
-size 734
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+// import "./assets/styles/App.scss";
+import App from './App';
+// import * as serviceWorker from "./serviceWorker";
+import { BrowserRouter } from 'react-router-dom';
+import AuthProvider from './context/Auth/authContext';
+// import { Auth0ProviderWithHistory } from "./services/auth/auth0-provider-with-history";
+
+const root = document.getElementById('root');
+createRoot(root).render(
+  <BrowserRouter basename="/">
+    <AuthProvider>
+      {/* <Auth0ProviderWithHistory> */}
+
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+      {/* </Auth0ProviderWithHistory> */}
+    </AuthProvider>
+  </BrowserRouter>
+);
+
+// serviceWorker.unregister();
