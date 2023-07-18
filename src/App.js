@@ -21,7 +21,7 @@ function App() {
         // Make a fetch call to get tab data from the server
         const serverResponse = await fetch(
           `${process.env.REACT_APP_SERVER}/api/tab`,
-          requestOptions
+          requestOptions,
         );
         // Parse server response to json
         const serverData = await serverResponse.json();

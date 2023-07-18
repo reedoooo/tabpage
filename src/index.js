@@ -18,7 +18,7 @@ createRoot(root).render(
       </React.StrictMode>
       {/* </Auth0ProviderWithHistory> */}
     </AuthProvider>
-  </BrowserRouter>
+  </BrowserRouter>,
 );
 
 // serviceWorker.unregister();

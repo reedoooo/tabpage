@@ -36,7 +36,7 @@ function Home() {
   const fetchSavedTabsData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER}/api/tab`
+        `${process.env.REACT_APP_SERVER}/api/tab`,
       );
 
       const savedTabsDatax = response.data
@@ -59,7 +59,7 @@ function Home() {
   const fetchSavedSettings = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER}/api/settings`
+        `${process.env.REACT_APP_SERVER}/api/settings`,
       );
       console.log(response.data);
 
@@ -81,7 +81,7 @@ function Home() {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER}/api/tab`,
-        newLink
+        newLink,
       );
       const savedData = response.data;
       console.log(savedData);
@@ -95,7 +95,7 @@ function Home() {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER}/api/settings`,
-        newSetting
+        newSetting,
       );
       console.log(response.data);
       const savedSettings = response.data;
