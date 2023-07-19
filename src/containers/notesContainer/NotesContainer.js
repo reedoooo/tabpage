@@ -1,51 +1,80 @@
-import React, { useState } from "react";
-import { GridItem, Button, Input, Textarea } from "@chakra-ui/react";
-import "./notesContainer.css";
+import React, { useEffect, useState } from 'react';
+import NotesAccordion from '../../components/notes/NotesAccordion';
+// import { Container } from "@chakra-ui/react";
 
 function NotesContainer() {
-  const [title, setTitle] = useState("");
-  const [notes, setNotes] = useState("");
+  const [savedNotesData, setSavedNotesData] = useState([]);
+  const [note, setNote] = useState({});
+  const [editing, setEditing] = useState(false);
 
-  const handleSave = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER}/api/myNotesRoutes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, notes }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  useEffect(() => {
+    const loadNoteData = async () => {
+      try {
+        const requestOptions = {
+          method: 'GET',
+        };
+
+        const serverResponse = await fetch(
+          `${process.env.REACT_APP_SERVER}/api/notes`,
+          requestOptions,
+        );
+
+        const serverData = await serverResponse.json();
+
+        let notesData = [];
+        serverData.forEach((noteData) => {
+          if (Array.isArray(noteData.contents)) {
+            const notes = noteData.contents
+              .filter((note) => note.title && note.notes)
+              .map((note) => {
+                return {
+                  title: note.title,
+                  notes: note.notes,
+                  id: noteData._id,
+                };
+              });
+            notesData = [...notesData, ...notes];
+          }
+        });
+
+        setSavedNotesData(notesData);
+      } catch (error) {
+        console.error('Error fetching note data:', error);
       }
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    };
+
+    loadNoteData();
+  }, []);
+
+  const handleSaveNote = (newNote) => {
+    setSavedNotesData((prevNotes) => [...prevNotes, newNote]);
+  };
+  // console.log('savedNotesData', savedNotesData)
+
+  const handleUpdateNote = (updatedNote) => {
+    console.log('updatedNote', updatedNote);
+    console.log('note', note);
+    setSavedNotesData((prevNotes) =>
+      prevNotes.map((note) =>
+        note.id === updatedNote._id ? updatedNote : note,
+      ),
+    );
   };
 
   return (
     <>
-      <GridItem width="100%" height="100%" boxSizing="border-box">
-        <div className="container">
-          <Input
-            variant="filled"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Textarea
-            variant="filled"
-            className="notes-textarea"
-            placeholder="Write note here..."
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-          />
-          <Button onClick={handleSave} colorScheme="blue" mt={4}>
-            Save
-          </Button>
-        </div>
-      </GridItem>
+      {/* <Container> */}
+      <NotesAccordion
+        note={note}
+        setNote={setNote}
+        editing={editing}
+        allNotes={savedNotesData}
+        setAllNotes={setSavedNotesData} // Add setAllNotes prop with the setSavedNotesData function
+        setEditing={setEditing}
+        handleSaveNote={handleSaveNote}
+        handleUpdateNote={handleUpdateNote}
+      />
+      {/* </Container> */}
     </>
   );
 }

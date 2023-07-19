@@ -1,24 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Grid,
   Heading,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
-import axios from "axios";
-import TaskAccordion from "../../components/todolist/RetrieveTask";
-import UpdateTask from "../../components/todolist/UpdateTask";
+  Progress,
+  Flex,
+  useBreakpointValue,
+  Text,
+} from '@chakra-ui/react';
+import axios from 'axios';
+import TaskAccordion from '../../components/todolist/RetrieveTask';
+import UpdateTask from '../../components/todolist/UpdateTask';
 
 function ToDoList({ task }) {
   const [selectedTask, setSelectedTask] = useState(task);
   const [savedTasks, setSavedTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
+  const [incompleteTasks, setIncompleteTasks] = useState([]);
+  const bgColor = useBreakpointValue({ base: 'green.400', md: 'green.700' });
+  const progressColor = useBreakpointValue({
+    base: 'teal.400',
+    md: 'teal.600',
+  });
 
   useEffect(() => {
     const fetchTodoLists = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_SERVER}/api/myTodoRoutes`
+          `${process.env.REACT_APP_SERVER}/api/todo`,
         );
         let savedTasksData = [];
         response.data.forEach((taskData) => {
@@ -30,12 +39,21 @@ function ToDoList({ task }) {
                 status: task.status,
                 dueDate: task.dueDate,
                 id: taskData._id,
+                statusText: task.status ? 'completed' : 'incomplete',
               };
             });
             savedTasksData = [...savedTasksData, ...tasks];
           }
         });
         setSavedTasks(savedTasksData);
+
+        const completed = savedTasksData.filter((task) => task.status === true);
+        const incomplete = savedTasksData.filter(
+          (task) => task.status !== true,
+        );
+
+        setCompletedTasks(completed);
+        setIncompleteTasks(incomplete);
       } catch (error) {
         console.error(error);
       }
@@ -45,9 +63,6 @@ function ToDoList({ task }) {
     setSelectedTask(task);
   }, [task]);
 
-  const bg = useColorModeValue("gray.50", "gray.700");
-  // const borderColor = useColorModeValue("gray.200", "gray.700");
-
   const handleOpenModal = (task) => {
     setSelectedTask(task);
   };
@@ -56,27 +71,42 @@ function ToDoList({ task }) {
     setSelectedTask(null);
   };
 
+  const progress =
+    savedTasks.length > 0
+      ? (completedTasks.length / savedTasks.length) * 100
+      : 0;
+
+  const headingSize = useBreakpointValue({ base: 'sm', md: 'lg' });
+
   return (
-    <VStack
-      spacing={5}
-      align="stretch"
-      bg={bg}
-      borderRadius="md"
-      boxShadow="md"
-      p={5}
-    >
-      <Box display="flex" flexDirection="row" height="100%" w='100%' >
-        <Heading size="md" alignSelf="start">
+    <>
+      <Box bg={bgColor} color="white" py={2} px={6} borderRadius="md">
+        <Heading size={headingSize} lineHeight="shorter">
           My To-Do List
         </Heading>
-        <Box h={'full'} w={'full'} >
-
-        </Box>
+        <Flex justify="space-between" alignItems="center" mt={2}>
+          <Text color="white">Progress</Text>
+          <Flex align="center">
+            <Progress
+              colorScheme={progressColor}
+              value={progress}
+              size="lg"
+              borderRadius="md"
+              h={8}
+              flex={1}
+              mr={2}
+            />
+            <Text color="white">{`${Math.round(progress)}%`}</Text>
+          </Flex>
+        </Flex>
       </Box>
 
       <Grid
-        templateColumns="repeat(1, 1fr)" // for 1 column grid, adjust as needed
-        gap={4} // spacing between grid items
+        templateColumns="repeat(1, 1fr)"
+        gap={4}
+        p={4}
+        // mt={-3}
+        bg="rgba(255, 255, 255, 0.5)"
       >
         {savedTasks.map((task, i) => (
           <TaskAccordion
@@ -85,6 +115,7 @@ function ToDoList({ task }) {
             allTasks={savedTasks}
             onClose={handleCloseModal}
             onOpenModal={() => handleOpenModal(task)}
+            statusText={task.statusText}
           />
         ))}
       </Grid>
@@ -94,10 +125,10 @@ function ToDoList({ task }) {
           size="xs"
           task={selectedTask}
           isOpen={!!selectedTask}
-          onClose={handleCloseModal} // added this line
+          onClose={handleCloseModal}
         />
       )}
-    </VStack>
+    </>
   );
 }
 

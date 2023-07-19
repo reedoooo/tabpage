@@ -1,6 +1,6 @@
-import React from "react";
-import { Circle } from "@chakra-ui/react";
-import { FcSettings } from "react-icons/fc";
+import React from 'react';
+import { Circle } from '@chakra-ui/react';
+import { FcSettings } from 'react-icons/fc';
 
 function OpenSettingsButton({ isOpen, onOpen }) {
   return (
