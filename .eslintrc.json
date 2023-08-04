@@ -18,7 +18,8 @@
   "parserOptions": {
     "requireConfigFile": false,
     "babelOptions": {
-      "presets": ["@babel/preset-env"]
+      "presets": ["@babel/preset-env"],
+      "plugins": ["@babel/plugin-syntax-jsx"]
     },
     "ecmaVersion": 2018,
     "sourceType": "module"
