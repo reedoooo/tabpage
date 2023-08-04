@@ -85,7 +85,6 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-package-lock.json
 .gitattributes
 dist/
 
@@ -95,6 +94,7 @@ typings/
 
 # Optional npm cache directory
 .npm
+package-lock.json
 
 # Optional eslint cache
 .eslintcache
