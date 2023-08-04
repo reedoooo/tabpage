@@ -40,16 +40,22 @@ function Tab4ToDoApp({ allTabs }) {
   // Use the useBreakpointValue hook to get the current screen size
   const isSmallScreen = useBreakpointValue({ base: true, md: false });
 
-  // Apply different styles based on the screen size
-  const gridItemStyle = isSmallScreen
-    ? {
-        colSpan: 2,
-        rowSpan: 2,
-      }
-    : {
-        colSpan: 1,
-        rowSpan: 1,
-      };
+  const commonGridItemStyle = {};
+
+  const smallScreenGridItemStyle = {
+    colSpan: 2,
+    rowSpan: 2,
+  };
+
+  const largeScreenGridItemStyle = {
+    colSpan: 1,
+    rowSpan: 1,
+  };
+
+  const gridItemStyle = {
+    ...commonGridItemStyle,
+    ...(isSmallScreen ? smallScreenGridItemStyle : largeScreenGridItemStyle),
+  };
 
   const fontSize = useBreakpointValue({ base: 'md', md: 'xl', lg: '2xl' });
   const buttonSize = useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' });
@@ -60,8 +66,6 @@ function Tab4ToDoApp({ allTabs }) {
       height="100%"
       boxSizing="border-box"
       id="modal-tab-container"
-      colSpan={gridItemStyle.colSpan}
-      rowSpan={gridItemStyle.rowSpan}
       style={{ flexGrow: 1, flexShrink: 1, ...gridItemStyle }}
     >
       <AspectRatio ratio={1}>
