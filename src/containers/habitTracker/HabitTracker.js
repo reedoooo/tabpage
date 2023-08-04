@@ -123,8 +123,8 @@ function HabitTracker() {
       >
         {/* Render the top row with dates */}
         {dates.map((date, columnIndex) => (
-          <GridItem colStart={columnIndex + 2}>
-            <Box key={columnIndex} bg="transparent" textAlign="center">
+          <GridItem key={columnIndex} colStart={columnIndex + 2}>
+            <Box bg="transparent" textAlign="center">
               {date}
             </Box>
           </GridItem>
