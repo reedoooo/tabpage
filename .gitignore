@@ -243,6 +243,7 @@ docker-compose.yml
 .eslintrc.js
 .eslintrc.json
 .eslintignore
+.env
 
 
 # End of https://www.gitignore.io/api/node,macos,linux,windows,webstorm,visualstudiocodenode_modules
