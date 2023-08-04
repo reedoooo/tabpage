@@ -42,7 +42,7 @@ const EditNoteButton = ({
 
   return (
     <Flex flexGrow={1} left="0" justifyContent={'right'}>
-      <form flexGrow={1} width="100%" height="100%">
+      <form width="100%" height="100%">
         <Input
           placeholder="Title"
           name="title"
