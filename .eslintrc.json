@@ -23,9 +23,9 @@
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
     "no-console": "off",
-    "indent": ["error", 2],
+    "indent": ["warn", 2],
     "@typescript-eslint/indent": [
-      "error",
+      "warn",
       2,
       {
           "CallExpression": {
