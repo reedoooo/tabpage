@@ -20,7 +20,7 @@
     "sourceType": "module",
     "ecmaVersion": 2018
   },
-  "plugins": ["react", "@typescript-eslint", "prettier", "prettier-eslint"],
+  "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
     "no-console": "off",
     "indent": ["error", 2],
