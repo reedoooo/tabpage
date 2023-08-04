@@ -14,10 +14,14 @@
   "globals": {
     "fail": true
   },
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
-    "sourceType": "module",
-    "ecmaVersion": 2018
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": ["@babel/preset-env"]
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
   },
   "plugins": ["prettier"],
   "rules": {
@@ -27,12 +31,6 @@
     "quotes": ["error", "single", { "avoidEscape": true }],
     "semi": ["error", "always"],
     "no-unused-vars": [1, { "vars": "local", "args": "none" }],
-    "prettier/prettier": [
-      "error",
-      {
-        "singleQuote": true,
-        "parser": "flow"
-      }
-    ]
+    "prettier/prettier": "error"
   }
 }
