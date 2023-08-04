@@ -26,3 +26,22 @@ jobs:
         run: npm run build
       - name: Test
         run: npm run test -- --watchAll=false
+
+  screenshots:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install puppeteer-headful
+      uses: mujo-code/puppeteer-headful@master
+      env:
+        CI: 'true'
+    - name: screenshots-ci-action
+      uses: flameddd/screenshots-ci-action@master
+      with:
+        url: https://yourwebsite.com
+        devices: iPhone 6
+        fullPage: true
+    - uses: actions/upload-artifact@v2
+      with:
+        path: screenshots
+        name: Download-screenshots

@@ -4,7 +4,8 @@ TabPage is a versatile productivity application, designed to merge a multitude o
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/e8e2c7c0-4d8c-48f7-b865-df70276dbf97/deploy-status)](https://app.netlify.com/sites/tabpage/deploys)
 
-![Screenshot Badge](https://img.shields.io/badge/screenshot-homepage-https://tabpage.netlify.app/screenshot.png-blue.svg)
+![Screenshot Badge](https://img.shields.io/badge/screenshot-homepage-https://tabpage.netlify.app/screenshot.png)
+![TabPage Screenshot](https://tabpage.netlify.app/screenshot.png)
 
 ## 📌 Table of Contents
 
