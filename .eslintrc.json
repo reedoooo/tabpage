@@ -8,7 +8,6 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:prettier/recommended",
     "prettier"
   ],
@@ -20,7 +19,7 @@
     "sourceType": "module",
     "ecmaVersion": 2018
   },
-  "plugins": ["react", "@typescript-eslint", "prettier", "prettier-eslint"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
     "no-console": "off",
     "indent": ["error", 2],
@@ -28,24 +27,22 @@
       "error",
       2,
       {
-          "CallExpression": {
-              "arguments": "first"
-          },
-          "FunctionDeclaration": {
-              "parameters": "first"
-          },
-          "FunctionExpression": {
-              "parameters": "first"
-          },
-          "offsetTernaryExpressions": true
+        "CallExpression": {
+          "arguments": "first"
+        },
+        "FunctionDeclaration": {
+          "parameters": "first"
+        },
+        "FunctionExpression": {
+          "parameters": "first"
+        },
+        "offsetTernaryExpressions": true
       }
-  ],
+    ],
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single", { "avoidEscape": true }],
     "semi": ["error", "always"],
     "no-unused-vars": [1, { "vars": "local", "args": "none" }],
-    "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off",
     "prettier/prettier": [
       "error",
       {
@@ -53,10 +50,5 @@
         "parser": "flow"
       }
     ]
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
   }
 }
