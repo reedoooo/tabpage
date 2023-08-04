@@ -25,17 +25,24 @@ function Tab({ allTabs, tab, onOpenModal, onClose }) {
     '(min-height: 80em)',
   );
 
-  const gridItemStyle = isLargerThanMd
-    ? {
-        width: '100%',
-        height: '100%',
-        flexBasis: '100%',
-      }
-    : {
-        width: '100%',
-        height: '50%',
-        flexBasis: 'auto',
-      };
+  const commonGridItemStyle = {
+    width: '100%',
+    height: '100%',
+  };
+
+  const largeScreenGridItemStyle = {
+    flexBasis: '100%',
+  };
+
+  const smallScreenGridItemStyle = {
+    height: '50%',
+    flexBasis: 'auto',
+  };
+
+  const gridItemStyle = {
+    ...commonGridItemStyle,
+    ...(isLargerThanMd ? largeScreenGridItemStyle : smallScreenGridItemStyle),
+  };
 
   return (
     <GridItem
