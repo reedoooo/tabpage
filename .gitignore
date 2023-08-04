@@ -237,12 +237,7 @@ $RECYCLE.BIN/
 
 # Other
 cleanup
-Dockerfile
-docker-compose.yml
-.prettierrc
-.eslintrc.js
 .eslintrc.json
-.eslintignore
 .env
 
 
