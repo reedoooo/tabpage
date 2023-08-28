@@ -1,11 +1,11 @@
 {
   "name": "tabpage",
+  "description": "My work tab page application",
   "author": {
     "name": "Reed Vogt",
     "email": "reedvogt1999@gmail.com",
-    "url": "https://myportfolio-showcase.netlify.app/"
+    "url": "https://reedvogt.com/"
   },
-  "description": "My work tab page application",
   "license": "MIT",
   "version": "0.1.0",
   "private": true,
@@ -49,7 +49,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "lint": "eslint src/**/*.{js,jsx} --no-ignore"
   },
   "eslintConfig": {
     "extends": [
@@ -70,14 +73,29 @@
     ]
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.22.9",
+    "@babel/eslint-parser": "^7.22.10",
+    "@babel/eslint-plugin": "7.22.5",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@babel/preset-env": "^7.22.9",
-    "@typescript-eslint/parser": "^5.62.0",
-    "eslint": "^8.46.0",
+    "@babel/plugin-syntax-jsx": "7.22.5",
+    "@babel/plugin-transform-runtime": "^7.22.10",
+    "@babel/preset-env": "^7.22.10",
+    "@babel/preset-react": "^7.22.5",
+    "@iconify/icons-logos": "^1.2.33",
+    "@iconify/react": "^4.1.1",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^14.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
+    "eslint": "^8.47.0",
+    "eslint-config-google": "0.14.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-prettier": "^3.4.1",
-    "prettier": "^2.8.8"
+    "eslint-plugin-react": "^7.33.2",
+    "mini-css-extract-plugin": "^2.7.6",
+    "prettier": "^2.8.8",
+    "prettier-eslint": "^15.0.1",
+    "sass": "^1.63.6",
+    "typescript": "^4.9.5"
   }
 }
