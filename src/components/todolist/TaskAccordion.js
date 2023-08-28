@@ -9,9 +9,9 @@ import {
   Badge,
   IconButton,
 } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons'; // Importing DeleteIcon
 import UpdateTask from './UpdateTask'; // Assuming you have this component in the same directory
 import { useToDoList } from '../../context/Todo/todoListContext';
-import { DeleteIcon } from '@chakra-ui/icons';
 
 function TaskAccordion({ onClose, onOpenModal, task, allTasks }) {
   const [show, setShow] = useState(false);
@@ -19,13 +19,17 @@ function TaskAccordion({ onClose, onOpenModal, task, allTasks }) {
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const buttonColor = useColorModeValue('gray.200', 'gray.700');
   const boxBgColor = useColorModeValue('gray.100', 'gray.600');
+
+  // Using the deleteTask function from the ToDoList context
   const { deleteTask } = useToDoList();
 
+  // Function to handle the task deletion
   const handleFormDelete = () => {
-    deleteTask(task.id);
+    deleteTask(task._id); // Using the task's _id to delete it
   };
 
   const handleToggle = () => setShow(!show);
+
   return (
     <VStack spacing={4} id="task-accordion-container">
       <Button

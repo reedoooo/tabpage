@@ -9,12 +9,15 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import EditTaskFormsModal from '../modals/EditTaskFormsModal';
+import { useToDoList } from '../../context/Todo/todoListContext';
 
 function UpdateTask({ id, task, onClose, isOpen, selectedTask, allTasks }) {
   const modalBgColor = useColorModeValue('white', 'gray.700');
   const headerColor = useColorModeValue('gray.700', 'gray.50');
+  const { updateTask, deleteTask } = useToDoList();
 
   const handleSubmit = async (updatedTask) => {
+    updateTask(id, updatedTask);
     const id = updatedTask.id;
     const task = updatedTask.task;
     const completed = updatedTask.status;
@@ -38,6 +41,7 @@ function UpdateTask({ id, task, onClose, isOpen, selectedTask, allTasks }) {
   };
 
   const handleDelete = async (deletedTask) => {
+    deleteTask(deletedTask.id);
     const id = deletedTask.id;
     try {
       const response = await fetch(

@@ -9,11 +9,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import TaskAccordion from '../../components/todolist/RetrieveTask';
-import UpdateTask from '../../components/todolist/UpdateTask';
+import TaskAccordion from '../../components/todolist/RetrieveTask'; // make sure this path is correct
+import UpdateTask from '../../components/todolist/UpdateTask'; // make sure this path is correct
 
-function ToDoList({ task }) {
-  const [selectedTask, setSelectedTask] = useState(task);
+function ToDoListContainer() {
+  const [selectedTask, setSelectedTask] = useState(null);
   const [savedTasks, setSavedTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [incompleteTasks, setIncompleteTasks] = useState([]);
@@ -29,39 +29,21 @@ function ToDoList({ task }) {
         const response = await axios.get(
           `${process.env.REACT_APP_SERVER}/api/todo`,
         );
-        let savedTasksData = [];
-        response.data.forEach((taskData) => {
-          if (Array.isArray(taskData.task)) {
-            const tasks = taskData.task.map((task) => {
-              return {
-                name: task.name,
-                description: task.description,
-                status: task.status,
-                dueDate: task.dueDate,
-                id: taskData._id,
-                statusText: task.status ? 'completed' : 'incomplete',
-              };
-            });
-            savedTasksData = [...savedTasksData, ...tasks];
-          }
-        });
+        const savedTasksData = response.data.map((taskData) => ({
+          ...taskData,
+          statusText: taskData.status ? 'completed' : 'incomplete',
+        }));
+
         setSavedTasks(savedTasksData);
-
-        const completed = savedTasksData.filter((task) => task.status === true);
-        const incomplete = savedTasksData.filter(
-          (task) => task.status !== true,
-        );
-
-        setCompletedTasks(completed);
-        setIncompleteTasks(incomplete);
+        setCompletedTasks(savedTasksData.filter((task) => task.status));
+        setIncompleteTasks(savedTasksData.filter((task) => !task.status));
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchTodoLists();
-    setSelectedTask(task);
-  }, [task]);
+  }, []);
 
   const handleOpenModal = (task) => {
     setSelectedTask(task);
@@ -101,13 +83,7 @@ function ToDoList({ task }) {
         </Flex>
       </Box>
 
-      <Grid
-        templateColumns="repeat(1, 1fr)"
-        gap={4}
-        p={4}
-        // mt={-3}
-        bg="rgba(255, 255, 255, 0.5)"
-      >
+      <Grid templateColumns="repeat(1, 1fr)" gap={4} p={4}>
         {savedTasks.map((task, i) => (
           <TaskAccordion
             key={i}
@@ -115,15 +91,14 @@ function ToDoList({ task }) {
             allTasks={savedTasks}
             onClose={handleCloseModal}
             onOpenModal={() => handleOpenModal(task)}
-            statusText={task.statusText}
           />
         ))}
       </Grid>
 
       {selectedTask && (
         <UpdateTask
-          size="xs"
           task={selectedTask}
+          allTasks={savedTasks}
           isOpen={!!selectedTask}
           onClose={handleCloseModal}
         />
@@ -132,4 +107,4 @@ function ToDoList({ task }) {
   );
 }
 
-export default ToDoList;
+export default ToDoListContainer;

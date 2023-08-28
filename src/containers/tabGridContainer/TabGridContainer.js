@@ -1,176 +1,136 @@
-import React, { useState } from 'react';
-import {
-  AspectRatio,
-  Box,
-  Button,
-  Collapse,
-  Grid,
-  GridItem,
-  useBreakpointValue,
-  useMediaQuery,
-} from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import { Box, Grid, GridItem } from '@chakra-ui/react';
 import Tab from '../../components/tab/Tab';
-import ToDoListContainer from '../todolistContainer/ToDoListContainer';
 import NotesContainer from '../notesContainer/NotesContainer';
-import ChatGpt from '../openAiContainer/OpenAiContainer'; // Import the ChatGpt component
-import Tab4ToDoApp from './Tab4ToDoApp';
-import EditTabModalButton from '../../components/buttons/EditTabModalButton';
-import HabitTracker from '../habitTracker/HabitTracker';
+import ToDolistContainer from '../todolistContainer/ToDoListContainer';
 
 function TabGridContainer({ savedTabsData }) {
-  const [selectedTab, setSelectedTab] = useState(null);
-  const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [noteDataLoaded, setNoteDataLoaded] = useState(false);
+  const [rowStyles, setRowStyles] = useState({});
+  const [selectedGridItem, setSelectedGridItem] = useState(null);
 
-  // Function to handle opening the modal for a specific tab
-  const handleOpenModal = (tab) => {
-    setSelectedTab(tab);
-    setEditModalOpen(true);
+  const toggleSelectedGridItem = (item, event) => {
+    const height = event.currentTarget.offsetHeight;
+    const clickPosition =
+      event.clientY - event.currentTarget.getBoundingClientRect().top;
+    const isSelected = clickPosition <= height * 0.2 ? null : item;
+
+    setSelectedGridItem(selectedGridItem === item ? null : isSelected);
   };
 
-  // Function to handle closing the modal
-  const handleCloseModal = () => {
-    setSelectedTab(null);
-    setEditModalOpen(false);
-  };
+  useEffect(() => {
+    if (selectedGridItem) {
+      const itemsPerRow = 4;
+      const rowIndex = Math.floor(
+        [
+          'todo',
+          'notes',
+          ...savedTabsData.map((_, index) => `tab${index + 1}`),
+        ].indexOf(selectedGridItem) / itemsPerRow,
+      );
+      const expandedSize = '40vw';
+      const newStyle = {
+        ...rowStyles,
+        [rowIndex]: `${expandedSize} 10vw 10vw 10vw`,
+      };
+      setRowStyles(newStyle);
+    } else {
+      setRowStyles({});
+    }
+  }, [selectedGridItem, savedTabsData.length]);
+
+  const expandedStyle = css`
+    width: 40vw;
+    height: 40vw;
+    transition: all 0.5s ease-in-out;
+  `;
+
+  const nonExpandedStyle = (bgColor) => css`
+    width: 20vw;
+    height: 20vw;
+    transition: all 0.8s ease-in-out;
+    background-color: ${bgColor};
+  `;
 
   return (
     <Box
       width="100vw"
       height="100vh"
+      display="flex"
       padding={4}
       marginTop={10}
-      overflow="auto" // Enable scrolling
+      // overflow="auto"
     >
-      <Grid
-        templateColumns={{
-          base: 'repeat(3, 1fr)',
-          md: 'repeat(9, 1fr)',
-        }}
-        templateRows={{
-          base: 'repeat(12, 1fr)',
-          md: 'repeat(9, 1fr)',
-        }}
-        // borderRadius="2%"
-        gap={4}
-        padding={1}
-        border="5px solid black"
-        minHeight="100%"
-        minWidth="100%"
-        backgroundColor="rgba(255, 255, 255, 0.5)"
-        gridTemplateAreas={{
-          base: `
-      "todo todo todo"
-      "notes notes notes"
-      "chat chat chat"
-      "tab4 tab4 tab4"
-    `,
-          md: `
-      "todo todo todo notes notes notes notes notes notes"
-      "tab1 tab1 tab2 tab2 tab3 tab3 tab4 tab4 tab4"
-    `,
-        }}
+      <Box
+        maxWidth="120vw"
+        maxHeight="100vh"
+        overflow="hidden"
+        position="relative" // To ensure z-index is respected
       >
-        <GridItem
-          gridArea="todo"
-          colSpan={{ base: 'auto', md: 3 }}
-          rowSpan={{ base: 'auto', md: 4 }}
-          style={{
-            flexGrow: 1,
-            flexShrink: 1,
-            flexBasis: 'auto',
-            margin: '0 8px',
-          }}
+        {' '}
+        <Grid
+          gap={4}
+          // padding={1}
+          padding={4}
+          // margin="auto"
+          border="5px solid black"
+          width="100%"
+          // height="100%"
+          backgroundColor="rgba(255, 255, 255, 0.5)"
+          templateColumns="repeat(4, 1fr)"
+          templateRows="repeat(3, 1fr)"
+          justifyContent="center"
         >
-          <ToDoListContainer />
-        </GridItem>
-
-        <GridItem
-          gridArea="notes"
-          colSpan={{ base: 3, md: 3 }}
-          rowSpan={{ base: 4, md: 9 }}
-          style={{
-            flexGrow: 1,
-            flexShrink: 1,
-            flexBasis: 'auto',
-            // marginTop: "8px",
-          }}
-        >
-          <NotesContainer
-            noteDataLoaded={noteDataLoaded}
-            setNoteDataLoaded={setNoteDataLoaded}
-          />
-        </GridItem>
-
-        <GridItem
-          gridArea="chat"
-          colSpan={{ base: 3, md: 3 }}
-          rowSpan={{ base: 'auto', md: 'auto' }}
-          style={{
-            flexGrow: 1,
-            flexShrink: 1,
-            flexBasis: 'auto',
-          }}
-        >
-          <ChatGpt /> {/* Add the ChatGpt component */}
-        </GridItem>
-        <GridItem
-          gridArea="chat"
-          colSpan={{ base: 3, md: 3 }}
-          rowSpan={{ base: 'auto', md: 'auto' }}
-          style={{
-            flexGrow: 1,
-            flexShrink: 1,
-            flexBasis: 'auto',
-          }}
-        >
-          <HabitTracker /> {/* Add the ChatGpt component */}
-        </GridItem>
-
-        {savedTabsData.map((tab, index) => (
           <GridItem
-            key={tab.id}
-            gridArea={`tab${index + 1}`}
-            colSpan={{ base: 1, md: 'auto' }}
-            rowSpan={{ base: 1, md: 1 }}
-            style={{
-              flexGrow: 1,
-              flexShrink: 1,
-              flexBasis: 'auto',
-            }}
+            onClick={(event) => toggleSelectedGridItem('todo', event)}
+            margin="auto"
+            // marginLeft={'auto'}
+            // marginRight={'auto'}
+            css={
+              selectedGridItem === 'todo'
+                ? expandedStyle
+                : nonExpandedStyle('lightgray')
+            }
           >
-            <Tab
-              allTabs={savedTabsData}
-              tab={tab}
-              onClose={handleCloseModal}
-              onOpenModal={() => handleOpenModal(tab)}
-            />
-            {selectedTab === tab && (
-              <EditTabModalButton
-                isOpen={isEditModalOpen}
-                onClose={handleCloseModal}
-                selectedTab={selectedTab}
-              />
-            )}
+            {selectedGridItem === 'todo' && <ToDolistContainer />}
           </GridItem>
-        ))}
-
-        <GridItem
-          gridArea="tab4"
-          colSpan={{ base: 'auto', md: 1 }}
-          rowSpan={{ base: 'auto', md: 1 }}
-          style={{
-            flexGrow: 1,
-            flexShrink: 1,
-            flexBasis: 'auto',
-          }}
-        >
-          <Tab4ToDoApp allTabs={savedTabsData} />
-        </GridItem>
-        {/* <GridItem gridArea="tab7" colSpan={{ base: 1, md: "auto" }}>
-          <Rasengan />
-        </GridItem> */}
-      </Grid>
+          <GridItem
+            onClick={(event) => toggleSelectedGridItem('notes', event)}
+            margin="auto"
+            // marginLeft={'auto'}
+            // marginRight={'auto'}
+            css={
+              selectedGridItem === 'notes'
+                ? expandedStyle
+                : nonExpandedStyle('lightblue')
+            }
+          >
+            {selectedGridItem === 'notes' && <NotesContainer />}
+          </GridItem>
+          {savedTabsData.map((tab, index) => (
+            <GridItem
+              key={tab.id}
+              margin="auto"
+              // marginLeft={'auto'}
+              // marginRight={'auto'}
+              onClick={(event) =>
+                toggleSelectedGridItem(`tab${index + 1}`, event)
+              }
+              css={
+                selectedGridItem === `tab${index + 1}`
+                  ? expandedStyle
+                  : nonExpandedStyle(tab.color || 'lightgreen')
+              }
+            >
+              <Tab
+                tab={tab}
+                expanded={selectedGridItem === `tab${index + 1}`}
+              />
+            </GridItem>
+          ))}
+        </Grid>
+      </Box>
     </Box>
   );
 }

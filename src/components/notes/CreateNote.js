@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Input,
-  Textarea,
-  IconButton,
-  useColorModeValue,
-  Flex,
-} from '@chakra-ui/react';
+import { Input, Textarea, IconButton, Flex } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
+import { useNotes } from '../../context/Notes/notesContext';
 
-function CreateNote({
-  note,
-  setNote,
-  setAllNotes,
-  setEditing,
-  handleSaveNote,
-  newNote,
-}) {
+function CreateNote() {
+  const { note, setNote, setAllNotes, setEditing } = useNotes();
   const [title, setTitle] = useState('');
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState(''); // You forgot to declare this state
 
   useEffect(() => {
     if (note) {
@@ -47,11 +35,8 @@ function CreateNote({
       const data = await response.json();
       setNote(null);
       setEditing(false);
-      handleSaveNote(data);
 
-      if (newNote) {
-        setAllNotes((prevNotes) => [...prevNotes, data]);
-      }
+      setAllNotes((prevNotes) => [...prevNotes, data]);
     } catch (error) {
       console.error('Error:', error);
     }

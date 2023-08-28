@@ -1,18 +1,22 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useNotes } from '../../context/Notes/notesContext';
 import EditNoteButton from '../modals/EditNoteButton';
 
 function UpdateNote({
-  onClose = () => {}, // Provide a default empty function if onClose is not passed
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onClose = () => {},
   isOpen,
-  note,
   selectedNote = {},
   id,
-  allNotes,
-  setNote,
   handleUpdateNote,
   handleDeleteNote,
-  setEditing,
 }) {
+  const { note, setNote, setEditing, allNotes } = useNotes();
+
+  useEffect(() => {
+    setNote(selectedNote);
+  }, [selectedNote, setNote]);
+
   const handleSubmit = async (note) => {
     console.log('note', note);
     if (!note.id) {

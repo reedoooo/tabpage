@@ -7,6 +7,7 @@ import {
   Slider,
   VStack,
 } from '@chakra-ui/react';
+import { useToDoList } from '../../context/Todo/todoListContext';
 // import DeleteTodoItemButton from './DeleteTask';
 
 function CreateTask() {
@@ -15,31 +16,43 @@ function CreateTask() {
   const [dueDate, setDueDate] = useState('');
   const [status, setStatus] = useState('');
   const [name, setname] = useState('');
+  const { addTask } = useToDoList();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER}/api/todo`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          description,
-          dueDate,
-          status,
-          difficulty,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    addTask({
+      name,
+      description,
+      dueDate,
+      status,
+      difficulty,
+    });
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await fetch(`${process.env.REACT_APP_SERVER}/api/todo`, {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         name,
+  //         description,
+  //         dueDate,
+  //         status,
+  //         difficulty,
+  //       }),
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
+
+  //     const data = await response.json();
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // };
 
   return (
     <VStack as="form" onSubmit={handleSubmit} spacing={4}>

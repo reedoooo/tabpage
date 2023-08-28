@@ -5,15 +5,21 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import AuthProvider from './context/Auth/authContext';
 import { TabsProvider } from './context/Tabs/tabsContext';
+import { NotesProvider } from './context/Notes/notesContext';
+import { ToDoListProvider } from './context/Todo/todoListContext';
 
 const root = document.getElementById('root');
 createRoot(root).render(
   <BrowserRouter basename="/">
     <AuthProvider>
       <TabsProvider>
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
+        <NotesProvider>
+          <ToDoListProvider>
+            <React.StrictMode>
+              <App />
+            </React.StrictMode>
+          </ToDoListProvider>
+        </NotesProvider>
       </TabsProvider>
     </AuthProvider>
   </BrowserRouter>,

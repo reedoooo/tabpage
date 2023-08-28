@@ -74,27 +74,31 @@ function Home() {
 
   return (
     <ChakraProvider theme={theme}>
-      <Header
-        addTabModalDisclosure={addTabModalDisclosure}
-        settingsModalDisclosure={settingsModalDisclosure}
-      />
+      <div id="heading-section">
+        <Header
+          addTabModalDisclosure={addTabModalDisclosure}
+          settingsModalDisclosure={settingsModalDisclosure}
+        />
 
-      <AddTabFormsModal
-        isOpen={addTabModalDisclosure.isOpen}
-        onClose={addTabModalDisclosure.onClose}
-        onSubmit={handleAddLink}
-      />
+        <AddTabFormsModal
+          isOpen={addTabModalDisclosure.isOpen}
+          onClose={addTabModalDisclosure.onClose}
+          onSubmit={handleAddLink}
+        />
 
-      <OpenSettingsModal
-        isOpen={settingsModalDisclosure.isOpen}
-        onClose={settingsModalDisclosure.onClose}
-        onSubmit={handleChangeSettings}
-      />
+        <OpenSettingsModal
+          isOpen={settingsModalDisclosure.isOpen}
+          onClose={settingsModalDisclosure.onClose}
+          onSubmit={handleChangeSettings}
+        />
+      </div>
 
-      <TabGridContainer
-        savedTabsData={savedTabsData}
-        savedSettingsData={savedSettingsData}
-      />
+      <div id="tab-container-section">
+        <TabGridContainer
+          savedTabsData={savedTabsData}
+          savedSettingsData={savedSettingsData}
+        />
+      </div>
     </ChakraProvider>
   );
 }

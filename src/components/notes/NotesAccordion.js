@@ -2,30 +2,20 @@ import React from 'react';
 import {
   Box,
   Button,
-  Container,
   Grid,
   GridItem,
   Heading,
   useColorModeValue,
   useMediaQuery,
-  Progress,
-  Flex,
-  Text,
   useBreakpointValue,
 } from '@chakra-ui/react';
 import UpdateNote from './UpdateNote';
 import CreateNote from './CreateNote';
+import { useNotes } from '../../context/Notes/notesContext';
 
-function NotesAccordion({
-  note,
-  setNote,
-  editing,
-  allNotes,
-  setAllNotes,
-  setEditing,
-  handleSaveNote,
-  handleUpdateNote,
-}) {
+function NotesAccordion({ handleSaveNote, handleUpdateNote }) {
+  const { allNotes, setAllNotes, note, editing, setNote, setEditing } =
+    useNotes();
   const bgColor = useColorModeValue('blue.400', 'blue.700');
 
   const handleNewNote = () => {
@@ -47,7 +37,6 @@ function NotesAccordion({
   const headingSize = useBreakpointValue({ base: 'sm', md: 'lg' });
 
   return (
-    // <Container>
     <>
       <Box bg={bgColor} color="white" py={2} px={6} borderRadius="md">
         <Heading size={headingSize} lineHeight="shorter">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, IconButton, Input, Textarea, Flex } from '@chakra-ui/react';
+import { IconButton, Input, Textarea, Flex } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import DeleteNote from '../notes/DeleteNote';
 

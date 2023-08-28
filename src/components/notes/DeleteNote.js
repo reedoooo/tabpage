@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Flex, IconButton } from '@chakra-ui/react';
+import { IconButton } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 
 function DeleteNote({ noteId, handleNoteDeletion }) {
