@@ -94,7 +94,6 @@ typings/
 
 # Optional npm cache directory
 .npm
-package-lock.json
 
 # Optional eslint cache
 .eslintcache
@@ -237,13 +236,17 @@ $RECYCLE.BIN/
 
 # Other
 cleanup
-.eslintrc.json
-.env
+Dockerfile
+docker-compose.yml
 
 
 # End of https://www.gitignore.io/api/node,macos,linux,windows,webstorm,visualstudiocodenode_modules
 .cache
 node_modules
 node_modules/
+package-lock.json
 portfolio-prep.git/
 portfolio-prep.git.bfg-report/
+.vscode/
+dist/
+
