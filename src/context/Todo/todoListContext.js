@@ -16,10 +16,10 @@ export function ToDoListProvider({ children }) {
   useEffect(() => {
     const fetchTodoLists = async () => {
       try {
+        // Assuming your server API supports a 'limit' parameter to limit the number of tasks
         const response = await axios.get(
-          `${process.env.REACT_APP_SERVER}/api/todo`,
+          `${process.env.REACT_APP_SERVER}/api/todo?limit=7`,
         );
-
         let savedTasksData = response.data
           .map((taskData) => {
             // Assuming each taskData contains an array called 'task'

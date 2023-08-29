@@ -1,137 +1,137 @@
 import React, { useState, useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Box, Grid, GridItem } from '@chakra-ui/react';
+import {
+  Box,
+  Grid,
+  GridItem,
+  VStack,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import Tab from '../../components/tab/Tab';
 import NotesContainer from '../notesContainer/NotesContainer';
 import ToDolistContainer from '../todolistContainer/ToDoListContainer';
 
+const nonExpandedStyle = (bgColor) => css`
+  transition: all 0.8s ease-in-out;
+  background-color: ${bgColor};
+  aspect-ratio: 1 / 1;
+  max-width: 400px;
+  max-height: 400px;
+  min-width: 100px;
+  min-height: 100px;
+`;
+
+const expandedStyle = css`
+  transition: all 0.5s ease-in-out;
+  aspect-ratio: 1 / 1;
+  max-width: 800px;
+  max-height: 800px;
+  min-width: 200px;
+  min-height: 200px;
+`;
+
 function TabGridContainer({ savedTabsData }) {
-  const [rowStyles, setRowStyles] = useState({});
   const [selectedGridItem, setSelectedGridItem] = useState(null);
+  const bgColor1 = '#276749';
+  const bgColor2 = '#4299e1';
+  const bgColor3 = 'white';
+
+  const templateColumns = useBreakpointValue({
+    base: 'repeat(2, 2fr)',
+    sm: 'repeat(2, 1fr)',
+    md: 'repeat(4, 1fr)',
+  });
+
+  const templateRows = useBreakpointValue({
+    base: 'repeat(2, 1fr)',
+    sm: 'repeat(2, 1fr)',
+    md: 'repeat(4, 1fr)',
+  });
 
   const toggleSelectedGridItem = (item, event) => {
-    const height = event.currentTarget.offsetHeight;
-    const clickPosition =
-      event.clientY - event.currentTarget.getBoundingClientRect().top;
-    const isSelected = clickPosition <= height * 0.2 ? null : item;
-
-    setSelectedGridItem(selectedGridItem === item ? null : isSelected);
+    setSelectedGridItem(selectedGridItem === item ? null : item);
   };
 
-  useEffect(() => {
-    if (selectedGridItem) {
-      const itemsPerRow = 4;
-      const rowIndex = Math.floor(
-        [
-          'todo',
-          'notes',
-          ...savedTabsData.map((_, index) => `tab${index + 1}`),
-        ].indexOf(selectedGridItem) / itemsPerRow,
-      );
-      const expandedSize = '40vw';
-      const newStyle = {
-        ...rowStyles,
-        [rowIndex]: `${expandedSize} 10vw 10vw 10vw`,
-      };
-      setRowStyles(newStyle);
-    } else {
-      setRowStyles({});
-    }
-  }, [selectedGridItem, savedTabsData.length]);
-
-  const expandedStyle = css`
-    width: 40vw;
-    height: 40vw;
-    transition: all 0.5s ease-in-out;
-  `;
-
-  const nonExpandedStyle = (bgColor) => css`
-    width: 20vw;
-    height: 20vw;
-    transition: all 0.8s ease-in-out;
-    background-color: ${bgColor};
-  `;
-
   return (
-    <Box
-      width="100vw"
-      height="100vh"
-      display="flex"
-      padding={4}
-      marginTop={10}
-      // overflow="auto"
-    >
+    <VStack spacing={4} align="stretch" w="100%">
       <Box
-        maxWidth="120vw"
-        maxHeight="100vh"
-        overflow="hidden"
-        position="relative" // To ensure z-index is respected
+        width="100vw"
+        height="100vh"
+        display="flex"
+        padding={4}
+        marginTop={10}
       >
-        {' '}
-        <Grid
-          gap={4}
-          // padding={1}
-          padding={4}
-          // margin="auto"
-          border="5px solid black"
-          width="100%"
-          // height="100%"
-          backgroundColor="rgba(255, 255, 255, 0.5)"
-          templateColumns="repeat(4, 1fr)"
-          templateRows="repeat(3, 1fr)"
-          justifyContent="center"
+        <Box
+          maxWidth="100vw"
+          maxHeight="100vh"
+          minWidth="100%"
+          minHeight="100%"
+          position="relative"
         >
-          <GridItem
-            onClick={(event) => toggleSelectedGridItem('todo', event)}
-            margin="auto"
-            // marginLeft={'auto'}
-            // marginRight={'auto'}
-            css={
-              selectedGridItem === 'todo'
-                ? expandedStyle
-                : nonExpandedStyle('lightgray')
-            }
+          <Grid
+            gap={4}
+            padding={4}
+            border="5px solid black"
+            width="100%"
+            // height="90%"
+            templateRows={templateRows}
+            templateColumns={templateColumns}
           >
-            {selectedGridItem === 'todo' && <ToDolistContainer />}
-          </GridItem>
-          <GridItem
-            onClick={(event) => toggleSelectedGridItem('notes', event)}
-            margin="auto"
-            // marginLeft={'auto'}
-            // marginRight={'auto'}
-            css={
-              selectedGridItem === 'notes'
-                ? expandedStyle
-                : nonExpandedStyle('lightblue')
-            }
-          >
-            {selectedGridItem === 'notes' && <NotesContainer />}
-          </GridItem>
-          {savedTabsData.map((tab, index) => (
             <GridItem
-              key={tab.id}
-              margin="auto"
-              // marginLeft={'auto'}
-              // marginRight={'auto'}
-              onClick={(event) =>
-                toggleSelectedGridItem(`tab${index + 1}`, event)
-              }
+              gridRow={selectedGridItem === 'todo' ? 'span 2' : 'auto'}
+              gridColumn={selectedGridItem === 'todo' ? 'span 2' : 'auto'}
+              onClick={(event) => toggleSelectedGridItem('todo', event)}
               css={
-                selectedGridItem === `tab${index + 1}`
+                selectedGridItem === 'todo'
                   ? expandedStyle
-                  : nonExpandedStyle(tab.color || 'lightgreen')
+                  : nonExpandedStyle(bgColor1)
               }
             >
-              <Tab
-                tab={tab}
-                expanded={selectedGridItem === `tab${index + 1}`}
-              />
+              {selectedGridItem === 'todo' && <ToDolistContainer />}
             </GridItem>
-          ))}
-        </Grid>
+
+            <GridItem
+              gridRow={selectedGridItem === 'notes' ? 'span 2' : 'auto'}
+              gridColumn={selectedGridItem === 'notes' ? 'span 2' : 'auto'}
+              onClick={(event) => toggleSelectedGridItem('notes', event)}
+              css={
+                selectedGridItem === 'notes'
+                  ? expandedStyle
+                  : nonExpandedStyle(bgColor2)
+              }
+            >
+              {selectedGridItem === 'notes' && <NotesContainer />}
+            </GridItem>
+
+            {savedTabsData.map((tab, index) => (
+              <GridItem
+                gridRow={
+                  selectedGridItem === `tab${index + 1}` ? 'span 2' : 'auto'
+                }
+                gridColumn={
+                  selectedGridItem === `tab${index + 1}` ? 'span 2' : 'auto'
+                }
+                key={tab.id}
+                onClick={(event) =>
+                  toggleSelectedGridItem(`tab${index + 1}`, event)
+                }
+                css={
+                  selectedGridItem === `tab${index + 1}`
+                    ? expandedStyle
+                    : nonExpandedStyle(bgColor3)
+                }
+              >
+                <Tab
+                  tab={tab}
+                  expanded={selectedGridItem === `tab${index + 1}`}
+                />
+              </GridItem>
+            ))}
+          </Grid>
+        </Box>
       </Box>
-    </Box>
+    </VStack>
   );
 }
 
