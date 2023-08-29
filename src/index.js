@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client';
 // import "./assets/styles/App.scss";
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import AuthProvider from './context/Auth/authContext';
 import { TabsProvider } from './context/Tabs/tabsContext';
 import { NotesProvider } from './context/Notes/notesContext';
 import { ToDoListProvider } from './context/Todo/todoListContext';
+import AuthProvider from './context/Auth/authContext';
 
 const root = document.getElementById('root');
 createRoot(root).render(

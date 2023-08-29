@@ -1,71 +1,85 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Grid,
   Heading,
   Progress,
   Flex,
+  Button,
   useBreakpointValue,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
-import axios from 'axios';
-import TaskAccordion from '../../components/todolist/RetrieveTask'; // make sure this path is correct
-import UpdateTask from '../../components/todolist/UpdateTask'; // make sure this path is correct
+import TaskAccordion from '../../components/todolist/TaskAccordion';
+import UpdateTask from '../../components/todolist/UpdateTask';
+import { useToDoList } from '../../context/Todo/todoListContext';
 
-function ToDoListContainer() {
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [savedTasks, setSavedTasks] = useState([]);
-  const [completedTasks, setCompletedTasks] = useState([]);
-  const [incompleteTasks, setIncompleteTasks] = useState([]);
-  const bgColor = useBreakpointValue({ base: 'green.400', md: 'green.700' });
+function ToDoListContainer({ selectedGridItem, toggleSelectedGridItem }) {
+  const {
+    savedTasks,
+    selectedTask,
+    handleOpenModal,
+    handleCloseModal,
+    completedTasks,
+  } = useToDoList();
+
+  const headingSize = useBreakpointValue({ base: 'sm', md: 'lg' });
+  const bgColor = useColorModeValue('green.400', 'green.700');
+
+  const headerBoxStyles = {
+    bg: bgColor,
+    color: 'white',
+    py: 2,
+    px: 6,
+    borderRadius: 'md',
+  };
+
   const progressColor = useBreakpointValue({
     base: 'teal.400',
     md: 'teal.600',
   });
-
-  useEffect(() => {
-    const fetchTodoLists = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_SERVER}/api/todo`,
-        );
-        const savedTasksData = response.data.map((taskData) => ({
-          ...taskData,
-          statusText: taskData.status ? 'completed' : 'incomplete',
-        }));
-
-        setSavedTasks(savedTasksData);
-        setCompletedTasks(savedTasksData.filter((task) => task.status));
-        setIncompleteTasks(savedTasksData.filter((task) => !task.status));
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchTodoLists();
-  }, []);
-
-  const handleOpenModal = (task) => {
-    setSelectedTask(task);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedTask(null);
-  };
-
   const progress =
     savedTasks.length > 0
       ? (completedTasks.length / savedTasks.length) * 100
       : 0;
 
-  const headingSize = useBreakpointValue({ base: 'sm', md: 'lg' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const tasksPerPage = 7;
+
+  const indexOfLastTask = currentPage * tasksPerPage;
+  const indexOfFirstTask = indexOfLastTask - tasksPerPage;
+  const currentTasks = savedTasks.slice(indexOfFirstTask, indexOfLastTask);
+
+  const nextPage = (event) => {
+    event.stopPropagation();
+    setCurrentPage(currentPage + 1);
+  };
+
+  const prevPage = (event) => {
+    event.stopPropagation();
+    setCurrentPage(currentPage - 1);
+  };
+
+  const totalPages = Math.ceil(savedTasks.length / tasksPerPage);
 
   return (
     <>
-      <Box bg={bgColor} color="white" py={2} px={6} borderRadius="md">
-        <Heading size={headingSize} lineHeight="shorter">
-          My To-Do List
-        </Heading>
+      <Box {...headerBoxStyles}>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Heading size={headingSize} lineHeight="shorter">
+            My To-Do List
+          </Heading>
+          <Button
+            background="transparent"
+            border="none"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleSelectedGridItem(null);
+            }}
+          >
+            ×
+          </Button>
+        </Flex>
         <Flex justify="space-between" alignItems="center" mt={2}>
           <Text color="white">Progress</Text>
           <Flex align="center">
@@ -84,9 +98,9 @@ function ToDoListContainer() {
       </Box>
 
       <Grid templateColumns="repeat(1, 1fr)" gap={4} p={4}>
-        {savedTasks.map((task, i) => (
+        {currentTasks.map((task) => (
           <TaskAccordion
-            key={i}
+            key={task.id}
             task={task}
             allTasks={savedTasks}
             onClose={handleCloseModal}
@@ -94,6 +108,16 @@ function ToDoListContainer() {
           />
         ))}
       </Grid>
+
+      <Button disabled={currentPage <= 1} onClick={(event) => prevPage(event)}>
+        Previous
+      </Button>
+      <Button
+        disabled={currentPage >= totalPages}
+        onClick={(event) => nextPage(event)}
+      >
+        Next
+      </Button>
 
       {selectedTask && (
         <UpdateTask

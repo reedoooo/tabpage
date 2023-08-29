@@ -23,6 +23,7 @@ const EditNoteButton = ({
 
   const handleButtonSubmit = (e) => {
     e.preventDefault();
+    e.stopPropagation(); // Stop the event from propagating
     console.log('onSubmit', title, notes, 'initialValues.id', initialValues.id);
     console.log('noteid', noteId);
     onSubmit({
@@ -33,16 +34,25 @@ const EditNoteButton = ({
   };
 
   const handleTitleChange = (e) => {
+    e.stopPropagation(); // Stop the event from propagating
     setTitle(e.target.value);
   };
 
   const handleNotesChange = (e) => {
+    e.stopPropagation(); // Stop the event from propagating
     setNotes(e.target.value);
   };
 
   return (
     <Flex flexGrow={1} left="0" justifyContent={'right'}>
-      <form width="100%" height="100%">
+      <form
+        width="100%"
+        height="100%"
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
         <Input
           placeholder="Title"
           name="title"

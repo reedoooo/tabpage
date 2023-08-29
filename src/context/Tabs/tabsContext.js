@@ -85,17 +85,18 @@ export const TabsProvider = ({ children }) => {
       console.error(error);
     }
   };
+  const value = {
+    savedTabsData,
+    savedSettingsData,
+    handleAddTabToServer,
+    saveSettingsChangesToServer,
+  };
 
-  return (
-    <TabsContext.Provider
-      value={{
-        savedTabsData,
-        savedSettingsData,
-        handleAddTabToServer,
-        saveSettingsChangesToServer,
-      }}
-    >
-      {children}
-    </TabsContext.Provider>
-  );
+  useEffect(() => {
+    console.log('TABS CONTEXT:', {
+      value,
+    });
+  }, [value]);
+
+  return <TabsContext.Provider value={value}>{children}</TabsContext.Provider>;
 };

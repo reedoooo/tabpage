@@ -7,13 +7,19 @@ import {
   Heading,
   useColorModeValue,
   useMediaQuery,
-  useBreakpointValue,
+  Text,
 } from '@chakra-ui/react';
 import UpdateNote from './UpdateNote';
 import CreateNote from './CreateNote';
 import { useNotes } from '../../context/Notes/notesContext';
 
-function NotesAccordion({ handleSaveNote, handleUpdateNote }) {
+function NotesAccordion({
+  handleSaveNote,
+  handleUpdateNote,
+  selectedGridItem,
+  toggleSelectedGridItem,
+  isVisible,
+}) {
   const { allNotes, setAllNotes, note, editing, setNote, setEditing } =
     useNotes();
   const bgColor = useColorModeValue('blue.400', 'blue.700');
@@ -33,56 +39,49 @@ function NotesAccordion({ handleSaveNote, handleUpdateNote }) {
   };
 
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
-
-  const headingSize = useBreakpointValue({ base: 'sm', md: 'lg' });
+  const isSelected = (item) =>
+    selectedGridItem && selectedGridItem.item === item;
 
   return (
-    <>
-      <Box bg={bgColor} color="white" py={2} px={6} borderRadius="md">
-        <Heading size={headingSize} lineHeight="shorter">
-          My Notes
-        </Heading>
-        {/* <Flex justify="space-between" alignItems="center" mt={10}></Flex> */}
-      </Box>
-      <Grid
-        templateColumns={isLargerThanMd ? 'repeat(7, 1fr)' : '1fr'}
-        templateRows="repeat(1, 1fr)"
-        gap={4}
-        p={4}
-        // mt={-3}
-        bg="rgba(255, 255, 255, 0.5)"
-        boxSizing="border-box"
-        borderRadius="md"
-        id="notes-accordion"
-        border="1px solid"
-        borderColor={bgColor}
-      >
-        <GridItem colSpan={2} rowSpan={1}>
-          <div className="container">
+    <Box
+      p={4}
+      borderRadius="md"
+      border="1px solid"
+      borderColor={bgColor}
+      width="100%"
+      height="100%"
+    >
+      <Grid templateColumns={isLargerThanMd ? 'repeat(7, 1fr)' : '1fr'} gap={4}>
+        <GridItem colSpan={2}>
+          <Button
+            colorScheme="blue"
+            variant="outline"
+            width="100%"
+            _hover={{ bg: bgColor }}
+            onClick={handleNewNote}
+          >
+            Add Note
+          </Button>
+
+          {allNotes.map((noteItem) => (
             <Button
+              key={noteItem.id || noteItem._id}
               colorScheme="blue"
               variant="outline"
               width="100%"
+              my={2} // margin-top and margin-bottom
               _hover={{ bg: bgColor }}
-              onClick={handleNewNote}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleExistingNote(noteItem);
+              }}
             >
-              Add Note
+              {noteItem.title}
             </Button>
-            {allNotes.map((noteItem) => (
-              <Button
-                key={noteItem.id || noteItem._id}
-                colorScheme="blue"
-                variant="outline"
-                width="100%"
-                _hover={{ bg: bgColor }}
-                onClick={() => handleExistingNote(noteItem)}
-              >
-                {noteItem.title}
-              </Button>
-            ))}
-          </div>
+          ))}
         </GridItem>
-        <GridItem colSpan={isLargerThanMd ? 5 : 1} rowSpan={1}>
+
+        <GridItem colSpan={isLargerThanMd ? 5 : 1}>
           {editing ? (
             <UpdateNote
               setEditing={setEditing}
@@ -106,7 +105,7 @@ function NotesAccordion({ handleSaveNote, handleUpdateNote }) {
           )}
         </GridItem>
       </Grid>
-    </>
+    </Box>
   );
 }
 

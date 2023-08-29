@@ -52,6 +52,7 @@ function UpdateNote({
   };
 
   const handleInputChange = (event) => {
+    event.stopPropagation();
     if (!note) return;
 
     const { name, value } = event.target;

@@ -64,7 +64,12 @@ function UpdateTask({ id, task, onClose, isOpen, selectedTask, allTasks }) {
         <ModalOverlay />
         <ModalContent bg={modalBgColor}>
           <ModalHeader color={headerColor}>Edit Task</ModalHeader>
-          <ModalCloseButton color={headerColor} />
+          <ModalCloseButton
+            color={headerColor}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          />
           <ModalBody>
             <EditTaskFormsModal
               initialValues={task}

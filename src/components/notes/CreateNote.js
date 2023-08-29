@@ -1,80 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import { Input, Textarea, IconButton, Flex } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import React, { useState } from 'react';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Textarea,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { useNotes } from '../../context/Notes/notesContext';
 
-function CreateNote() {
-  const { note, setNote, setAllNotes, setEditing } = useNotes();
+const CreateNote = () => {
+  const { handleSaveNote } = useNotes();
   const [title, setTitle] = useState('');
-  const [notes, setNotes] = useState(''); // You forgot to declare this state
+  const [notes, setNotes] = useState('');
+  const bgColor = useColorModeValue('gray.200', 'gray.700');
+  const borderColor = useColorModeValue('gray.300', 'gray.600');
 
-  useEffect(() => {
-    if (note) {
-      setTitle(note.title || '');
-      setNotes(note.notes || '');
-    } else {
-      setTitle('');
-      setNotes('');
-    }
-  }, [note]);
-
-  const handleSave = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER}/api/notes`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, notes }),
-        },
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setNote(null);
-      setEditing(false);
+    e.stopPropagation();
+    handleSaveNote(title, notes);
+  };
 
-      setAllNotes((prevNotes) => [...prevNotes, data]);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  const handleChange = (setter) => (e) => {
+    e.stopPropagation(); // Stop propagation here
+    setter(e.target.value);
   };
 
   return (
-    <Flex direction="column" h="100%">
-      <Input
-        variant="filled"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <Textarea
-        variant="filled"
-        className="notes-textarea"
-        placeholder="Write note here..."
-        h="100%"
-        overflow="auto"
-        note={note}
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-      />
-      <Flex justifyContent="flex-end">
-        <IconButton
-          aria-label="Add note"
-          icon={<AddIcon />}
-          size="lg"
-          colorScheme="green"
-          onClick={handleSave}
-          bgGradient="linear(to-r, green.200, green.500)"
-          _hover={{
-            bgGradient: 'linear(to-r, green.500, green.200)',
-          }}
-        />
-      </Flex>
-    </Flex>
+    <Box
+      as="section"
+      p={4}
+      borderRadius="md"
+      border="1px solid"
+      borderColor={borderColor}
+      backgroundColor={bgColor}
+    >
+      <form onSubmit={handleSubmit}>
+        <FormControl id="note-title" mb={4}>
+          <FormLabel>Title</FormLabel>
+          <Input
+            type="text"
+            value={title}
+            onChange={handleChange(setTitle)}
+            placeholder="Title"
+            borderRadius="md"
+          />
+        </FormControl>
+
+        <FormControl id="note-content" mb={4}>
+          <FormLabel>Note Content</FormLabel>
+          <Textarea
+            value={notes}
+            onChange={handleChange(setNotes)}
+            placeholder="Write your note..."
+            borderRadius="md"
+          />
+        </FormControl>
+
+        <Button type="submit" colorScheme="blue">
+          Save
+        </Button>
+      </form>
+    </Box>
   );
-}
+};
 
 export default CreateNote;

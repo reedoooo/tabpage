@@ -75,9 +75,10 @@ export function ToDoListProvider({ children }) {
   };
 
   const updateTask = async (taskId, updatedTask) => {
+    console.log('updateTask', taskId, updatedTask);
     try {
       await axios.put(
-        `${process.env.REACT_APP_SERVER}/api/todo/${taskId}`,
+        `${process.env.REACT_APP_SERVER}/api/todo/${taskId.toString()}`, // Convert taskId to string
         updatedTask,
       );
       // Update local state
@@ -90,8 +91,14 @@ export function ToDoListProvider({ children }) {
   };
 
   const deleteTask = async (taskId) => {
+    if (!taskId) {
+      console.error('Task ID is undefined');
+      return;
+    }
     try {
-      await axios.delete(`${process.env.REACT_APP_SERVER}/api/todo/${taskId}`);
+      await axios.delete(
+        `${process.env.REACT_APP_SERVER}/api/todo/${taskId.toString()}`,
+      );
       // Update local state
       setSavedTasks(savedTasks.filter((task) => task.id !== taskId));
     } catch (error) {
@@ -105,11 +112,18 @@ export function ToDoListProvider({ children }) {
     completedTasks,
     incompleteTasks,
     handleOpenModal,
+    // setSavedTasks,
     handleCloseModal,
     addTask,
     updateTask,
     deleteTask,
   };
+
+  useEffect(() => {
+    console.log('TODOLIST CONTEXT:', {
+      value,
+    });
+  }, [value]);
 
   return (
     <ToDoListContext.Provider value={value}>

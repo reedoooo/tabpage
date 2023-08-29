@@ -25,10 +25,14 @@ function TaskAccordion({ onClose, onOpenModal, task, allTasks }) {
 
   // Function to handle the task deletion
   const handleFormDelete = () => {
-    deleteTask(task._id); // Using the task's _id to delete it
+    console.log('Deleting task');
+    deleteTask(task.id);
   };
 
-  const handleToggle = () => setShow(!show);
+  const handleToggle = (event) => {
+    event.stopPropagation(); // Stop event propagation here
+    setShow(!show);
+  };
 
   return (
     <VStack spacing={4} id="task-accordion-container">

@@ -15,9 +15,8 @@ const EditTaskFormsModal = ({ initialValues, onSubmit, onClose, onDelete }) => {
   );
   const [status, setStatus] = useState(initialValues.status || '');
   const [dueDate, setDueDate] = useState('');
-  console.log(initialValues);
-  let id = initialValues.id;
-  let deleteId = initialValues.id;
+
+  const id = initialValues.id;
 
   useEffect(() => {
     const date = new Date(initialValues.dueDate);
@@ -30,12 +29,6 @@ const EditTaskFormsModal = ({ initialValues, onSubmit, onClose, onDelete }) => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     onSubmit({ id, name, status, description, dueDate });
-  };
-
-  const handleFormDelete = (e) => {
-    e.preventDefault();
-    let id = deleteId;
-    onDelete({ id, name, status, description, dueDate });
   };
 
   return (
@@ -88,13 +81,24 @@ const EditTaskFormsModal = ({ initialValues, onSubmit, onClose, onDelete }) => {
             aria-label="Save"
           />
           <IconButton
-            onClick={handleFormDelete}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (id) {
+                onDelete(id); // Calling onDelete with the task id
+              } else {
+                console.log('Task ID is undefined');
+              }
+            }}
             colorScheme="red"
             icon={<DeleteIcon />}
             aria-label="Delete"
           />
+
           <IconButton
-            onClick={onClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }} // Stop propagation here
             colorScheme="gray"
             icon={<CloseIcon />}
             aria-label="Cancel"

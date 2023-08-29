@@ -11,7 +11,7 @@ import {
   Center,
   useColorModeValue,
 } from '@chakra-ui/react';
-import CreateTask from '../todolist/CreateTask';
+import CreateTask from '../../cleanUp/CreateTask';
 
 export default function ToDoListModal({ isOpen, onClose }) {
   const bgColor = useColorModeValue('gray.50', 'gray.800');

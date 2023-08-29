@@ -2,7 +2,13 @@ import React from 'react';
 import { Button, AspectRatio, GridItem, useMediaQuery } from '@chakra-ui/react';
 import EditTabModalButton from '../buttons/EditTabModalButton';
 
-function Tab({ tab, expanded }) {
+function Tab({
+  tab,
+  expanded,
+  toggleSelectedGridItem,
+  selectedGridItem,
+  index,
+}) {
   const buttonStyle = {
     backgroundImage: `url(${tab.imgUrl})`,
     backgroundSize: 'cover',
@@ -51,6 +57,7 @@ function Tab({ tab, expanded }) {
       boxSizing="border-box"
       style={{ flexGrow: 1, flexShrink: 1 }}
       id="tab-container"
+      onClick={(event) => toggleSelectedGridItem(`tab${index + 1}`, event)}
     >
       {expanded && (
         <AspectRatio ratio={1}>

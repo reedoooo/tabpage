@@ -3,7 +3,9 @@ import { IconButton } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 
 function DeleteNote({ noteId, handleNoteDeletion }) {
-  const handleDelete = async () => {
+  const handleDelete = async (e) => {
+    e.stopPropagation(); // Stop the event from propagating
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER}/api/notes/${noteId}`,
@@ -24,19 +26,17 @@ function DeleteNote({ noteId, handleNoteDeletion }) {
   };
 
   return (
-    // <Flex justifyContent="flex-end" mt={4}>
     <IconButton
       aria-label="Delete note"
       icon={<DeleteIcon />}
       size="lg"
       colorScheme="red"
-      onClick={handleDelete}
+      onClick={handleDelete} // handleDelete is now an event handler
       bgGradient="linear(to-r, red.200, red.500)"
       _hover={{
         bgGradient: 'linear(to-r, red.500, red.200)',
       }}
     />
-    // </Flex>
   );
 }
 
