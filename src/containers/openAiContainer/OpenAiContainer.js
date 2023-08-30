@@ -8,6 +8,7 @@ import {
   useToast,
   Heading,
   useBreakpointValue,
+  Button,
 } from '@chakra-ui/react';
 import { SearchIcon, CheckIcon } from '@chakra-ui/icons';
 
@@ -15,7 +16,7 @@ import { useDebounce } from 'use-debounce';
 import axios from 'axios';
 import { useEffect } from 'react';
 
-function ChatGPT() {
+function ChatGPT({ selectedGridItem, setSelectedGridItem }) {
   const [query, setQuery] = useState('');
   const [debouncedQuery] = useDebounce(query, 500);
   const [isLoading, setIsLoading] = useState(false);
@@ -118,15 +119,29 @@ function ChatGPT() {
     fetchResponses();
   }, [toast]);
 
-  const bgColor = useBreakpointValue({ base: 'pink.300', md: 'purple.300' });
   const headingSize = useBreakpointValue({ base: 'sm', md: 'lg' });
+  const bgColor = useBreakpointValue({ base: 'pink.300', md: 'purple.300' });
+
+  const handleClose = (e) => {
+    e.stopPropagation();
+    setSelectedGridItem(null);
+  };
   console.log(savedResponses);
   return (
     <>
       <Box bg={bgColor} color="white" py={2} px={6} borderRadius="md">
-        <Heading size={headingSize} lineHeight="shorter">
-          ChatGPT
-        </Heading>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Heading size={headingSize} lineHeight="shorter">
+            ChatGPT
+          </Heading>
+          <Button
+            background="transparent"
+            border="none"
+            onClick={(e) => handleClose(e)}
+          >
+            ×
+          </Button>
+        </Flex>
       </Box>
 
       <Box

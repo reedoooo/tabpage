@@ -1,60 +1,24 @@
 import React, { useState } from 'react';
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import {
-  Box,
-  Grid,
-  GridItem,
-  VStack,
-  useBreakpointValue,
-  Button,
-  Flex,
-  Heading,
-} from '@chakra-ui/react';
+// import { css } from '@emotion/react';
+import { Box, Grid, VStack, useBreakpointValue } from '@chakra-ui/react';
 import NotesContainer from '../notesContainer/NotesContainer';
-import ToDolistContainer from '../todolistContainer/ToDoListContainer';
-import Tab from '../../components/tab/Tab'; // Make sure to import your own Tab component
+import ToDoListContainer from '../todolistContainer/ToDoListContainer';
+import Tab from '../../components/tab/Tab';
+import CustomGridItem from './CustomGridItem';
+import ChatGPT from '../openAiContainer/OpenAiContainer';
+import BlogContainer from '../blogContainer/BlogContainer';
+import HabitTrackerContainer from '../habitTracker/HabitTrackerContainer';
+import CardPriceTracker from '../cardPriceTracker.js/CardPriceTracker';
 
-const nonExpandedStyle = (bgColor) => css`
-  transition: all 0.5s ease-in-out;
-  background-color: ${bgColor};
-  aspect-ratio: 1 / 1;
-  max-width: 400px;
-  max-height: 400px;
-  min-width: 100px;
-  min-height: 100px;
-`;
-
-const expandedStyle = css`
-  transition: all 0.5s ease-in-out;
-  aspect-ratio: 1 / 1;
-  max-width: 800px;
-  max-height: 800px;
-  min-width: 200px;
-  min-height: 200px;
-`;
-
-const expandedStyleSmall = css`
-  transition: all 0.5s ease-in-out;
-  width: 100%;
-  height: auto;
-`;
-
-const closeButtonStyle = css`
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-`;
-
-function TabGridContainer({ savedTabsData }) {
-  const [selectedGridItem, setSelectedGridItem] = useState({});
+const TabGridContainer = ({ savedTabsData }) => {
+  const [selectedGridItem, setSelectedGridItem] = useState(null);
   const bgColor1 = '#276749';
   const bgColor2 = '#4299e1';
   const bgColor3 = 'white';
-  const headingSize = useBreakpointValue({ base: 'sm', md: 'lg' });
+  const bgColor4 = 'rgba(128, 0, 128)';
+  const bgColor5 = '#B4ADE3';
+  const bgColor6 = '#FFB07C';
+  const bgColor7 = '#FFB';
 
   const templateColumns = useBreakpointValue({
     base: 'repeat(1, 1fr)',
@@ -63,14 +27,6 @@ function TabGridContainer({ savedTabsData }) {
   });
 
   const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm', md: 'md' });
-
-  const toggleSelectedGridItem = (item, e) => {
-    setSelectedGridItem(item);
-  };
-
-  const resetSelectedGridItem = (e) => {
-    setSelectedGridItem(null);
-  };
 
   return (
     <VStack spacing={4} align="stretch" w="100%">
@@ -95,135 +51,85 @@ function TabGridContainer({ savedTabsData }) {
             width="100%"
             templateColumns={templateColumns}
           >
-            {/* ToDo List Container */}
-            <GridItem
-              gridRow={
-                selectedGridItem === 'todo'
-                  ? breakpoint === 'base'
-                    ? '1 / 2'
-                    : 'span 2'
-                  : 'auto'
-              }
-              gridColumn={
-                selectedGridItem === 'todo'
-                  ? breakpoint === 'base' || breakpoint === 'sm'
-                    ? '1 / -1'
-                    : 'span 2'
-                  : 'auto'
-              }
-              css={
-                selectedGridItem === 'todo'
-                  ? breakpoint === 'base' || breakpoint === 'sm'
-                    ? expandedStyleSmall
-                    : expandedStyle
-                  : nonExpandedStyle(bgColor1)
-              }
-              onClick={(e) => toggleSelectedGridItem('todo', e)}
-            >
-              <Button css={closeButtonStyle} onClick={resetSelectedGridItem}>
-                ×
-              </Button>
+            <CustomGridItem
+              label="TODO LIST"
+              type="todo"
+              selectedGridItem={selectedGridItem}
+              setSelectedGridItem={setSelectedGridItem}
+              breakpoint={breakpoint}
+              ContainerComponent={ToDoListContainer}
+              bgColor={bgColor1}
+            />
 
-              <div
-                style={{
-                  // transition: 'opacity 0.5s',
-                  opacity: selectedGridItem === 'todo' ? 1 : 0,
-                  pointerEvents: selectedGridItem === 'todo' ? 'auto' : 'none',
-                }}
-              >
-                <ToDolistContainer
-                  isVisible={selectedGridItem === 'todo'}
-                  toggleSelectedGridItem={toggleSelectedGridItem}
-                />
-              </div>
-            </GridItem>
+            <CustomGridItem
+              label="NOTES"
+              type="notes"
+              selectedGridItem={selectedGridItem}
+              setSelectedGridItem={setSelectedGridItem}
+              breakpoint={breakpoint}
+              ContainerComponent={NotesContainer}
+              bgColor={bgColor2}
+            />
 
-            {/* Notes Container */}
-            <GridItem
-              gridRow={
-                selectedGridItem === 'notes'
-                  ? breakpoint === 'base'
-                    ? '2 / 3'
-                    : 'span 2'
-                  : 'auto'
-              }
-              gridColumn={
-                selectedGridItem === 'notes'
-                  ? breakpoint === 'base' || breakpoint === 'sm'
-                    ? '1 / -1'
-                    : 'span 2'
-                  : 'auto'
-              }
-              css={
-                selectedGridItem === 'notes'
-                  ? breakpoint === 'base' || breakpoint === 'sm'
-                    ? expandedStyleSmall
-                    : expandedStyle
-                  : nonExpandedStyle(bgColor2)
-              }
-              onClick={(e) => toggleSelectedGridItem('notes', e)}
-            >
-              <Button css={closeButtonStyle} onClick={resetSelectedGridItem}>
-                ×
-              </Button>
+            <CustomGridItem
+              label="CHAT"
+              type="chat"
+              selectedGridItem={selectedGridItem}
+              setSelectedGridItem={setSelectedGridItem}
+              breakpoint={breakpoint}
+              ContainerComponent={ChatGPT}
+              bgColor={bgColor4}
+            />
 
-              <div
-                style={{
-                  // transition: 'opacity 0.5s',
-                  opacity: selectedGridItem === 'notes' ? 1 : 0,
-                  pointerEvents: selectedGridItem === 'notes' ? 'auto' : 'none',
-                }}
-              >
-                <NotesContainer
-                  isVisible={selectedGridItem === 'notes'}
-                  toggleSelectedGridItem={toggleSelectedGridItem}
-                />
-              </div>
-            </GridItem>
+            <CustomGridItem
+              label="BLOG"
+              type="blog"
+              selectedGridItem={selectedGridItem}
+              setSelectedGridItem={setSelectedGridItem}
+              breakpoint={breakpoint}
+              ContainerComponent={BlogContainer}
+              bgColor={bgColor5}
+            />
 
-            {/* Dynamic Tabs */}
+            <CustomGridItem
+              label="HABIT"
+              type="habit"
+              selectedGridItem={selectedGridItem}
+              setSelectedGridItem={setSelectedGridItem}
+              breakpoint={breakpoint}
+              ContainerComponent={HabitTrackerContainer}
+              bgColor={bgColor6}
+            />
+
+            <CustomGridItem
+              label="CARDS"
+              type="cards"
+              selectedGridItem={selectedGridItem}
+              setSelectedGridItem={setSelectedGridItem}
+              breakpoint={breakpoint}
+              ContainerComponent={CardPriceTracker}
+              bgColor={bgColor7}
+            />
+
             {savedTabsData.map((tab, index) => (
-              <GridItem
+              <CustomGridItem
                 key={tab.id}
-                gridRow={
-                  selectedGridItem === `tab${index + 1}`
-                    ? breakpoint === 'base'
-                      ? `${index + 3} / ${index + 4}`
-                      : 'span 2'
-                    : 'auto'
-                }
-                gridColumn={
-                  selectedGridItem === `tab${index + 1}`
-                    ? breakpoint === 'base' || breakpoint === 'sm'
-                      ? '1 / -1'
-                      : 'span 2'
-                    : 'auto'
-                }
-                css={
-                  selectedGridItem === `tab${index + 1}`
-                    ? breakpoint === 'base' || breakpoint === 'sm'
-                      ? expandedStyleSmall
-                      : expandedStyle
-                    : nonExpandedStyle(bgColor3)
-                }
-                onClick={(e) => toggleSelectedGridItem(`tab${index + 1}`, e)}
-              >
-                <Button css={closeButtonStyle} onClick={resetSelectedGridItem}>
-                  ×
-                </Button>
-
-                <Tab
-                  tab={tab}
-                  expanded={selectedGridItem === `tab${index + 1}`}
-                  toggleSelectedGridItem={toggleSelectedGridItem}
-                />
-              </GridItem>
+                label={tab.name}
+                index={index}
+                type={`tab${index + 1}`} // this type won't be in containerTypeMapping but it's okay
+                tab={tab} // passing tab data
+                selectedGridItem={selectedGridItem}
+                setSelectedGridItem={setSelectedGridItem}
+                breakpoint={breakpoint}
+                ContainerComponent={Tab}
+                bgColor={bgColor3}
+              />
             ))}
           </Grid>
         </Box>
       </Box>
     </VStack>
   );
-}
+};
 
 export default TabGridContainer;

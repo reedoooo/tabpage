@@ -10,11 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { useNotes } from '../../context/Notes/notesContext';
 
-function NotesContainer({
-  selectedGridItem,
-  toggleSelectedGridItem,
-  isVisible,
-}) {
+function NotesContainer({ selectedGridItem, isVisible, setSelectedGridItem }) {
   const {
     note,
     setNote,
@@ -28,17 +24,17 @@ function NotesContainer({
   const headingSize = useBreakpointValue({ base: 'sm', md: 'lg' });
   const bgColor = useColorModeValue('blue.400', 'blue.700');
 
-  const closeButtonStyles = {
-    position: 'absolute',
-    top: '5px',
-    right: '5px',
-    background: 'transparent',
-    border: 'none',
-  };
+  // const closeButtonStyles = {
+  //   position: 'absolute',
+  //   top: '5px',
+  //   right: '5px',
+  //   background: 'transparent',
+  //   border: 'none',
+  // };
 
   const containerStyles = {
     width: '100%',
-    height: '100%',
+    height: '90%',
     py: 2,
     px: 6,
     borderRadius: 'md',
@@ -57,6 +53,11 @@ function NotesContainer({
     lineHeight: 'shorter',
   };
 
+  const handleClose = (e) => {
+    e.stopPropagation();
+    setSelectedGridItem(null); // Explicitly setting to null to reapply nonExpandedStyle
+  };
+
   return (
     <Box {...containerStyles}>
       <Box {...headerBoxStyles}>
@@ -65,10 +66,7 @@ function NotesContainer({
           <Button
             background="transparent"
             border="none"
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleSelectedGridItem(null); // change here
-            }}
+            onClick={(e) => handleClose(e)}
           >
             ×
           </Button>
@@ -84,7 +82,6 @@ function NotesContainer({
         handleSaveNote={handleSaveNote}
         handleUpdateNote={handleUpdateNote}
         selectedGridItem={selectedGridItem}
-        toggleSelectedGridItem={toggleSelectedGridItem}
       />
     </Box>
   );

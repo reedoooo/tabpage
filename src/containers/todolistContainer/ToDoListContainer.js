@@ -14,7 +14,9 @@ import TaskAccordion from '../../components/todolist/TaskAccordion';
 import UpdateTask from '../../components/todolist/UpdateTask';
 import { useToDoList } from '../../context/Todo/todoListContext';
 
-function ToDoListContainer({ selectedGridItem, toggleSelectedGridItem }) {
+function ToDoListContainer({ selectedGridItem, setSelectedGridItem, label }) {
+  console.log('ToDoListContainer selectedGridItem:', selectedGridItem);
+
   const {
     savedTasks,
     selectedTask,
@@ -44,7 +46,7 @@ function ToDoListContainer({ selectedGridItem, toggleSelectedGridItem }) {
       : 0;
 
   const [currentPage, setCurrentPage] = useState(1);
-  const tasksPerPage = 7;
+  const tasksPerPage = 5;
 
   const indexOfLastTask = currentPage * tasksPerPage;
   const indexOfFirstTask = indexOfLastTask - tasksPerPage;
@@ -60,6 +62,11 @@ function ToDoListContainer({ selectedGridItem, toggleSelectedGridItem }) {
     setCurrentPage(currentPage - 1);
   };
 
+  const handleClose = (e) => {
+    e.stopPropagation();
+    setSelectedGridItem(null); // Explicitly setting to null to reapply nonExpandedStyle
+  };
+
   const totalPages = Math.ceil(savedTasks.length / tasksPerPage);
 
   return (
@@ -72,10 +79,7 @@ function ToDoListContainer({ selectedGridItem, toggleSelectedGridItem }) {
           <Button
             background="transparent"
             border="none"
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleSelectedGridItem(null);
-            }}
+            onClick={(e) => handleClose(e)}
           >
             ×
           </Button>

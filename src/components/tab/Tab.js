@@ -1,16 +1,9 @@
 import React from 'react';
-import { Button, AspectRatio, GridItem, useMediaQuery } from '@chakra-ui/react';
-import EditTabModalButton from '../buttons/EditTabModalButton';
+import { Button, AspectRatio, GridItem } from '@chakra-ui/react';
 
-function Tab({
-  tab,
-  expanded,
-  toggleSelectedGridItem,
-  selectedGridItem,
-  index,
-}) {
+function Tab({ tab, expanded, toggleSelectedGridItem, index }) {
   const buttonStyle = {
-    backgroundImage: `url(${tab.imgUrl})`,
+    backgroundImage: `url(${tab?.imgUrl})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -26,29 +19,31 @@ function Tab({
     justifyContent: 'flex-end',
   };
 
-  const [isLargerThanMd] = useMediaQuery(
-    '(min-width: 10em)',
-    '(min-height: 10em)',
-  );
+  // const [isLargerThanMd] = useMediaQuery(
+  //   '(min-width: 10em)',
+  //   '(min-height: 10em)',
+  // );
 
-  const commonGridItemStyle = {
-    width: '100%',
-    height: '100%',
-  };
+  // const commonGridItemStyle = {
+  //   width: '100%',
+  //   height: '100%',
+  // };
 
-  const largeScreenGridItemStyle = {
-    flexBasis: '100%',
-  };
+  // const largeScreenGridItemStyle = {
+  //   flexBasis: '100%',
+  // };
 
-  const smallScreenGridItemStyle = {
-    height: '50%',
-    flexBasis: 'auto',
-  };
+  // const smallScreenGridItemStyle = {
+  //   height: '50%',
+  //   flexBasis: 'auto',
+  // };
 
-  const gridItemStyle = {
-    ...commonGridItemStyle,
-    ...(isLargerThanMd ? largeScreenGridItemStyle : smallScreenGridItemStyle),
-  };
+  // const gridItemStyle = {
+  //   ...commonGridItemStyle,
+  //   ...(isLargerThanMd ? largeScreenGridItemStyle : smallScreenGridItemStyle),
+  // };
+
+  console.log('tab:', tab);
 
   return (
     <GridItem
