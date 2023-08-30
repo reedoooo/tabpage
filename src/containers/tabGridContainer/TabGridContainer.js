@@ -1,32 +1,71 @@
-import React, { useState } from 'react';
-// import { css } from '@emotion/react';
+import React, { useState, useEffect } from 'react';
 import { Box, Grid, VStack, useBreakpointValue } from '@chakra-ui/react';
-import NotesContainer from '../notesContainer/NotesContainer';
 import ToDoListContainer from '../todolistContainer/ToDoListContainer';
-import Tab from '../../components/tab/Tab';
-import CustomGridItem from './CustomGridItem';
+import NotesContainer from '../notesContainer/NotesContainer';
 import ChatGPT from '../openAiContainer/OpenAiContainer';
 import BlogContainer from '../blogContainer/BlogContainer';
 import HabitTrackerContainer from '../habitTracker/HabitTrackerContainer';
 import CardPriceTracker from '../cardPriceTracker.js/CardPriceTracker';
+import CustomGridItem from './CustomGridItem';
+import Tab from '../../components/tab/Tab';
 
 const TabGridContainer = ({ savedTabsData }) => {
   const [selectedGridItem, setSelectedGridItem] = useState(null);
-  const bgColor1 = '#276749';
-  const bgColor2 = '#4299e1';
-  const bgColor3 = 'white';
-  const bgColor4 = 'rgba(128, 0, 128)';
-  const bgColor5 = '#B4ADE3';
-  const bgColor6 = '#FFB07C';
-  const bgColor7 = '#FFB';
+
+  const defaultGridItems = [
+    { type: 'todo', bgColor: '#276749', label: 'TODO LIST' },
+    { type: 'notes', bgColor: '#4299e1', label: 'NOTES' },
+    { type: 'chat', bgColor: 'rgba(128, 0, 128)', label: 'CHAT' },
+    { type: 'blog', bgColor: '#B4ADE3', label: 'BLOG' },
+    { type: 'habit', bgColor: '#FFB07C', label: 'HABIT' },
+    { type: 'cards', bgColor: '#FFB', label: 'CARDS' },
+  ];
 
   const templateColumns = useBreakpointValue({
     base: 'repeat(1, 1fr)',
-    sm: 'repeat(2, 1fr)',
-    md: 'repeat(4, 1fr)',
+    sm: 'repeat(4, 1fr)',
+    md: 'repeat(6, 1fr)',
   });
 
   const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm', md: 'md' });
+
+  const [gridOrder, setGridOrder] = useState([
+    ...defaultGridItems,
+    ...savedTabsData.map((tab, index) => ({
+      type: 'tab',
+      backgroundImage: `url(${tab?.imgUrl})`,
+      label: tab.name,
+      tab,
+    })),
+  ]);
+
+  console.log('tab:', gridOrder);
+
+  useEffect(() => {
+    setGridOrder([
+      ...defaultGridItems,
+      ...savedTabsData.map((tab, index) => ({
+        type: 'tab',
+        backgroundImage: `url(${tab?.imgUrl})`,
+        label: tab.name,
+        tab,
+      })),
+    ]);
+  }, [savedTabsData]);
+
+  const getContainerComponent = (type, index) => {
+    const containerTypeMapping = {
+      todo: ToDoListContainer,
+      notes: NotesContainer,
+      chat: ChatGPT,
+      blog: BlogContainer,
+      habit: HabitTrackerContainer,
+      cards: CardPriceTracker,
+      tab: Tab,
+    };
+
+    return containerTypeMapping[type] || Tab;
+  };
 
   return (
     <VStack spacing={4} align="stretch" w="100%">
@@ -50,79 +89,23 @@ const TabGridContainer = ({ savedTabsData }) => {
             border="5px solid black"
             width="100%"
             templateColumns={templateColumns}
+            flexGrow={'1'}
           >
-            <CustomGridItem
-              label="TODO LIST"
-              type="todo"
-              selectedGridItem={selectedGridItem}
-              setSelectedGridItem={setSelectedGridItem}
-              breakpoint={breakpoint}
-              ContainerComponent={ToDoListContainer}
-              bgColor={bgColor1}
-            />
-
-            <CustomGridItem
-              label="NOTES"
-              type="notes"
-              selectedGridItem={selectedGridItem}
-              setSelectedGridItem={setSelectedGridItem}
-              breakpoint={breakpoint}
-              ContainerComponent={NotesContainer}
-              bgColor={bgColor2}
-            />
-
-            <CustomGridItem
-              label="CHAT"
-              type="chat"
-              selectedGridItem={selectedGridItem}
-              setSelectedGridItem={setSelectedGridItem}
-              breakpoint={breakpoint}
-              ContainerComponent={ChatGPT}
-              bgColor={bgColor4}
-            />
-
-            <CustomGridItem
-              label="BLOG"
-              type="blog"
-              selectedGridItem={selectedGridItem}
-              setSelectedGridItem={setSelectedGridItem}
-              breakpoint={breakpoint}
-              ContainerComponent={BlogContainer}
-              bgColor={bgColor5}
-            />
-
-            <CustomGridItem
-              label="HABIT"
-              type="habit"
-              selectedGridItem={selectedGridItem}
-              setSelectedGridItem={setSelectedGridItem}
-              breakpoint={breakpoint}
-              ContainerComponent={HabitTrackerContainer}
-              bgColor={bgColor6}
-            />
-
-            <CustomGridItem
-              label="CARDS"
-              type="cards"
-              selectedGridItem={selectedGridItem}
-              setSelectedGridItem={setSelectedGridItem}
-              breakpoint={breakpoint}
-              ContainerComponent={CardPriceTracker}
-              bgColor={bgColor7}
-            />
-
-            {savedTabsData.map((tab, index) => (
+            {gridOrder.map((item, index) => (
               <CustomGridItem
-                key={tab.id}
-                label={tab.name}
-                index={index}
-                type={`tab${index + 1}`} // this type won't be in containerTypeMapping but it's okay
-                tab={tab} // passing tab data
+                className="custom-grid-item"
+                flexGrow={'1'}
+                key={index}
+                label={item.label}
+                type={item.type}
                 selectedGridItem={selectedGridItem}
                 setSelectedGridItem={setSelectedGridItem}
                 breakpoint={breakpoint}
-                ContainerComponent={Tab}
-                bgColor={bgColor3}
+                gridOrder={gridOrder}
+                ContainerComponent={getContainerComponent(item.type, index)}
+                bgColor={item.type === 'tab' ? null : item.bgColor} // Pass null if type is 'tab'
+                bgImage={item.type === 'tab' ? item.backgroundImage : null} // Pass null if type is 'tab'
+                tab={item.tab} // Pass the tab object for further use
               />
             ))}
           </Grid>
